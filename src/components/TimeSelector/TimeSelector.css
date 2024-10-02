@@ -1,0 +1,36 @@
+.time-selector {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: #7e5f8f;
+    width: 180px;
+    padding: 0px 30px;
+    margin: auto;
+    border-radius: 50px;
+}
+.scroll-container {
+    overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+    height: 88px; /* Высота контейнера со скроллом */
+    width: 70px;   /* Ширина контейнера */
+    margin: 0 10px;
+    position: relative;
+    scroll-behavior: smooth; /* Плавная прокрутка */
+}
+.scroll-item {
+    height: 30px; /* Высота каждого элемента */
+    line-height: 30px; /* Выравнивание текста по центру */
+    text-align: center;
+    transition: opacity 0.3s;
+    font-size: 2rem;
+}
+.transparent {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.3); /* Полупрозрачный цвет */
+}
+.visible {
+    color: rgb(255, 255, 255); /* Непрозрачный цвет для видимых элементов */
+}
+.tchk{
+    color: #fff;
+    font-size: 2rem; 
+}

@@ -1,0 +1,85 @@
+.body{
+    margin-top: 20%;
+    margin-bottom: 30%;
+    justify-content: center;
+   
+
+}
+.body span{
+    margin: 1.6rem 0rem;
+    display: block;
+}
+p{
+    margin-top: 25px;
+   
+}
+
+.time-selector {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: #7e5f8f;
+    width: 180px;
+    padding: 0px 30px;
+    margin: auto;
+    border-radius: 50px;
+    height: 88px;
+}
+.scroll-container {
+    overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+    height: 88px; /* Высота контейнера со скроллом */
+    width: 70px;   /* Ширина контейнера */
+    margin: 0 10px;
+    position: relative;
+    scroll-behavior: smooth; /* Плавная прокрутка */
+}
+.scroll-item {
+    height: 30px; /* Высота каждого элемента */
+    line-height: 30px; /* Выравнивание текста по центру */
+    text-align: center;
+    transition: opacity 0.3s;
+    font-size: 2rem;
+}
+.transparent {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.3); /* Полупрозрачный цвет */
+}
+.visible {
+    font-size: 2rem;
+    color: rgb(255, 255, 255); /* Непрозрачный цвет для видимых элементов */
+}
+.tchk{
+    color: #fff;
+    font-size: 2rem; 
+}
+.scroll-container {
+    height: 120px; /* высота контейнера */
+    overflow-y: auto; /* возможность прокрутки */
+    position: relative;
+    height: 88px;
+  }
+  
+  .item {
+    height: 30px; /* высота каждого элемента */
+    display: flex;
+    align-items: center; /* центровка по вертикали */
+    justify-content: center; /* центровка по горизонтали */
+    transition: opacity 0.3s ease; /* плавный переход при изменении прозрачности */
+  }
+  
+  .visible {
+    opacity: 1; /* полностью видимый элемент */
+  }
+  
+  .transparent {
+    opacity: 0.5; /* полупрозрачные элементы */
+  }
+  .time-selector::-webkit-scrollbar {
+    display: none; /* Скрыть ползунок прокрутки */
+  }
+  
+  /* Убираем ползунок прокрутки для Firefox */
+  .time-selector ::-webkit-scrollbar{
+             height: 0;
+        width: 0;
+  }
