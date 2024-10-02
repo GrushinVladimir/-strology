@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+const zodiacImages = {
+  Водолей: 'img/zhak/vodoley.png',
+  Рыбы: 'img/zhak/riby.png',
+  Овен: 'img/zhak/oven.png',
+  Телец: 'img/zhak/telec.png',
+  Близнецы: 'img/zhak/bliznecy.png',
+  Рак: 'img/zhak/rak.png',
+  Лев: 'img/zhak/lev.png',
+  Дева: '/img/zhak/deva.png',
+  Весы: 'img/zhak/vesy.png',
+  Скорпион: 'img/zhak/scorpion.png',
+  Стрелец: 'img/zhak/strelec.png',
+  Козерог: 'img/zhak/kozerog.png',
+};
 
 const MainPage = () => {
   const location = useLocation();
@@ -28,7 +42,13 @@ const MainPage = () => {
       <h1>Ваш знак</h1>
       <h2>{zodiacSign}</h2>
       <div className="zodiac-image">
-        {/* Здесь будет изображение знака зодиака, пока оставляем пустым */}
+        {zodiacSign && (
+          <img
+            src={zodiacImages[zodiacSign]}
+            alt={zodiacSign}
+            style={{ maxWidth: '260px', height: 'auto' }}
+          />
+        )}
       </div>
       <div className="tabs">
         <button

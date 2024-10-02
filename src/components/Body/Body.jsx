@@ -24,6 +24,23 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const [zodiacSign, setZodiacSign] = useState(''); // для хранения знака зодиака
   const navigate = useNavigate(); // для редиректа
 
+
+
+  const zodiacImages = {
+    Водолей: 'path/to/aquarius_image.jpg',
+    Рыбы: 'path/to/pisces_image.jpg',
+    Овен: 'path/to/aries_image.jpg',
+    Телец: 'path/to/taurus_image.jpg',
+    Близнецы: 'path/to/gemini_image.jpg',
+    Рак: 'path/to/cancer_image.jpg',
+    Лев: 'path/to/leos_image.jpg',
+    Дева: 'img/zhak/deva.png',
+    Весы: 'path/to/libra_image.jpg',
+    Скорпион: 'path/to/scorpio_image.jpg',
+    Стрелец: 'path/to/sagittarius_image.jpg',
+    Козерог: 'path/to/capricorn_image.jpg',
+  };
+
   // Функция для вычисления знака зодиака
   const getZodiacSign = (day, month) => {
     if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
@@ -52,6 +69,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       return "Козерог";
     }
   };
+
+  const ZodiacSignDisplay = () => {
+    const [day, setDay] = useState(1);
+    const [month, setMonth] = useState(1);
+    
+    const zodiacSign = getZodiacSign(day, month);}
 
   const handleFinish = () => {
     if (!day || !month || !year || !placeOfBirth || !username) {
