@@ -8,5 +8,8 @@
     font-size: 20px;
     display: block;
     margin: auto;
-    margin-top: 10%;
+    bottom: 2rem;
+    position: absolute;
+    transform: translateX(-50%);
+    left:50%;
 }

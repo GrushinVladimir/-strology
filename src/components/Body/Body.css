@@ -83,3 +83,19 @@ p{
              height: 0;
         width: 0;
   }
+
+  .calendars {
+
+    transform: translateX(-50%);
+    left: 50%;
+    position: fixed;
+  }
+  .custom-year-dropdown {
+    /* Override styles for the year dropdown */
+    font-size: 14px; /* Adjust the font size as needed */
+  }
+  
+  .custom-year-dropdown::after {
+    width: 5px; /* Set the desired width */
+    height: 5px; /* Set the desired height */
+  }

@@ -2,8 +2,19 @@ import { useTelegram } from '../hooks/useTelegram';
 import './Body.css';  
 import React, { useEffect, useState } from 'react';  
 import { useNavigate } from 'react-router-dom'; // для редиректа
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { registerLocale, setDefaultLocale } from 'react-datepicker';
+import ru from 'date-fns/locale/ru'; // Импортируем русскую локаль
+
+
+// Регистрируем русскую локаль
+registerLocale('ru', ru);
+setDefaultLocale('ru'); // Устанавливаем её по умолчанию
+
 
 const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
+
   const { user } = useTelegram();  
   const [day, setDay] = useState('');   
   const [month, setMonth] = useState('');   
@@ -157,6 +168,52 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     }
   }, [step, hourIndex, minuteIndex]);
 
+
+  const [startDate, setStartDate] = useState(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+
+  const today = new Date();
+
+  const handleDateChange = (date) => {
+    setStartDate(date);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
+    
+    // Update the state with new values
+    setDay(day); 
+    setMonth(month);
+    setYear(year);
+  };
+
+
+  const formatDate = (date) => {
+    if (!date) {
+      return (
+        <span style={{ display: 'flex', margin: '0' }}>
+          <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>День</span>
+          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>Мес</span>
+          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '2.5rem' }}>Год</span>
+        </span>
+      );
+    }
+  
+    const day = date.toLocaleDateString('ru-RU', { day: '2-digit' });
+    const month = date.toLocaleDateString('ru-RU', { month: 'long' }); // или '2-digit'
+    const year = date.toLocaleDateString('ru-RU', { year: 'numeric' });
+  
+    return (
+      <span style={{ display: 'flex', margin: '0' }}>
+        <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>{day}</span>
+        <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>{month}</span>
+        <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '2.5rem' }}>{year}</span>
+      </span>
+    );
+  };
+ 
+
+  
   const renderStep = () => {  
     switch (step) {  
       case 0:  
@@ -164,7 +221,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           <div className='body'>  
             <h2 className={'username'}>  
               Давай знакомится,<br />  
-              {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
+             { user }
             </h2>  
             <p>  
               Ответь на 5 простых вопросов. <br />  
@@ -201,46 +258,93 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           </div>
           );
   
-      case 2:  
-        return (  
-          <div className='body'>  
-          <h2>Дата рождения</h2>   
-          <span>Дата рождения нужна для определения вашего зодиакального знака.</span>   
-          <br />  
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>   
-            <div>  
-              <input  
-                type="number"  
-                min="1"  
-                max="31"  
-                value={day}  
-                onChange={(e) => setDay(e.target.value)}  
-                placeholder="День" 
-              />  
-            </div>  
-            <div style={{ marginLeft: '10px' }}>  
-              <input  
-                type="number"  
-                min="1"  
-                max="12"  
-                value={month}  
-                onChange={(e) => setMonth(e.target.value)}  
-                placeholder="Месяц" 
-              />  
-            </div>  
-            <div style={{ marginLeft: '10px' }}>  
-              <input  
-                type="number"  
-                value={year}  
-                onChange={(e) => setYear(e.target.value)}  
-                placeholder="Год" 
-              />  
-            </div>  
-          </div>  
-          <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'>Далее</button>  
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </div>  
-        ); 
+          case 2:  
+          return (  
+            <div className='body'>
+              <h2>Дата рождения</h2>
+              <span>Дата рождения нужна для определения вашего зодиакального знака.</span>
+              <br />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div>
+                  {!calendarOpen && (
+                    <button 
+                      onClick={() => setCalendarOpen(true)} 
+                      style={{ 
+                        padding: '15px 30px',
+                        background: '#7e5f8f',
+                        fontSize: '20px',
+                        borderRadius: '40px',
+                        color: 'white', 
+                        border: 'none', 
+                        cursor: 'pointer' 
+                      }}
+                    >
+                      {formatDate(startDate)}
+                    </button>
+                  )}
+                  
+                  {/* Overlay */}
+                  {calendarOpen && (
+                    <div style={{
+                      position: 'fixed',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
+                      zIndex: 999, // Ensure it appears above other elements
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <div style={{ 
+             
+                        borderRadius: '10px', 
+                
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
+                      }}>
+                        <DatePicker
+                          selected={startDate}
+                          onChange={handleDateChange} // Ensure this updates the state
+                          dateFormat="dd/MM/yyyy"
+                          inline 
+                          popperPlacement="bottom"
+                          showYearDropdown 
+                          yearDropdownItemNumber={100}
+                          scrollableYearDropdown 
+                          maxDate={today} 
+                          locale="ru" 
+                        />
+                        <button 
+                          onClick={() => {
+                            setCalendarOpen(false); // Close the calendar
+                           
+                          }} 
+                          className='button'
+                          style={{
+                            position: 'relative',
+                            bottom: '0',
+                            marginTop: '10px',
+                            padding: '10px 20px',
+                            background: '#7e5f8f',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontSize: '1rem',
+                            width: '245px'
+                          }}
+                        >
+                          Установить
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <button onClick={() => handleNext({ day, month, year })} className='button'>Далее</button>
+            </div>
+          ); 
   
       case 3:  
         return (  
@@ -258,12 +362,24 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       <div className='body'>  
         <h2>Ваше имя</h2>  
         <p>Введите ваше имя, чтобы мы могли к вам обращаться.</p>  
-        <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder='Ваше имя' />  
-        <button onClick={() => handleFinish()} className='button'>Завершить</button>  
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <input type="text" placeholder="" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <button onClick={() => handleNext({ username })} className='button'>Далее</button>
+     
       </div>  
     );  
 
+    case 5:
+      return (
+    <div className='body'>
+      <h2>Ваши данные</h2>
+      <p>Время рождения: {hours[hourIndex]}:{minutes[minuteIndex]}</p>
+      <p>Дата рождения: {day}.{month}.{year}</p>
+      <p>Место рождения: {placeOfBirth}</p>
+      <p>Имя пользователя: {username}</p>
+      <button onClick={() => handleFinish()} className='button'>Завершить</button>  
+    </div>
+        
+      );
   default:  
     return null;  
 }  
