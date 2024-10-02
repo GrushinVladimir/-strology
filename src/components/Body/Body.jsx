@@ -12,9 +12,7 @@ import ru from 'date-fns/locale/ru'; // Импортируем русскую л
 registerLocale('ru', ru);
 setDefaultLocale('ru'); // Устанавливаем её по умолчанию
 
-
 const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
-
   const { user } = useTelegram();  
   const [day, setDay] = useState('');   
   const [month, setMonth] = useState('');   
@@ -221,7 +219,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           <div className='body'>  
             <h2 className={'username'}>  
               Давай знакомится,<br />  
-             { user }
+              {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
             </h2>  
             <p>  
               Ответь на 5 простых вопросов. <br />  
