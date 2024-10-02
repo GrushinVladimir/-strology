@@ -105,10 +105,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   
       const itemHeight = 30; // Height of each item
   
-      // Function to center the item
+      // Function to center the item smoothly
       const centerItem = (selector, index) => {
         const offset = (selector.clientHeight / 2) - (itemHeight / 2); // Offset for centering
         const scrollToPosition = index * itemHeight - offset;
+  
+        // Using smooth scroll behavior
         selector.scrollTo({
           top: scrollToPosition,
           behavior: 'smooth'
@@ -139,7 +141,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           // Set timeout to center after scrolling stops
           scrollTimeout = setTimeout(() => {
             centerItem(selector, midIndex);
-          }, 100); // Delay before centering
+          }, 150); // Increased delay for smoother behavior
         };
   
         selector.addEventListener('scroll', scrollHandler);
