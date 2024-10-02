@@ -6,13 +6,16 @@
 
 }
 .body span{
+  font-size: 1rem;
     margin: 1.6rem 0rem;
     display: block;
 }
 p{
+  padding: 0px 25px;
     margin-top: 25px;
    
 }
+
 
 .time-selector {
     display: flex;
@@ -21,7 +24,7 @@ p{
     background: #7e5f8f;
     width: 180px;
     padding: 0px 30px;
-    margin: auto;
+    margin: 1.62rem auto;
     border-radius: 50px;
     height: 88px;
 }
@@ -41,10 +44,14 @@ p{
     font-size: 2rem;
 }
 .transparent {
+  transition: opacity 0.3s ease;
+
     font-size: 1.5rem;
     color: rgba(255, 255, 255, 0.3); /* Полупрозрачный цвет */
 }
 .visible {
+  transition: opacity 0.3s ease;
+
     font-size: 2rem;
     color: rgb(255, 255, 255); /* Непрозрачный цвет для видимых элементов */
 }

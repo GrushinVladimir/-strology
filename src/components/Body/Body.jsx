@@ -12,7 +12,7 @@ import ru from 'date-fns/locale/ru';
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
 
-const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
+const Body = ({ step, userName, handleStart, handleNext, formData, initialHour, initialMinute }) => {
   const { user } = useTelegram();  
   const [day, setDay] = useState('');   
   const [month, setMonth] = useState('');   
@@ -133,67 +133,90 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const initialHourIndex = currentTimeInMoscow.getHours();
   const initialMinuteIndex = currentTimeInMoscow.getMinutes();
 
-  const [hourIndex, setHourIndex] = useState(initialHourIndex + 1); 
-  const [minuteIndex, setMinuteIndex] = useState(initialMinuteIndex + 1); 
+  
+    const [hourIndex, setHourIndex] = useState(initialHourIndex + 1);
+    const [minuteIndex, setMinuteIndex] = useState(initialMinuteIndex + 1);
+  
+    const hours = ['', ...Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')), ''];
+    const minutes = ['', ...Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')), ''];
+  
+useEffect(() => {
+  if (step === 1) {
+    const hourSelector = document.getElementById('hourSelector');
+    const minuteSelector = document.getElementById('minuteSelector');
 
-  const hours = ['', ...Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')), ''];
-  const minutes = ['', ...Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')), ''];
+    const itemHeight = 30;
 
+    const centerItem = (selector, index) => {
+      const offset = (selector.clientHeight / 2) - (itemHeight / 2);
+      const scrollToPosition = index * itemHeight - offset;
 
-//scripts time bd
-  useEffect(() => {
-    if (step === 1) {
-      const hourSelector = document.getElementById('hourSelector');
-      const minuteSelector = document.getElementById('minuteSelector');
-  
-      const itemHeight = 30; 
-  
-      const centerItem = (selector, index) => {
-        const offset = (selector.clientHeight / 2) - (itemHeight / 2); 
-        const scrollToPosition = index * itemHeight - offset;
-  
-        selector.scrollTo({
-          top: scrollToPosition,
-          behavior: 'smooth'
-        });
-      };
-  
-      if (hourSelector && minuteSelector) {
-        centerItem(hourSelector, hourIndex);
-        centerItem(minuteSelector, minuteIndex);
+      selector.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+      });
+    };
+
+    if (hourSelector && minuteSelector) {
+      // Set initial time to 00:00 only when the component mounts
+      // and step becomes 1
+      if (hourIndex === undefined && minuteIndex === undefined) {
+        setHourIndex(0);
+        setMinuteIndex(0);
       }
-  
-      const handleScroll = (selector, setIndex, maxLength) => {
-        let scrollTimeout;
-  
-        const scrollHandler = () => {
-          clearTimeout(scrollTimeout);
-  
-          const currentScrollTop = selector.scrollTop;
-          const midIndex = Math.floor((currentScrollTop + (selector.clientHeight / 2)) / itemHeight);
-  
-          if (midIndex >= 0 && midIndex < maxLength) {
-            setIndex(midIndex);
-          }
-          scrollTimeout = setTimeout(() => {
-            centerItem(selector, midIndex);
-          }, 150); 
-        };
-  
-        selector.addEventListener('scroll', scrollHandler);
-        return () => {
-          selector.removeEventListener('scroll', scrollHandler);
-          clearTimeout(scrollTimeout);
-        };
-      };
-      handleScroll(hourSelector, setHourIndex, hours.length);
-      handleScroll(minuteSelector, setMinuteIndex, minutes.length);
+
+      centerItem(hourSelector, hourIndex);
+      centerItem(minuteSelector, minuteIndex);
     }
-  }, [step, hourIndex, minuteIndex]);
 
+    const handleScroll = (selector, setIndex, maxLength) => {
+      let scrollTimeout;
 
-  const [startDate, setStartDate] = useState(null);
-  const [calendarOpen, setCalendarOpen] = useState(false);
+      const scrollHandler = () => {
+        clearTimeout(scrollTimeout);
+
+        const currentScrollTop = selector.scrollTop;
+        // Calculate the index based on the current scroll position
+        // Adjusting to account for potential overflow
+        const midIndex = Math.floor((currentScrollTop + (selector.clientHeight / 2)) / itemHeight);
+
+        // Wrap the index to create a continuous cycle
+        let wrappedIndex = midIndex;
+        if (wrappedIndex < 0) {
+          wrappedIndex = maxLength - 1;
+        } else if (wrappedIndex >= maxLength) {
+          wrappedIndex = 0;
+        }
+
+        // Update the index in state, allowing the scroll to be changed
+        setIndex(wrappedIndex);
+
+        // Update the scroll position to maintain visual continuity
+        if (wrappedIndex <= 0) {
+          selector.scrollTop = (maxLength - 1) * itemHeight;
+        } else if (wrappedIndex >= maxLength - 1) {
+          selector.scrollTop = 0;
+        }
+
+        scrollTimeout = setTimeout(() => {
+          centerItem(selector, wrappedIndex);
+        }, 150);
+      };
+
+      selector.addEventListener('scroll', scrollHandler);
+      return () => {
+        selector.removeEventListener('scroll', scrollHandler);
+        clearTimeout(scrollTimeout);
+      };
+    };
+
+    handleScroll(hourSelector, setHourIndex, hours.length);
+    handleScroll(minuteSelector, setMinuteIndex, minutes.length);
+  }
+}, [step]);
+  
+    const [startDate, setStartDate] = useState(null);
+    const [calendarOpen, setCalendarOpen] = useState(false);
 
 
   const today = new Date();
@@ -259,7 +282,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           return (
             <div className='body'>
             <h2>Время рождения</h2>
-            <span>Время рождения нужно для определения вашего солнечного знака.</span>
+            <p>Время рождения нужно для определения вашего солнечного знака.</p>
             <div className="time-selector">
                 <div className="scroll-container" id="hourSelector">
                     {hours.map((hour, index) => (
@@ -268,6 +291,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                         </div>
                     ))}
                 </div>
+                <span style={{fontSize:'2rem'}}>:</span>
                 <div className="scroll-container" id="minuteSelector">
                     {minutes.map((minute, index) => (
                         <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
@@ -309,87 +333,93 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           case 2:  
           return (  
             <div className='body'>
-              <h2>Дата рождения</h2>
-              <span>Дата рождения нужна для определения вашего зодиакального знака.</span>
-              <br />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div>
-                  {!calendarOpen && (
-                    <button 
-                      onClick={() => setCalendarOpen(true)} 
-                      style={{ 
-                        padding: '15px 30px',
+            <h2>Дата рождения</h2>
+            <p>Дата рождения нужна для определения вашего зодиакального знака.</p>
+            <br />
+            <div className="calendar-container">
+              {!calendarOpen && (
+                <button
+                  onClick={() => setCalendarOpen(true)}
+                  style={{
+                    padding: '15px 30px',
+                    background: '#7e5f8f',
+                    fontSize: '20px',
+                    borderRadius: '40px',
+                    color: 'white',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {formatDate(startDate)}
+                </button>
+              )}
+          
+              {calendarOpen && (
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 999,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <div
+                    style={{
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                    }}
+                  >
+                    <DatePicker
+                      selected={startDate}
+                      onChange={handleDateChange}
+                      dateFormat="dd/MM/yyyy"
+                      inline
+                      popperPlacement="bottom"
+                      showYearDropdown
+                      yearDropdownItemNumber={100}
+                      scrollableYearDropdown
+                      maxDate={today}
+                      locale="ru"
+                    />
+                    <button
+                      onClick={() => {
+                        setCalendarOpen(false);
+                      }}
+                      className="button"
+                      style={{
+                        position: 'relative',
+                        bottom: '0',
+                        marginTop: '10px',
+                        padding: '10px 20px',
                         background: '#7e5f8f',
-                        fontSize: '20px',
-                        borderRadius: '40px',
-                        color: 'white', 
-                        border: 'none', 
-                        cursor: 'pointer' 
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        fontSize: '1rem',
+                        width: '340px'
                       }}
                     >
-                      {formatDate(startDate)}
+                      Установить
                     </button>
-                  )}
-                  
-                  {calendarOpen && (
-                    <div style={{
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-                      zIndex: 999, 
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <div style={{  
-                        borderRadius: '10px',      
-                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
-                      }}>
-                        <DatePicker
-                          selected={startDate}
-                          onChange={handleDateChange} 
-                          dateFormat="dd/MM/yyyy"
-                          inline 
-                          popperPlacement="bottom"
-                          showYearDropdown 
-                          yearDropdownItemNumber={100}
-                          scrollableYearDropdown 
-                          maxDate={today} 
-                          locale="ru" 
-                        />
-                        <button 
-                          onClick={() => {
-                            setCalendarOpen(false); 
-                           
-                          }} 
-                          className='button'
-                          style={{
-                            position: 'relative',
-                            bottom: '0',
-                            marginTop: '10px',
-                            padding: '10px 20px',
-                            background: '#7e5f8f',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            width: '245px'
-                          }}
-                        >
-                          Установить
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-              <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'>Далее</button>
-              {errorMessage && <p className="error-message">{errorMessage}</p>}
+              )}
             </div>
+          
+            <button onClick={() => handleNextWithValidation({ day, month, year })} className="button">
+              Далее
+            </button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>
+          
+
           ); 
   
       case 3:  

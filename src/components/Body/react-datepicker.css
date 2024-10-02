@@ -73,6 +73,7 @@
 }
 .react-datepicker__header:not(.react-datepicker__header--has-time-select) {
   border-top-right-radius: 0.3rem;
+  min-width: 340px;
 }
 
 .react-datepicker__year-dropdown-container--select,
@@ -95,6 +96,7 @@
 }
 
 h2.react-datepicker__current-month {
+  text-transform: capitalize;
   padding: 0;
   margin: 0;
 }
@@ -339,8 +341,9 @@ h2.react-datepicker__current-month {
 .react-datepicker__time-name {
   color: #000;
   display: inline-block;
-  width: 1.7rem;
-  line-height: 1.7rem;
+  width: 2.2rem;
+  line-height: 2.2rem;
+  font-size: 1.1rem;
   text-align: center;
   margin: 0.166rem;
 }
@@ -586,7 +589,7 @@ h2.react-datepicker__current-month {
 .react-datepicker__month-year-read-view--down-arrow {
   transform: rotate(135deg);
   right: -16px;
-  top: 0;
+  top: 2px;
 }
 
 .react-datepicker__year-dropdown,
@@ -617,6 +620,8 @@ h2.react-datepicker__current-month {
 .react-datepicker__year-option,
 .react-datepicker__month-option,
 .react-datepicker__month-year-option {
+  font-size: 1rem;
+    padding: .6rem 0rem;
   line-height: 20px;
   width: 100%;
   display: block;
@@ -658,7 +663,9 @@ h2.react-datepicker__current-month {
 .react-datepicker__month-option--selected,
 .react-datepicker__month-year-option--selected {
   position: absolute;
-  left: 15px;
+
+    right: 35px;
+    padding: 0.8rem 0.6rem 0.1rem 0.6rem;
 }
 
 .react-datepicker__close-icon {
