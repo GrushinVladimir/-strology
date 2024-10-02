@@ -99,3 +99,24 @@ p{
     width: 5px; /* Set the desired width */
     height: 5px; /* Set the desired height */
   }
+  input{
+    line-height: 2rem;
+    padding: 5px 15px;
+    border-radius: 30px;
+    text-align: center;
+    margin-top: 1rem;
+    border: none; 
+  }
+
+  .unknown-time-button {
+    margin-top: 10px;
+    background-color: white; /* Стандартный цвет фона */
+    color: black; /* Цвет текста */
+    border: 1px solid red; /* Красная рамка */
+    transition: background-color 0.3s; /* Плавный переход цвета */
+}
+
+.unknown-time-button:hover {
+    background-color: red; /* Меняем цвет на красный при наведении */
+    color: white; /* Меняем текст на белый при наведении */
+}

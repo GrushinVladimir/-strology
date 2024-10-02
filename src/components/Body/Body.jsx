@@ -1,16 +1,16 @@
 import { useTelegram } from '../hooks/useTelegram';  
 import './Body.css';  
 import React, { useEffect, useState } from 'react';  
-import { useNavigate } from 'react-router-dom'; // для редиректа
+import { useNavigate } from 'react-router-dom'; 
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
-import ru from 'date-fns/locale/ru'; // Импортируем русскую локаль
+import ru from 'date-fns/locale/ru'; 
 
 
-// Регистрируем русскую локаль
+
 registerLocale('ru', ru);
-setDefaultLocale('ru'); // Устанавливаем её по умолчанию
+setDefaultLocale('ru'); 
 
 const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
   const { user } = useTelegram();  
@@ -68,71 +68,78 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     setErrorMessage(''); // сброс сообщения об ошибке
 
     // Валидация для каждого шага
-    if (step === 1 && (!hours && !unknownTime)) {
-      setErrorMessage('Укажите время рождения или выберите "Я не знаю времени".');
-      return;
+    if (step === 1) {
+        if (unknownTime) {
+            // Если выбрано "Я не знаю времени", передаем null
+            handleNext({ ...currentData, hour: null, minute: null });
+            return;
+        } else if (!hours[hourIndex] || !minutes[minuteIndex]) {
+            setErrorMessage('Укажите время рождения или выберите "Я не знаю времени".');
+            return;
+        }
     }
 
     if (step === 2 && (!day || !month || !year)) {
-      setErrorMessage('Заполните все поля даты рождения.');
-      return;
+        setErrorMessage('Заполните все поля даты рождения.');
+        return;
     }
 
     if (step === 3 && !placeOfBirth) {
-      setErrorMessage('Заполните поле места рождения.');
-      return;
+        setErrorMessage('Заполните поле места рождения.');
+        return;
     }
 
     if (step === 4 && !username) {
-      setErrorMessage('Введите ваше имя.');
-      return;
+        setErrorMessage('Введите ваше имя.');
+        return;
     }
 
-    // Переход на следующий шаг, если валидация пройдена
-    handleNext(currentData);
-  };
 
-  // Получаем текущее время в Москве
+    const selectedHour = unknownTime ? null : hours[hourIndex];
+    const selectedMinute = unknownTime ? null : minutes[minuteIndex];
+
+    handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });
+};
+
+
   const date = new Date();
-  const localTimezoneOffset = date.getTimezoneOffset() * 60000; // Смещение в миллисекундах
-  const moscowTimezoneOffset = 3 * 60 * 60 * 1000; // UTC+3 (Московское время)
+  const localTimezoneOffset = date.getTimezoneOffset() * 60000; 
+  const moscowTimezoneOffset = 3 * 60 * 60 * 1000; 
 
-  // Установка текущего времени
   const currentTimeInMoscow = new Date(date.getTime() + localTimezoneOffset + moscowTimezoneOffset);
   const initialHourIndex = currentTimeInMoscow.getHours();
   const initialMinuteIndex = currentTimeInMoscow.getMinutes();
 
-  const [hourIndex, setHourIndex] = useState(initialHourIndex + 1); // Начинаем с +1 для учета пустого места
-  const [minuteIndex, setMinuteIndex] = useState(initialMinuteIndex + 1); // Начинаем с +1 для учета пустого места
+  const [hourIndex, setHourIndex] = useState(initialHourIndex + 1); 
+  const [minuteIndex, setMinuteIndex] = useState(initialMinuteIndex + 1); 
 
   const hours = ['', ...Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')), ''];
   const minutes = ['', ...Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')), ''];
+
+
+//scripts time bd
   useEffect(() => {
     if (step === 1) {
       const hourSelector = document.getElementById('hourSelector');
       const minuteSelector = document.getElementById('minuteSelector');
   
-      const itemHeight = 30; // Height of each item
+      const itemHeight = 30; 
   
-      // Function to center the item smoothly
       const centerItem = (selector, index) => {
-        const offset = (selector.clientHeight / 2) - (itemHeight / 2); // Offset for centering
+        const offset = (selector.clientHeight / 2) - (itemHeight / 2); 
         const scrollToPosition = index * itemHeight - offset;
   
-        // Using smooth scroll behavior
         selector.scrollTo({
           top: scrollToPosition,
           behavior: 'smooth'
         });
       };
   
-      // Initialize selectors
       if (hourSelector && minuteSelector) {
         centerItem(hourSelector, hourIndex);
         centerItem(minuteSelector, minuteIndex);
       }
   
-      // Debounced scroll handler
       const handleScroll = (selector, setIndex, maxLength) => {
         let scrollTimeout;
   
@@ -142,15 +149,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           const currentScrollTop = selector.scrollTop;
           const midIndex = Math.floor((currentScrollTop + (selector.clientHeight / 2)) / itemHeight);
   
-          // Ensure the index is within the array bounds
           if (midIndex >= 0 && midIndex < maxLength) {
             setIndex(midIndex);
           }
-  
-          // Set timeout to center after scrolling stops
           scrollTimeout = setTimeout(() => {
             centerItem(selector, midIndex);
-          }, 150); // Increased delay for smoother behavior
+          }, 150); 
         };
   
         selector.addEventListener('scroll', scrollHandler);
@@ -159,8 +163,6 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           clearTimeout(scrollTimeout);
         };
       };
-  
-      // Setup scroll handling
       handleScroll(hourSelector, setHourIndex, hours.length);
       handleScroll(minuteSelector, setMinuteIndex, minutes.length);
     }
@@ -176,10 +178,9 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const handleDateChange = (date) => {
     setStartDate(date);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
+    const month = date.getMonth() + 1; 
     const year = date.getFullYear();
     
-    // Update the state with new values
     setDay(day); 
     setMonth(month);
     setYear(year);
@@ -198,7 +199,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     }
   
     const day = date.toLocaleDateString('ru-RU', { day: '2-digit' });
-    const month = date.toLocaleDateString('ru-RU', { month: 'long' }); // или '2-digit'
+    const month = date.toLocaleDateString('ru-RU', { month: 'long' }); 
     const year = date.toLocaleDateString('ru-RU', { year: 'numeric' });
   
     return (
@@ -212,6 +213,8 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
  
 
   
+
+  //forms
   const renderStep = () => {  
     switch (step) {  
       case 0:  
@@ -235,25 +238,49 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
             <h2>Время рождения</h2>
             <span>Время рождения нужно для определения вашего солнечного знака.</span>
             <div className="time-selector">
-              <div className="scroll-container" id="hourSelector">
-                {hours.map((hour, index) => (
-                  <div key={index} className={`item ${index === hourIndex ? 'visible' : 'transparent'}`}>
-                    {hour}
-                  </div>
-                ))}
-              </div>
-              <div className="scroll-container" id="minuteSelector">
-                {minutes.map((minute, index) => (
-                  <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
-                    {minute}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <button onClick={() => handleNext({ hour: hours[hourIndex], minute: minutes[minuteIndex] })} className='button'>
-              Далее
+                <div className="scroll-container" id="hourSelector">
+                    {hours.map((hour, index) => (
+                        <div key={index} className={`item ${index === hourIndex ? 'visible' : 'transparent'}`}>
+                            {hour}
+                        </div>
+                    ))}
+                </div>
+                <div className="scroll-container" id="minuteSelector">
+                    {minutes.map((minute, index) => (
+                        <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
+                            {minute}
+                        </div>
+                    ))}
+                </div>
+            </div>  
+            <button 
+                onClick={() => {
+                    setUnknownTime(true); 
+                    setHourIndex(0); 
+                    setMinuteIndex(0); 
+                    handleNextWithValidation({ hour: null, minute: null });
+                }}    
+                className='button'
+                style={{
+                  position: 'relative',
+                  margin: '3rem auto',
+                  display: 'block',
+                  left: 'unset',
+                  transform: 'none',
+                  padding: '6px 15px'
+                }}
+            >
+              Не знаю
             </button>
-          </div>
+
+            <button 
+                onClick={() => handleNextWithValidation({})} 
+                className='button'
+            >
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                Далее
+            </button>
+        </div>
           );
   
           case 2:  
@@ -281,7 +308,6 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                     </button>
                   )}
                   
-                  {/* Overlay */}
                   {calendarOpen && (
                     <div style={{
                       position: 'fixed',
@@ -289,21 +315,19 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black
-                      zIndex: 999, // Ensure it appears above other elements
+                      backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+                      zIndex: 999, 
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <div style={{ 
-             
-                        borderRadius: '10px', 
-                
+                      <div style={{  
+                        borderRadius: '10px',      
                         boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
                       }}>
                         <DatePicker
                           selected={startDate}
-                          onChange={handleDateChange} // Ensure this updates the state
+                          onChange={handleDateChange} 
                           dateFormat="dd/MM/yyyy"
                           inline 
                           popperPlacement="bottom"
@@ -315,7 +339,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                         />
                         <button 
                           onClick={() => {
-                            setCalendarOpen(false); // Close the calendar
+                            setCalendarOpen(false); 
                            
                           }} 
                           className='button'
@@ -340,7 +364,8 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                   )}
                 </div>
               </div>
-              <button onClick={() => handleNext({ day, month, year })} className='button'>Далее</button>
+              <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'>Далее</button>
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
             </div>
           ); 
   
@@ -361,8 +386,8 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         <h2>Ваше имя</h2>  
         <p>Введите ваше имя, чтобы мы могли к вам обращаться.</p>  
         <input type="text" placeholder="" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <button onClick={() => handleNext({ username })} className='button'>Далее</button>
-     
+        <button onClick={() => handleNextWithValidation({ username })} className='button'>Далее</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  
 
