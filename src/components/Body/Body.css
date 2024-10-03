@@ -17,7 +17,9 @@ p{
    
 }
 
-
+.react-datepicker__year-read-view span{
+  padding:0px;
+}
 .time-selector {
     display: flex;
     align-items: center;
