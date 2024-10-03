@@ -242,7 +242,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
             <h2>Время рождения</h2>
             <span>Время рождения нужно для определения вашего солнечного знака.</span>
            <img src="img/forms/песочные_часы_свг_белые 1.png" alt="" 
-            style={{ maxWidth: '260px', height: 'auto' }}
+            style={{ maxWidth: '220px', height: 'auto' }}
             />
             <div className="time-selector">
                 <div className="scroll-container" id="hourSelector">
@@ -299,13 +299,13 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               <img src="img/forms/Group 1.png" alt="" 
             style={{ maxWidth: '290px', height: 'auto',marginTop: '20%',marginBottom: '2rem' }}
             />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'}}>
                 <div>
                   {!calendarOpen && (
                     <button 
                       onClick={() => setCalendarOpen(true)} 
                       style={{ 
-                        padding: '15px 30px',
+                        padding: '6px 0px',
                         background: '#7e5f8f',
                         fontSize: '20px',
                         borderRadius: '40px',
@@ -385,7 +385,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
             <h2>Место рождения</h2>  
             <span style={{padding:'0 1rem',    margin: '0.6rem 0rem'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
             <img src="img/forms/planet.png" alt="" 
-            style={{ maxWidth: '330px', height: 'auto',marginTop: '20%',marginBottom: '2rem' }}
+            style={{ maxWidth: '260px', height: 'auto',marginTop: '10%',marginBottom: '2rem' }}
             />
             
             <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  

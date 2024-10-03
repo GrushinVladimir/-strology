@@ -1,5 +1,5 @@
 .body{
-    margin-top: 20%;
+    margin-top:5%;
     margin-bottom: 30%;
     justify-content: center;
    
@@ -7,7 +7,8 @@
 }
 .body span{
   font-size: 1rem;
-    margin: 1.6rem 0rem;
+  margin: 1rem 0rem;
+  padding: 0 1rem;
     display: block;
 }
 p{
@@ -26,7 +27,7 @@ p{
     padding: 0px 30px;
     margin: 1.62rem auto;
     border-radius: 50px;
-    height: 88px;
+    height: 70px;
 }
 .scroll-container {
     overflow-y: auto; /* Разрешаем вертикальную прокрутку */
