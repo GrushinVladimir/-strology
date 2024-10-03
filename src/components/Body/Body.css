@@ -11,15 +11,17 @@
   padding: 0 1rem;
     display: block;
 }
+.body div span{
+  padding:0px;
+}
+
 p{
   padding: 0px 25px;
     margin-top: 25px;
    
 }
 
-.react-datepicker__year-read-view span{
-  padding:0px;
-}
+
 .time-selector {
     display: flex;
     align-items: center;
