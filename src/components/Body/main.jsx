@@ -1,109 +1,222 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { load } from 'cheerio';
 import { useLocation } from 'react-router-dom';
 
-const zodiacSigns = {
-  'Водолей': 11,
-  'Рыбы': 12,
-  'Овен': 1,
-  'Телец': 2,
-  'Близнецы': 3,
-  'Рак': 4,
-  'Лев': 5,
-  'Дева': 6,
-  'Весы': 7,
-  'Скорпион': 8,
-  'Стрелец': 9,
-  'Козерог': 10,
+const zodiacImages = {
+  Водолей: 'img/zhak/vodoley.png',
+  Рыбы: 'img/zhak/riby.png',
+  Овен: 'img/zhak/oven.png',
+  Телец: 'img/zhak/telec.png',
+  Близнецы: 'img/zhak/bliznecy.png',
+  Рак: 'img/zhak/rak.png',
+  Лев: 'img/zhak/lev.png',
+  Дева: '/img/zhak/deva.png',
+  Весы: 'img/zhak/vesy.png',
+  Скорпион: 'img/zhak/scorpion.png',
+  Стрелец: 'img/zhak/strelec.png',
+  Козерог: 'img/zhak/kozerog.png',
 };
 
-const getHoroscope = async (zodiacSign, period) => {
-  const signNumber = zodiacSigns[zodiacSign];
-  let url = '';
 
-  switch (period) {
-    case 'today':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
-      break;
-    case 'tomorrow':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
-      break;
-    case 'week':
-      url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
-      break;
-    case 'month':
-      url = `/api/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
-      break;
-    default:
-      return '';
-  }
-
-  try {
-    const { data } = await axios.get(url);
-    const $ = load(data);
-    const horoscopeText = $('.main-horoscope p').text();
-    return horoscopeText;
-  } catch (error) {
-    console.error('Error fetching horoscope:', error);
-    return 'Unable to fetch horoscope';
-  }
-};
 
 const MainPage = () => {
+
+  
   const location = useLocation();
   const { zodiacSign } = location.state || {};
-  const [horoscope, setHoroscope] = useState('');
-  const [activeTab, setActiveTab] = useState('Сегодня');
-  
-  const fetchHoroscope = async (period) => {
-    let periodKey = '';
-    switch (period) {
-      case 'Сегодня':
-        periodKey = 'today';
-        break;
-      case 'Завтра':
-        periodKey = 'tomorrow';
-        break;
-      case 'Неделя':
-        periodKey = 'week';
-        break;
-      case 'Месяц':
-        periodKey = 'month';
-        break;
-      default:
-        return;
-    }
+  const [activeTab, setActiveTab] = useState(null); // Начальное состояние null
+  const [showTabContent, setShowTabContent] = useState(false); // Начальное значение false
 
-    const horoscopeText = await getHoroscope(zodiacSign, periodKey);
-    setHoroscope(horoscopeText);
+
+
+  const [dates, setDates] = useState({
+      today: '',
+      tomorrow: '',
+      inSevenDays: '',
+      inThirtyOneDays: '',
+      currentDay: ''
+    });
+  
+    useEffect(() => {
+      const today = new Date(); // Получаем текущую дату
+      const tomorrow = new Date(today); // Копируем текущую дату
+      const inSevenDays = new Date(today); // Копируем текущую дату
+      const inThirtyOneDays = new Date(today); // Копируем текущую дату
+  
+      // Устанавливаем завтрашнюю дату
+      tomorrow.setDate(today.getDate() + 1);
+      
+      // Устанавливаем дату через 7 дней
+      inSevenDays.setDate(today.getDate() + 7);
+      
+      // Устанавливаем дату через 31 день
+      inThirtyOneDays.setDate(today.getDate() + 31);
+  
+      // Получаем текущий день месяца
+      const currentDay = today.getDate(); 
+  
+      // Обновляем состояние с датами
+      setDates({
+        today: today.toLocaleDateString(),
+        tomorrow: tomorrow.toLocaleDateString(),
+        inSevenDays: inSevenDays.toLocaleDateString(),
+        inThirtyOneDays: inThirtyOneDays.toLocaleDateString(),
+        currentDay: currentDay // Устанавливаем текущий день
+      });
+    }, []);
+
+
+  const renderTabContent = () => {
+    if (!showTabContent) return null; // Если контент скрыт, возвращаем null
+
+    switch (activeTab) {
+      case 'Сегодня':
+        return (
+          <div className="tab-content show">
+            <h1>{dates.today}</h1>
+            <div>
+              Сегодняшний день гороскоп предлагает Рыбам посвятить борьбе с бардаком: как в буквальном смысле (пора бы заняться уборкой), так и в фигуральном. Рыбам стоит вспомнить об отложенных делах, «подчистить хвосты», выполнить обещания.     
+            </div>
+            <div className='title-znam'><img src='Tattoo.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>
+            Сегодня даже невинный и искренний комплимент Рыбы воспринимают вштыки: они проявят крайнюю требовательность по отношению к себе. Знаку стоит быть мягче и уступчивее.
+            </div>
+            <div className='title-znam'><img src='Money Box.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>  
+            Сегодня с самого утра Рыбы могут испытать внутренний конфликт. Не исключено, что они задумаются, не настала ли пора менять отношение к работе или саму работу. Гороскоп советует Рыбам сегодня отказаться от радикальных мер и для начала просто поговорить с руководством, обсудив волнующие их вопросы. Часто этого бывает достаточно, чтобы устранить причину дискомфорта. Только получив решительный отказ босса повысить зарплату, пододвинуть кулер поближе к Рыбам или разрешить им уходить с работы на 15 минут раньше, стоит предпринимать шаги по смене рода деятельности.
+            </div>
+          </div>
+        );
+      case 'Завтра':
+        return (
+          <div className="tab-content show">
+             <h1> {dates.tomorrow}</h1>
+           
+            <div>
+              Рыбам стоит много общаться с разношерстными собеседниками, ведь чем их больше – тем интереснее станет жизнь. Советы и новости еще не раз вам помогут. Гороскоп на сегодня для знака Рыб рекомендует также завести непростую беседу со второй половинкой – важно сказать, что именно вас не устраивает в отношениях и поискать компромиссы вместе.
+            </div>
+            <div className='title-znam'><img src='Tattoo.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>
+              Вполне вероятно, что завтра к Рыбам обратятся за утешением: близкий друг может нуждаться во врачевании сердечной раны. Если друг окажется противоположного пола, не исключено, что это станет первым шагом к сближению – отношения могут выйти за рамки дружеских. Что ж, если вы давно мечтаете вырваться из френдзоны, завтра лучшее время предпринять такую попытку. Согласно любовному гороскопу, сейчас Рыбам легко удается непринужденное общение, а потому самое время отправляться на свидание.
+            </div>
+            <div className='title-znam'><img src='Money Box.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>
+              Рыбам невероятно сложно установить контакт с окружающими. Бывают такие дни, и стоит отнестись к данному факту философски. Гороскоп не советует Рыбам начинать завтра масштабные совместные проекты. Без взаимопонимания не будет слаженной командной работы – как Лебедь, Рак и Щука, каждый будет тянуть в свою сторону, от чего дело будет топтаться на месте. Так что Рыбам предлагается либо сыграть в одиночку, либо дождаться окончания этого неприятного периода, а потом уже строить доверительные партнерские отношения.  
+            </div>
+          </div>
+        );
+      case 'Неделя':
+        return (
+          <div className="tab-content show">
+              <h1>{dates.currentDay} - {dates.inSevenDays}</h1>
+              <div>
+                У Рыб на этой неделе может сложиться неоднозначная ситуация. Романтические отношения могут буквально закружить голову. Если вы одиноки и давно мечтаете о любви, то в эти дни старайтесь не сидеть дома, а чаще ходить на праздничные мероприятия, в клубы, на танцплощадки, на концерты. Создайте вокруг себя шумную веселую и праздничную атмосферу или окажитесь в местах с такой атмосферой. Это не замедлит положительно отразиться на вашей личной жизни.
+              </div>
+              <div className='title-znam'><img src='Tattoo.png'/><span>Знак в сфере любви и отношений</span></div>
+              <div>
+                На этой неделе могут решиться все конфликты, можно прийти к приятному компромиссу. Не стоит сдерживать эмоций - говорите прямо, иначе рискуете сорваться в самый неподходящий момент. Все бытовые решения со второй половинкой пройдут без ссор.
+              </div>
+              <div className='title-znam'><img src='Money Box.png'/><span>Знак в сфере любви и отношений</span></div>
+              <div>
+                Творческий подъём означает быстрое и неоднозначное решение рабочих задач. Радость от наконец найденного решения может привести к тому, что Рыбы захотят подтянуть всех к своему уровню, чем заработают себе косые взгляды и недопонимание. Позже они поймут, что нужен профессиональный взгляд со стороны и начнётся внутренний конфликт на фоне перемены настроения. Совместная деятельность противопоказана. Под конец недели будьте внимательнее: есть риск потерять весь заработанный прогресс. 
+              </div>
+          </div>
+        );
+      case 'Месяц':
+        return (
+          <div className="tab-content show">
+            <h1>{dates.today} - {dates.inThirtyOneDays}</h1>
+            <div>
+              Гороскоп для Рыб на сентябрь 2024 немногим отличается от настроений предыдущего месяца – звезды приготовили вам немало сюрпризов, большая часть которых вряд ли будет приятной. По-прежнему не стоит строить грандиозных планов и рассчитывать на то, что они реализуются без сучка и задоринки. Ваша задача скорее в том, чтобы суметь искусно лавировать между стремительно меняющимися условиями и обстоятельствами. И в конце концов выйти из любых непредсказуемых ситуаций с минимальными потерями.
+              Можно сказать, что ваш девиз месяца – «Удержать свои владения», а никак не «Захватить новые территории».
+              А если вы проявите внутреннюю гибкость, подключите свою природную мудрость и спокойствие, то даже сможете выиграть у судьбы какой-то приз: моральный или материальный.
+              Благоприятные дни: 7-8, 12-13, 21, 25-26.
+              Неблагоприятные дни: 3-4, 10-11, 17-18, 23, 30.
+            </div>
+            <div className='title-znam'><img src='Tattoo.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>
+              В этом месяце ждите проявление старого друга или подруги - это может быть началом новых романтических отношений, либо лёгкой интрижки: исход будет зависеть от обоих знаков. Прислушивайтесь к советам.
+            </div>
+            <div className='title-znam'><img src='Money Box.png'/><span>Знак в сфере любви и отношений</span></div>
+            <div>
+            Начало осени для представителей знака - время спокойствия и умиротворения. Финансы целесообразно вложить в отпуск и путешествия. Эти траты окупятся еще до конца года за счет накопленного во время отдыха позитива и креативной энергии, которые принесут Рыбам хорошие доходы.
+            При всем благоволении звезд к представителям знака, в сентябре им надо быть осмотрительными при подписании финансовых документов. Не исключена возможность использования благодушия Рыб в корыстных целях.
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
-  useEffect(() => {
-    fetchHoroscope(activeTab);
-  }, [activeTab]);
+  const toggleTabContent = () => {
+    setShowTabContent(!showTabContent);
+    if (showTabContent) {
+      setActiveTab(null); // Сбрасываем активный таб при скрытии контента
+    }
+  };
 
   return (
     <div className="main-page">
       <h2>Ваш знак</h2>
       <h1>{zodiacSign}</h1>
 
-      <div className="tabs">
-        {['Сегодня', 'Завтра', 'Неделя', 'Месяц'].map((tab) => (
-          <button
-            key={tab}
-            className={activeTab === tab ? 'active' : ''}
-            onClick={() => {
-              setActiveTab(tab);
-            }}
-          >
-            {tab}
-          </button>
-        ))}
+      <div className="zodiac-image">
+        {zodiacSign && (
+          <img
+            src={zodiacImages[zodiacSign]}
+            alt={zodiacSign}
+            style={{ maxWidth: '260px', height: 'auto' }}
+          />
+        )}
       </div>
 
-      <div className="horoscope-content">
-        <p>{horoscope}</p>
+      {/* Контейнер для табов и контента */}
+      <div className="tabs-and-content">
+                {showTabContent && activeTab && ( // Проверяем, что есть активный таб
+            <div className="toggle-icon" onClick={toggleTabContent}>
+                 {/*  
+                 <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                className="bi bi-caret-down-fill"
+                viewBox="0 0 16 16"
+              >
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-.753.342z" />
+              </svg> 
+              */}
+             <img src="free-icon-down-chevron-10728680.png" alt="" />
+            </div>
+          )}
+        <div className="tabs">
+          {['Сегодня', 'Завтра', 'Неделя', 'Месяц'].map(tab => (
+            <button
+              key={tab}
+              className={activeTab === tab ? 'active' : ''}
+              onClick={() => {
+                setActiveTab(tab);
+                setShowTabContent(true); // Показываем таб контент при клике
+              }}
+            
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Контент табов */}
+
+        <div className="tab-content-container">
+
+          {renderTabContent()}
+
+        </div>
+        <div className='menu'>
+          <a href=""><img src="img/menu/Union.png"  /><span>Главная</span></a>
+          <a href=""><img src="img/menu/chat.png" /><span>Чат</span></a>
+          <a href=""><img src="img/menu/profile.png" style={{width: '16px'}}/><span>Профиль</span></a>
+        </div>
       </div>
     </div>
   );
