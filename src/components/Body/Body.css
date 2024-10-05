@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Dudka';
+  src: url('fonts/Dudka.woff2') format('woff2'), 
+       url('fonts/Dudka.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Involve';
+  src: url('fonts/Involve-VF.ttf') format('woff2'), 
+       url('fonts/Dudka.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 .body{
     margin-top:5%;
     margin-bottom: 30%;
@@ -18,20 +32,53 @@
 p{
   padding: 0px 25px;
     margin-top: 25px;
+    color: #FFF;
+    letter-spacing: .6px;
+text-align: center;
+font-family: Involve;
+font-size: 10px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+
    
 }
 
-
+.na{
+  border-radius: 6px;
+  opacity: 0.7;
+  background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+ 
+}
+.na span{
+  color: #FFF;
+  text-align: center;
+font-family: Involve;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+padding: 0px;
+margin:0px;
+}
 .time-selector {
+  justify-content: space-evenly;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     font-family: Arial, sans-serif;
-    background: #7e5f8f;
-    width: 180px;
     padding: 0px 30px;
     margin: 1.62rem auto;
-    border-radius: 50px;
-    height: 70px;
+
+
+    border-radius: 39px;
+opacity: 0.7;
+background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), -2px 3px 4px 0px rgba(0, 0, 0, 0.25) inset;
+
+width: 157px;
+height: 55px;
+flex-shrink: 0;
 }
 .scroll-container {
     overflow-y: auto; /* Разрешаем вертикальную прокрутку */
@@ -65,10 +112,11 @@ p{
     font-size: 2rem; 
 }
 .scroll-container {
-    height: 120px; /* высота контейнера */
+
     overflow-y: auto; /* возможность прокрутки */
     position: relative;
-    height: 88px;
+    height: 74px;
+    width: 24px;
   }
   
   .item {
@@ -77,13 +125,28 @@ p{
     align-items: center; /* центровка по вертикали */
     justify-content: center; /* центровка по горизонтали */
     transition: opacity 0.3s ease; /* плавный переход при изменении прозрачности */
+
+width: 24px;
+
+flex-shrink: 0;
+
+color: #FFF;
+text-align: center;
+font-family: Involve;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
   }
   
   .visible {
+    height: 11px;
     opacity: 1; /* полностью видимый элемент */
   }
   
   .transparent {
+    font-size: 10px;
+
     opacity: 0.5; /* полупрозрачные элементы */
   }
   .time-selector::-webkit-scrollbar {
@@ -116,7 +179,7 @@ p{
     padding: 5px 15px;
     border-radius: 30px;
     text-align: center;
-    margin-top: 1rem;
+    
     border: none; 
   }
 
@@ -157,7 +220,22 @@ p{
   transition: height 0.3s;
   margin-bottom: 0;
 }
-
+.data{
+  width: 196px;
+  height: 56px;
+flex-shrink: 0;
+  border-radius: 39px;
+opacity: 0.7;
+background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), -2px 3px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.body .button{
+  letter-spacing: .6px;
+  border-radius: 6px;
+  opacity: 0.7;
+  background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 .tabs .active {
   background: #4c3997;
   border: none;
@@ -217,9 +295,17 @@ h1{
   font-weight: 400;
 }
 h2{
-  padding: 1rem;
-  line-height: 1.7rem;
+  color: #FFF;
+
+  text-align: center;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke-width: 1;
+  -webkit-text-stroke-color: #000;
+  font-family: Dudka;
+  font-size: 24px;
+  font-style: normal;
   font-weight: 400;
+  line-height: normal;
 }
 
 .title-znam{

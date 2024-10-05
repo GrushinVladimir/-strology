@@ -194,10 +194,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const formatDate = (date) => {
     if (!date) {
       return (
-        <span style={{ display: 'flex', margin: '0' }}>
-          <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>День</span>
-          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>Мес</span>
-          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '2.5rem' }}>Год</span>
+        <span style={{ display: 'flex', margin: '0'  ,  alignItems: 'center', 
+          height: '47px'
+}}>
+          <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>День</span>
+          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>Мес</span>
+          <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '1.4rem' }}>Год</span>
         </span>
       );
     }
@@ -224,11 +226,11 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       case 0 :  
         return (  
           <div className='body'>  
-            <h2 className={'username'}>  
+            <h2 style={{marginTop:'20vh'}}>  
               Давай знакомится,<br />  
               {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
             </h2>  
-            <p>  
+            <p style={{opacity:'.9'}}>  
               Ответь на 5 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
             </p>  
@@ -239,7 +241,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         case 1:
           return (
             <div className='body'>
-            <h2>Время рождения</h2>
+            <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
             <span>Время рождения нужно для определения вашего солнечного знака.</span>
            <img src="img/forms/песочные_часы_свг_белые 1.png" alt="" 
             style={{ maxWidth: '220px', height: 'auto' }}
@@ -251,7 +253,9 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                             {hour}
                         </div>
                     ))}
+                   
                 </div>
+                <span>:</span>
                 <div className="scroll-container" id="minuteSelector">
                     {minutes.map((minute, index) => (
                         <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
@@ -267,7 +271,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                     setMinuteIndex(0); 
                     handleNextWithValidation({ hour: null, minute: null });
                 }}    
-                className='button'
+                className='button na'
                 style={{
                   position: 'relative',
                   margin: '3rem auto',
@@ -277,7 +281,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                   padding: '6px 15px'
                 }}
             >
-              Не знаю
+              <span>Не знаю</span> 
             </button>
 
             <button 
@@ -299,16 +303,18 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               <img src="img/forms/Group 1.png" alt="" 
             style={{ maxWidth: '290px', height: 'auto',marginTop: '20%',marginBottom: '2rem' }}
             />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'}}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
+          
+
+
+              }}>
                 <div>
                   {!calendarOpen && (
-                    <button 
+                    <button  className='data'
                       onClick={() => setCalendarOpen(true)} 
                       style={{ 
                         padding: '6px 0px',
-                        background: '#7e5f8f',
-                        fontSize: '20px',
-                        borderRadius: '40px',
+        
                         color: 'white', 
                         border: 'none', 
                         cursor: 'pointer' 

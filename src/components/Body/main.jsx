@@ -124,7 +124,7 @@ const MainPage = () => {
       case 'Месяц':
         return (
           <div className="tab-content show">
-            <h1>{dates.today} - {dates.inThirtyOneDays}</h1>
+            <h1>{dates.currentDay} - {dates.inThirtyOneDays}</h1>
             <div>
               Гороскоп для Рыб на сентябрь 2024 немногим отличается от настроений предыдущего месяца – звезды приготовили вам немало сюрпризов, большая часть которых вряд ли будет приятной. По-прежнему не стоит строить грандиозных планов и рассчитывать на то, что они реализуются без сучка и задоринки. Ваша задача скорее в том, чтобы суметь искусно лавировать между стремительно меняющимися условиями и обстоятельствами. И в конце концов выйти из любых непредсказуемых ситуаций с минимальными потерями.
               Можно сказать, что ваш девиз месяца – «Удержать свои владения», а никак не «Захватить новые территории».
@@ -174,19 +174,7 @@ const MainPage = () => {
       <div className="tabs-and-content">
                 {showTabContent && activeTab && ( // Проверяем, что есть активный таб
             <div className="toggle-icon" onClick={toggleTabContent}>
-                 {/*  
-                 <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="currentColor"
-                className="bi bi-caret-down-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-.753.342z" />
-              </svg> 
-              */}
-             <img src="free-icon-down-chevron-10728680.png" alt="" />
+             <img src="free-icon-down-chevron-10728680.png" alt="" style={{width:'35px'}}/ >
             </div>
           )}
         <div className="tabs">
