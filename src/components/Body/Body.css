@@ -341,3 +341,16 @@ h2{
 .menu span{
   opacity: .6;
 }
+@media (min-width: 770px) {
+.case-img{
+  max-width: 290px;
+   height: auto;
+   margin-top: 20%;
+   margin-bottom: 2rem }}
+   @media (max-width: 770px) {
+    .case-img{
+      max-width: 162px;
+      height: auto;
+      margin-top: 1%;
+      margin-bottom: 1px;}}
+

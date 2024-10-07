@@ -244,7 +244,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
             <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
             <span>Время рождения нужно для определения вашего солнечного знака.</span>
            <img src="img/forms/time.png" alt="" 
-            style={{ maxWidth: '220px', height: 'auto' }}
+           className="case-img"
             />
             <div className="time-selector">
                 <div className="scroll-container" id="hourSelector">
@@ -300,8 +300,8 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
               <span>Дата рождения нужна для определения вашего зодиакального знака.</span>
               <br />
-              <img src="img/forms/Group 1.png" alt="" 
-            style={{ maxWidth: '290px', height: 'auto',marginTop: '20%',marginBottom: '2rem' }}
+              <img className="case-img" src="img/forms/Group 1.png" alt="" 
+           
             />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
           
