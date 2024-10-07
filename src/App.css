@@ -1,19 +1,13 @@
-:root {
-  --tg-viewport-height: 100vh;
-  --tg-viewport-stable-height: 100vh;
+*{
+  margin:0;
+  padding:0;
+  font-family: 'Involve', sans-serif;
 }
+body{
 
-body {
-  margin: 0;
-  padding: 0;
-  height: var(--tg-viewport-height);
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f5f5f5; /* Светлый фон */
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
 }
-
 @media (max-width: 935px) {
 #root{
 
@@ -34,7 +28,7 @@ body {
     max-width: 430px;
     width: 100%;
     max-height: 935px;
-    height: 100%;
+    min-height: 100vh;
     position: relative;
 }
 }
