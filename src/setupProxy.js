@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://www.horoscope.com',
+      target: 'https://www.horoscope.com',
       changeOrigin: true,
       pathRewrite: {
         '^/api': '', // Удаляет префикс /api из URL
