@@ -232,9 +232,12 @@ box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0
 .body .button{
   letter-spacing: .6px;
   border-radius: 6px;
-  opacity: 0.7;
-  background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+  background: linear-gradient(90deg, rgba(83, 63, 161, 0.7) -1.41%, rgba(23, 13, 58, 0.7) 99.73%);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.body .button span{
+  padding:0;
+  margin:0;
 }
 .tabs .active {
   background: #4c3997;
@@ -280,7 +283,8 @@ box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0
 .tab-content-container{
   background: #4c3997;
 
-    max-height: 70vh; /* Устанавливаем максимальную высоту в 70% от высоты окна */
+  
+    max-height: 70vh;
     overflow-y: auto; /* Позволяет прокрутку по вертикали */
 
 

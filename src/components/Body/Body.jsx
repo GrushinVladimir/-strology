@@ -234,7 +234,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               Ответь на 5 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
             </p>  
-            <button onClick={handleStart} className='button'>Начать</button>  
+            <button onClick={handleStart} className='button'><span>Начать</span></button>  
           </div>  
         );  
   
@@ -243,7 +243,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
             <div className='body'>
             <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
             <span>Время рождения нужно для определения вашего солнечного знака.</span>
-           <img src="img/forms/песочные_часы_свг_белые 1.png" alt="" 
+           <img src="img/forms/time.png" alt="" 
             style={{ maxWidth: '220px', height: 'auto' }}
             />
             <div className="time-selector">
@@ -289,7 +289,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                 className='button'
             >
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
-                Далее
+                <span>Далее</span>
             </button>
         </div>
           );
@@ -297,7 +297,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           case 2:  
           return (  
             <div className='body'>
-              <h2>Дата рождения</h2>
+              <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
               <span>Дата рождения нужна для определения вашего зодиакального знака.</span>
               <br />
               <img src="img/forms/Group 1.png" alt="" 
@@ -314,7 +314,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                       onClick={() => setCalendarOpen(true)} 
                       style={{ 
                         padding: '6px 0px',
-        
+                        width:'210px',
                         color: 'white', 
                         border: 'none', 
                         cursor: 'pointer' 
@@ -380,7 +380,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                   )}
                 </div>
               </div>
-              <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'>Далее</button>
+              <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'><span>Далее</span></button>
               {errorMessage && <p className="error-message">{errorMessage}</p>}
             </div>
           ); 
@@ -388,14 +388,14 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       case 3:  
         return (  
           <div className='body'>  
-            <h2>Место рождения</h2>  
+            <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
             <span style={{padding:'0 1rem',    margin: '0.6rem 0rem'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
             <img src="img/forms/planet.png" alt="" 
-            style={{ maxWidth: '260px', height: 'auto',marginTop: '10%',marginBottom: '2rem' }}
+            style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}
             />
             
             <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
-            <button onClick={() => handleNextWithValidation({ placeOfBirth })} className='button'>Далее</button>  
+            <button onClick={() => handleNextWithValidation({ placeOfBirth })} className='button'><span>Далее</span></button>  
             {errorMessage && <p className="error-message">{errorMessage}</p>}
           </div>  
         );  
@@ -403,12 +403,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         case 4:  
     return (  
       <div className='body'>  
-        <h2>Ваше имя</h2>  
-        <p>Введите ваше имя, чтобы мы могли к вам обращаться.</p>  
+        <h2 style={{marginTop:'10vh'}}>Ваше имя</h2>  
+        <span>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
         <img src="img/forms/imya.png" alt="" 
-            style={{ maxWidth: '330px', height: 'auto',marginTop: '20%',marginBottom: '2rem' }} />
+            style={{ maxWidth: '100%', height: 'auto',marginTop: '20%',marginBottom: '2rem' }} />
         <input type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <button onClick={() => handleNextWithValidation({ username })} className='button'>Далее</button>
+        <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  
@@ -421,7 +421,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       <p>Дата рождения: {day}.{month}.{year}</p>
       <p>Место рождения: {placeOfBirth}</p>
       <p>Имя пользователя: {username}</p>
-      <button onClick={() => handleFinish()} className='button'>Завершить</button>  
+      <button onClick={() => handleFinish()} className='button'><span>Завершить</span></button>  
     </div>
         
       );
