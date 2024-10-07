@@ -10,9 +10,9 @@ body{
 }
 @media (max-width: 935px) {
 #root{
-
+  max-width: 1430px;
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
-  height: 00vh; /* Высота экрана */
+  height: 100vh; /* Высота экрана */
   display: flex; /* Используем флексбокс для центрирования */
   justify-content: center; /* Центрируем по горизонтали */
   align-items: center; /* Центрируем по вертикали */
@@ -34,7 +34,7 @@ body{
 }
 @media (min-width: 935px) {
   #root{
-
+    max-width: 1430px;
     font-family: Arial, sans-serif; /* Шрифт по умолчанию */
     height: 100vh; /* Высота экрана */
     display: flex; /* Используем флексбокс для центрирования */
