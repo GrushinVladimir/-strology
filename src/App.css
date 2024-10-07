@@ -10,7 +10,7 @@ body{
 }
 @media (max-width: 935px) {
 #root{
-  max-width: 1430px;
+
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
   height: 100vh; /* Высота экрана */
   display: flex; /* Используем флексбокс для центрирования */
@@ -25,7 +25,7 @@ body{
     background: url(../img/image8.png);
     background-repeat: round;
     box-sizing: border-box;
-    max-width: 1430px;
+    max-width: 430px;
     width: 100%;
     max-height: 935px;
     height: 100%;
@@ -34,7 +34,7 @@ body{
 }
 @media (min-width: 935px) {
   #root{
-    max-width: 1430px;
+    width: 1430px;
     font-family: Arial, sans-serif; /* Шрифт по умолчанию */
     height: 100vh; /* Высота экрана */
     display: flex; /* Используем флексбокс для центрирования */
