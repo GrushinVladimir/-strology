@@ -230,10 +230,10 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               Давай знакомится,<br />  
               {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
             </h2>  
-            <p style={{opacity:'.9'}}>  
+            <span style={{opacity:'.9'}}>  
               Ответь на 5 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
-            </p>  
+            </span>  
             <button onClick={handleStart} className='button'><span>Начать</span></button>  
           </div>  
         );  
@@ -242,7 +242,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           return (
             <div className='body'>
             <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
-            <span>Время рождения нужно для определения вашего солнечного знака.</span>
+            <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
            <img src="img/forms/time.png" alt="" 
            className="case-img"
             />
@@ -298,7 +298,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
           return (  
             <div className='body'>
               <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
-              <span>Дата рождения нужна для определения вашего зодиакального знака.</span>
+              <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
               <br />
               <img className="case-img" src="img/forms/Group 1.png" alt="" 
            
@@ -331,7 +331,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+                      backgroundColor: 'rgb(0 0 0 / 80%)', 
                       zIndex: 999, 
                       display: 'flex',
                       alignItems: 'center',
@@ -362,15 +362,15 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                           style={{
                             position: 'relative',
                             bottom: '0',
-                            marginTop: '10px',
+                           
                             padding: '10px 20px',
-                            background: '#7e5f8f',
+                            
                             color: 'white',
                             border: 'none',
                             borderRadius: '5px',
                             cursor: 'pointer',
                             fontSize: '1rem',
-                            width: '345px'
+                            margin: '10px 0px'
                           }}
                         >
                           Установить
@@ -389,12 +389,12 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         return (  
           <div className='body'>  
             <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
-            <span style={{padding:'0 1rem',    margin: '0.6rem 0rem'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
+            <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
             <img src="img/forms/planet.png" alt="" 
             style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}
             />
             
-            <input value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
+            <input className="input-field" value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
             <button onClick={() => handleNextWithValidation({ placeOfBirth })} className='button'><span>Далее</span></button>  
             {errorMessage && <p className="error-message">{errorMessage}</p>}
           </div>  
@@ -404,10 +404,10 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     return (  
       <div className='body'>  
         <h2 style={{marginTop:'10vh'}}>Ваше имя</h2>  
-        <span>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
+        <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
         <img src="img/forms/imya.png" alt="" 
             style={{ maxWidth: '100%', height: 'auto',marginTop: '20%',marginBottom: '2rem' }} />
-        <input type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input className="input-field"  type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
         <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  

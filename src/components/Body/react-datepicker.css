@@ -23,7 +23,7 @@
   font-size: 0.8rem;
   background-color: #fff;
   color: #000;
-  border: 1px solid #aeaeae;
+
   border-radius: 0.3rem;
   display: inline-block;
   position: relative;
@@ -57,11 +57,15 @@
 
 .react-datepicker__header {
   text-align: center;
-  background-color: #55266f8f;
-  border-bottom: 1px solid #aeaeae;
-  border-top-left-radius: 0.3rem;
+  background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
+  box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), -2px 3px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  /* background-color: #55266f8f; */
+  /* border-bottom: 1px solid #aeaeae; */
+  /* border-top-left-radius: 0.3rem; */
   padding: 8px 0;
   position: relative;
+  color: #fff;
+  border: none;
 }
 .react-datepicker__header--time {
   padding-bottom: 8px;
@@ -89,9 +93,9 @@
 .react-datepicker__current-month,
 .react-datepicker-time__header,
 .react-datepicker-year-header {
-  margin-top: 0;
-  color: #000;
-  font-weight: bold;
+  margin-top: 15px;
+  color: #ffffff;
+  font-weight: 300;
   font-size: 0.944rem;
 }
 
@@ -339,7 +343,7 @@ h2.react-datepicker__current-month {
 .react-datepicker__day-name,
 .react-datepicker__day,
 .react-datepicker__time-name {
-  color: #000;
+  color: #d9d9d9;
   display: inline-block;
   width: 2.2rem;
   line-height: 2.2rem;
@@ -595,7 +599,7 @@ h2.react-datepicker__current-month {
 .react-datepicker__year-dropdown,
 .react-datepicker__month-dropdown,
 .react-datepicker__month-year-dropdown {
-  background-color: #f0f0f0;
+  background-color: #4b398feb;
   position: absolute;
   width: 50%;
   left: 25%;
