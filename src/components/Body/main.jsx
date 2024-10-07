@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { load } from 'cheerio';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link  } from 'react-router-dom';
 
 const translateText = async (text) => {  
   const apiKey = 'AIzaSyBjA1Vb3DcbyZGvy9I2drZlEUbOd6ApbVY';   
@@ -243,10 +243,10 @@ const MainPage = () => {
             <img src="img/menu/chat.png" />
             <span>Чат</span>
           </a>
-          <a href="">
+          <Link to="/profile">
             <img src="img/menu/profile.png" style={{ width: '16px' }} />
             <span>Профиль</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

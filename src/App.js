@@ -5,6 +5,7 @@ import Body from './components/Body/Body';
 import MainPage from './components/Body/main'; // Подключаем MainPage
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Импортируем BrowserRouter и другие компоненты
+import ProfilePage from './components/Body/ProfilePage'; // Импорт ProfilePage
 
 function App() {
   const { onToggleButton, tg } = useTelegram();
@@ -29,7 +30,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-
         <Routes>
           <Route
             path="/"
@@ -44,6 +44,7 @@ function App() {
             }
           />
           <Route path="/main" element={<MainPage />} />
+          <Route path="/profile" element={<ProfilePage />} /> {/* Добавляем маршрут для ProfilePage */}
         </Routes>
       </div>
     </Router>
