@@ -1,8 +1,6 @@
 html, body, #root {
   height: var(--tg-viewport-height);
 
-*{
-  font-family: 'Involve', sans-serif;
 }
 body{
 
