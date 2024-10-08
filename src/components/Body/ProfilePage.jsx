@@ -1,12 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTelegram } from '../hooks/useTelegram';  
+const ProfilePage = () => {
+  const { user } = useTelegram(); // Use the custom hook to get user data
 
-const ProfilePage = ({ name, zodiacSign }) => {
   return (
     <div>
       <h1>Профиль пользователя</h1>
-      <p>Имя: {name}</p>
-      <p>Знак зодиака: {zodiacSign}</p>
+      {user ? (
+        <>
+          <p>Имя: {user.first_name} {user.last_name}</p>
+          <img src={user.photo_url} alt="Профиль" style={{ width: '100px', height: '100px' }} />
+          <p>Номер телефона: {user.phone_number || 'Не предоставлен'}</p>
+        </>
+      ) : (
+        <p>Загрузка данных пользователя...</p>
+      )}
 
       <div className="menu">
         <Link to="/">
