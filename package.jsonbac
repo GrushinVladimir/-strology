@@ -1,0 +1,31 @@
+{
+  "name": "astr",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix client\" \"npm run start --prefix server\"",
+    "server": "node server/index.js",
+    "client": "npm start --prefix client",
+    "dev": "nodemon server/index.js",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "node-fetch": "^3.3.2",
+    "telegraf": "^4.4.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
