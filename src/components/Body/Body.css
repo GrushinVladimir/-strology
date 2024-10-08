@@ -80,14 +80,6 @@ width: 157px;
 height: 55px;
 flex-shrink: 0;
 }
-.scroll-container {
-    overflow-y: auto; /* Разрешаем вертикальную прокрутку */
-    height: 88px; /* Высота контейнера со скроллом */
-    width: 70px;   /* Ширина контейнера */
-    margin: 0 10px;
-    position: relative;
-    scroll-behavior: smooth; /* Плавная прокрутка */
-}
 .scroll-item {
     height: 30px; /* Высота каждого элемента */
     line-height: 30px; /* Выравнивание текста по центру */
@@ -113,7 +105,7 @@ flex-shrink: 0;
 }
 .scroll-container {
 
-    overflow-y: auto; /* возможность прокрутки */
+    overflow-y: overlay;
     position: relative;
     height: 74px;
     width: 24px;
