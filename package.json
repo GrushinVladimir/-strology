@@ -5,7 +5,8 @@
         "start": "concurrently \"npm run start --prefix client\" \"npm run start --prefix server\"",
         "server": "node server/index.js",
         "client": "npm start --prefix client",
-        "dev": "nodemon server/index.js"
+        "dev": "nodemon server/index.js",
+        "build": "react-scripts build",
     },
     "dependencies": {
         "body-parser": "^1.20.3",
@@ -13,7 +14,6 @@
         "cors": "^2.8.5",
         "express": "^4.21.0",
         "node-fetch": "^3.3.2",
-        "react-scripts": "^5.0.1",
         "telegraf": "^4.4.0"
     }
 }
