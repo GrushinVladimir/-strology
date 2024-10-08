@@ -327,6 +327,7 @@ h2{
   background: #24126ba6;
   justify-content: space-around;
   align-items: center;
+  
 }
 .menu a{
   display: grid;
@@ -381,4 +382,163 @@ h2{
   display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+.top-profile-left{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0vh 2vh;
+}
+.top-profile-left p{
+  text-align: left;
+  margin: 0;
+  padding: 6px 0px 0px 10px;
+  color: #FFF;
+
+font-family: Dudka;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.top-profile-left img{
+  border-radius: 50%;
+  object-fit: cover;
+  width: 60px;
+  height: 60px;
+}
+.header-pofile{
+  
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+height: 225px;
+flex-shrink: 0;
+border-radius: 4px;
+background: #170D3A;
+box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
+}
+.line-profile{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-profile-right{
+  background: #2A1A65;
+  padding: .4rem 1.2rem;
+  margin-right: 2vh;
+  border-radius: 6px;
+  font-family: 'Involve';
+
+}
+.profile-desk p, .profile-desk h4{
+  text-align: left;
+  padding: 0px 25px;
+  margin-top: 5px;
+}
+.profile-desk p{
+  opacity: .8;
+  font-size: 12px;
+}
+.center-profile{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4vh;
+  width: 100%;
+}
+.center-profile div{
+  position: relative;
+  width: 49%;
+  height: 22vh;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: #170D3A;
+}
+.center-profile div p{
+  font-size: 12px;
+  margin-top: 15px;
+}
+.bottom-profile div{
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: #170D3A;
+}
+
+.bottom-profile div p{
+  padding: 20px 10px;
+  line-height: 1rem;
+  font-size: 15px;
+  margin: 10px 0;
+}
+.Prof .menu{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.Zadaniys .menu{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.body-profile button{
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  left: 0;
+  display: block;
+  margin-left: 6%;
+}
+
+.body-profile{
+  height: 100%;
+  margin-bottom: 60px;
+
+}
+.Prof{
+  font-family: 'Dudka';
+  overflow-y: auto;
+  height: 100%;
+}
+.victor-desc{
+font-size: 14px;
+opacity: .8;
+margin-bottom: 25px;
+}
+.victor-otvet{
+  border-radius: 12px;
+  background: #533FA1;
+  width: 90%;
+  height: 52px;
+  border: none;
+  margin-bottom: 15px;
+  color: #fff;
+}
+.body-test {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  left: 0;
+  display: block;
+  margin-left: 6%;
+}
+.zadaniya-block{
+  display: flex;
+  justify-content: space-between;
+  background: #170D3A;
+  line-height: 2rem;
+  width: 90%;
+  align-items: center;
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-top: 2vh;
+  padding: 5px;
+}
+.left{
+  width: 60%;
+    text-align: left;
+    line-height: 1rem;
+}
+.right{
+  width: 40%;
 }

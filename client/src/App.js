@@ -6,7 +6,8 @@ import MainPage from './components/Body/main'; // Подключаем MainPage
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Импортируем BrowserRouter и другие компоненты
 import ProfilePage from './components/Body/ProfilePage'; // Импорт ProfilePage
-
+import Test from './components/Body/test'; 
+import Zadaniya from './components/Body/zadaniya'; 
 function App() {
   const { onToggleButton, tg } = useTelegram();
   const [step, setStep] = useState(0);
@@ -45,6 +46,8 @@ function App() {
           />
           <Route path="/main" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} /> {/* Добавляем маршрут для ProfilePage */}
+          <Route path="/test" element={<Test />} /> {/* Добавляем маршрут для ProfilePage */}
+          <Route path="/zadaniya" element={<Zadaniya />} /> {/* Добавляем маршрут для ProfilePage */}
         </Routes>
       </div>
     </Router>

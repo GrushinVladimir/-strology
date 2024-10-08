@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
+import ProfilePage from './ProfilePage'; 
 
 
 
@@ -433,8 +434,16 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               />
       </div>
       <div className="center-container flex">
-          <input className="input-field"  type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>   
+      <input 
+                className="input-field"  
+                type="text" 
+                placeholder="Введите имя" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+            />
+            
+     
+                  </div>   
       <div className="bottom-container ">
         <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
       </div> 

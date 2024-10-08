@@ -244,7 +244,7 @@ const MainPage = () => {
             <span>Чат</span>
           </a>
           <Link to="/profile">
-            <img src="img/menu/profile.png" style={{ width: '16px' }} />
+            <img src="img/menu/profile.png" style={{ width: '13px' }} />
             <span>Профиль</span>
           </Link>
         </div>

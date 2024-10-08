@@ -7,7 +7,11 @@ export function useTelegram() {
     useEffect(() => {
         console.log(tg.initDataUnsafe); // Логируем данные о пользователе
         if (tg.initDataUnsafe?.user) {
-            setUser(tg.initDataUnsafe.user);
+            setUser({
+                ...tg.initDataUnsafe.user,
+                phone_number: tg.initDataUnsafe.user.phone_number || null, // добавляем телефон
+                photo_url: tg.initDataUnsafe.user.photo_url || null // добавляем фото
+            });
         }
     }, [tg]);
 
