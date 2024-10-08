@@ -234,181 +234,210 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               Ответь на 5 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
             </span>  
-            <button onClick={handleStart} className='button'><span>Начать</span></button>  
-          </div>  
+            <button onClick={handleStart} className='button posi'><span>Начать</span></button>  
+            <img src="img/forms/oblaco.png" alt="" className="oblaco"  />
+          </div> 
+           
+
         );  
   
         case 1:
           return (
             <div className='body'>
-            <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
-            <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
-           <img src="img/forms/time.png" alt="" 
-           className="case-img"
-            />
-            <div className="time-selector">
-                <div className="scroll-container" id="hourSelector">
-                    {hours.map((hour, index) => (
-                        <div key={index} className={`item ${index === hourIndex ? 'visible' : 'transparent'}`}>
-                            {hour}
+              <div className="top-container">
+                <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
+                <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
+            </div>
+            <div className="image-container">
+              <img src="img/forms/time.png" alt="" className="case-img"  />
+            </div>
+            <div className="center-container">
+                    <div className="time-selector">
+                        <div className="scroll-container" id="hourSelector">
+                            {hours.map((hour, index) => (
+                                <div key={index} className={`item ${index === hourIndex ? 'visible' : 'transparent'}`}>
+                                    {hour}
+                                </div>
+                            ))}
+                          
                         </div>
-                    ))}
-                   
-                </div>
-                <span>:</span>
-                <div className="scroll-container" id="minuteSelector">
-                    {minutes.map((minute, index) => (
-                        <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
-                            {minute}
+                        <span>:</span>
+                        <div className="scroll-container" id="minuteSelector">
+                            {minutes.map((minute, index) => (
+                                <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
+                                    {minute}
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            </div>  
-            <button 
-                onClick={() => {
-                    setUnknownTime(true); 
-                    setHourIndex(0); 
-                    setMinuteIndex(0); 
-                    handleNextWithValidation({ hour: null, minute: null });
-                }}    
-                className='button na'
-                style={{
-                  position: 'relative',
-                  margin: '3rem auto',
-                  display: 'block',
-                  left: 'unset',
-                  transform: 'none',
-                  padding: '6px 15px'
-                }}
-            >
-              <span>Не знаю</span> 
-            </button>
+                    </div>  
+                    <button 
+                        onClick={() => {
+                            setUnknownTime(true); 
+                            setHourIndex(0); 
+                            setMinuteIndex(0); 
+                            handleNextWithValidation({ hour: null, minute: null });
+                        }}    
+                        className='button na'
+                        style={{
+                          position: 'relative',
+                          margin: '2vh auto auto',
+                          display: 'block',
+                          left: 'unset',
+                          transform: 'none',
+                          padding: '6px 15px'
+                      
 
-            <button 
-                onClick={() => handleNextWithValidation({})} 
-                className='button'
-            >
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
-                <span>Далее</span>
-            </button>
-        </div>
-          );
-  
-          case 2:  
-          return (  
-            <div className='body'>
-              <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
-              <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
-              <br />
-              <img className="case-img" src="img/forms/Group 1.png" alt="" 
-           
-            />
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
-          
-
-
-              }}>
-                <div>
-                  {!calendarOpen && (
-                    <button  className='data'
-                      onClick={() => setCalendarOpen(true)} 
-                      style={{ 
-                        padding: '6px 0px',
-                        width:'210px',
-                        color: 'white', 
-                        border: 'none', 
-                        cursor: 'pointer' 
-                      }}
+                        }}
                     >
-                      {formatDate(startDate)}
+                      <span>Не знаю</span> 
+                    
                     </button>
-                  )}
-                  
-                  {calendarOpen && (
-                    <div style={{
-                      position: 'fixed',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgb(0 0 0 / 80%)', 
-                      zIndex: 999, 
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <div style={{  
-                        borderRadius: '10px',      
-                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
-                      }}>
-                        <DatePicker
-                          selected={startDate}
-                          onChange={handleDateChange} 
-                          dateFormat="dd/MM/yyyy"
-                          inline 
-                          popperPlacement="bottom"
-                          showYearDropdown 
-                          yearDropdownItemNumber={100}
-                          scrollableYearDropdown 
-                          maxDate={today} 
-                          locale="ru" 
-                        />
-                        <button 
-                          onClick={() => {
-                            setCalendarOpen(false); 
-                           
-                          }} 
-                          className='button'
-                          style={{
-                            position: 'relative',
-                            bottom: '0',
-                           
-                            padding: '10px 20px',
-                            
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            margin: '10px 0px'
+                </div>
+                <div className="bottom-container">
+                <button 
+                    onClick={() => handleNextWithValidation({})} 
+                    className='button'
+                >
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    <span>Далее</span>
+                </button>
+                </div>
+            </div>
+              );
+      
+              case 2:  
+              return (  
+                <div className='body'>
+                  <div className="top-container">
+                    <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
+                    <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
+                  </div>
+                  <div className="image-container">
+                    <img className="case-img-ru" src="img/forms/Group 1.png" alt="" />
+                  </div>
+                  <div className="center-container">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
+              
+
+
+                  }}>
+                    <div>
+                      {!calendarOpen && (
+                        <button  className='data'
+                          onClick={() => setCalendarOpen(true)} 
+                          style={{ 
+                            padding: '6px 0px',
+                            width:'210px',
+                            color: 'white', 
+                            border: 'none', 
+                            cursor: 'pointer' 
                           }}
                         >
-                          Установить
+                          {formatDate(startDate)}
                         </button>
-                      </div>
+                      )}
+                      
+                      {calendarOpen && (
+                        <div style={{
+                          position: 'fixed',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          backgroundColor: 'rgb(0 0 0 / 80%)', 
+                          zIndex: 999, 
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <div style={{  
+                            borderRadius: '10px',      
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
+                          }}>
+                            <DatePicker
+                              selected={startDate}
+                              onChange={handleDateChange} 
+                              dateFormat="dd/MM/yyyy"
+                              inline 
+                              popperPlacement="bottom"
+                              showYearDropdown 
+                              yearDropdownItemNumber={100}
+                              scrollableYearDropdown 
+                              maxDate={today} 
+                              locale="ru" 
+                            />
+                            <button 
+                              onClick={() => {
+                                setCalendarOpen(false); 
+                              
+                              }} 
+                              className='button'
+                              style={{
+                                dislpay: 'block',
+                                bottom: '0',
+                              
+                                padding: '10px 20px',
+                                
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                fontSize: '1rem',
+                                margin: '10px auto'
+                              }}
+                            >
+                              Установить
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </div>
               </div>
-              <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'><span>Далее</span></button>
-              {errorMessage && <p className="error-message">{errorMessage}</p>}
+              <div className="bottom-container">
+                <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'><span>Далее</span></button>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+            </div>
             </div>
           ); 
   
       case 3:  
         return (  
           <div className='body'>  
-            <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
-            <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
-            <img src="img/forms/planet.png" alt="" 
-            style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}
-            />
-            
-            <input className="input-field" value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
+          <div className="top-container">
+              <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
+              <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
+          </div>
+          <div className="image-container">
+            <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}/>
+          </div>
+          <div className="center-container  flex">
+            <input className="input-field " value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
+          </div>
+          <div className="bottom-container">
             <button onClick={() => handleNextWithValidation({ placeOfBirth })} className='button'><span>Далее</span></button>  
             {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>
           </div>  
         );  
   
         case 4:  
     return (  
       <div className='body'>  
+      <div className="top-container">
         <h2 style={{marginTop:'10vh'}}>Ваше имя</h2>  
         <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
-        <img src="img/forms/imya.png" alt="" 
-            style={{ maxWidth: '100%', height: 'auto',marginTop: '20%',marginBottom: '2rem' }} />
-        <input className="input-field"  type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
+      </div>
+      <div className="image-container">
+          <img src="img/forms/imya.png" alt=""  className="case-img"
+              />
+      </div>
+      <div className="center-container flex">
+          <input className="input-field"  type="text" placeholder="Введите имя" value={username} onChange={(e) => setUsername(e.target.value)} />
+      </div>   
+      <div className="bottom-container ">
         <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
+      </div> 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  
@@ -421,7 +450,9 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       <p>Дата рождения: {day}.{month}.{year}</p>
       <p>Место рождения: {placeOfBirth}</p>
       <p>Имя пользователя: {username}</p>
+      <div className="bottom-container ">
       <button onClick={() => handleFinish()} className='button'><span>Завершить</span></button>  
+      </div>
     </div>
         
       );
