@@ -248,7 +248,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                 <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
                 <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
             </div>
-            <div className="image-container">
+            <div className="image-container" style={{marginBottom: '3vh'}}>
               <img src="img/forms/time.png" alt="" className="case-img"  />
             </div>
             <div className="center-container">
@@ -312,7 +312,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
                     <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
                     <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
                   </div>
-                  <div className="image-container">
+                  <div className="image-container" style={{marginBottom: '3vh'}}>
                     <img className="case-img-ru" src="img/forms/Group 1.png" alt="" />
                   </div>
                   <div className="center-container">
