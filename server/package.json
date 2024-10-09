@@ -13,6 +13,8 @@
     "nodemon": "^3.1.7"
   },
   "dependencies": {
-    "node-telegram-bot-api": "^0.63.0"
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.7.1",
+    "node-telegram-bot-api": "^0.66.0"
   }
 }

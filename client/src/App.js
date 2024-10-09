@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // И
 import ProfilePage from './components/Body/ProfilePage'; // Импорт ProfilePage
 import Test from './components/Body/test'; 
 import Zadaniya from './components/Body/zadaniya'; 
+
 function App() {
   const { onToggleButton, tg } = useTelegram();
   const [step, setStep] = useState(0);
@@ -18,9 +19,28 @@ function App() {
     tg.ready();
   }, []);
 
-  const handleStart = () => {
+  const handleStart = async () => {
     setUserName(userName);
     setStep(1);
+
+    // Отправка данных пользователя на сервер
+    const response = await fetch('http://localhost:5000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        telegramId: tg.initDataUnsafe.user.id, // ID пользователя Telegram
+        name: userName,
+      }),
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      console.log('Пользователь сохранён:', userData);
+    } else {
+      console.error('Ошибка при сохранении пользователя');
+    }
   };
 
   const handleNext = (data) => {
@@ -46,8 +66,8 @@ function App() {
           />
           <Route path="/main" element={<MainPage />} />
           <Route path="/profile" element={<ProfilePage />} /> {/* Добавляем маршрут для ProfilePage */}
-          <Route path="/test" element={<Test />} /> {/* Добавляем маршрут для ProfilePage */}
-          <Route path="/zadaniya" element={<Zadaniya />} /> {/* Добавляем маршрут для ProfilePage */}
+          <Route path="/test" element={<Test />} /> {/* Добавляем маршрут для Test */}
+          <Route path="/zadaniya" element={<Zadaniya />} /> {/* Добавляем маршрут для Zadaniya */}
         </Routes>
       </div>
     </Router>
