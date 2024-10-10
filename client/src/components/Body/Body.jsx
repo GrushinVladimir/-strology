@@ -7,6 +7,7 @@ import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
 import ProfilePage from './ProfilePage'; 
+import axios from 'axios';
 
 
 
@@ -21,9 +22,10 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const [placeOfBirth, setPlaceOfBirth] = useState('');   
   const [username, setUsername] = useState('');  
   const [unknownTime, setUnknownTime] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(''); // для отображения ошибки
-  const [zodiacSign, setZodiacSign] = useState(''); // для хранения знака зодиака
-  const navigate = useNavigate(); // для редиректа
+  const [errorMessage, setErrorMessage] = useState(''); 
+  const [zodiacSign, setZodiacSign] = useState(''); 
+  const [isRegistered, setIsRegistered] = useState(false); 
+  const navigate = useNavigate(); 
 
 
 
@@ -121,7 +123,40 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const hours = ['', ...Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')), ''];
   const minutes = ['', ...Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')), ''];
 
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/checkUser', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
+        if (response.ok) {
+          const data = await response.json();
+          setIsRegistered(data.exists); // устанавливаем состояние регистрации пользователя
+          if (data.exists) {
+            // Если пользователь существует, перенаправляем его на страницу профиля
+            navigate('/profile'); // Замените на ваш путь профиля
+          }
+        } else {
+          console.error('Ошибка при проверке пользователя');
+        }
+      } catch (error) {
+        console.error('Ошибка:', error);
+      }
+    };
+
+    checkUser();
+  }, [navigate]); // Убедитесь, что `navigate` добавлен в зависимости
+
+  useEffect(() => {
+    if (isRegistered) {
+      navigate('/profile'); // Замените на ваш путь профиля
+    }
+  }, [isRegistered, navigate]);
+  
 //scripts time bd
   useEffect(() => {
     if (step === 1) {
@@ -223,6 +258,11 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
 
   //forms
   const renderStep = () => {  
+    // Если пользователь зарегистрирован, не отображайте шаги
+    if (isUserRegistered) {
+      return <Navigate to="/main" />;
+  }
+    
     switch (step) {  
       case 0 :  
         return (  
@@ -467,11 +507,15 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       );
   default:  
     return null;  
-}  
-  };  
-  
-  return <>{renderStep()}</>;  
-};  
-  
+  }
+};
+
+return (
+  <div>
+    {renderStep()}
+  </div>
+);
+};
+
 export default Body;
 

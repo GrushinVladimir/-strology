@@ -1,23 +1,36 @@
 import './App.css';
 import { useTelegram } from './components/hooks/useTelegram';
-import Header from './components/Header/Header';
 import Body from './components/Body/Body';
 import MainPage from './components/Body/main'; // Подключаем MainPage
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Импортируем BrowserRouter и другие компоненты
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Импортируем Navigate
 import ProfilePage from './components/Body/ProfilePage'; // Импорт ProfilePage
 import Test from './components/Body/test'; 
 import Zadaniya from './components/Body/zadaniya'; 
 
 function App() {
-  const { onToggleButton, tg } = useTelegram();
+  const { tg } = useTelegram();
   const [step, setStep] = useState(0);
   const [userName, setUserName] = useState('');
   const [formData, setFormData] = useState({});
+  const [isUserRegistered, setIsUserRegistered] = useState(false);
 
   useEffect(() => {
     tg.ready();
-  }, []);
+
+    // Функция для проверки пользователя
+    const checkUser = async () => {
+      const response = await fetch(`http://localhost:5000/api/checkUser?telegramId=${tg.initDataUnsafe.user.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.exists) {
+          setIsUserRegistered(true); // Пользователь зарегистрирован
+        }
+      }
+    };
+
+    checkUser(); // Проверка при загрузке
+  }, [tg]);
 
   const handleStart = async () => {
     setUserName(userName);
@@ -38,6 +51,7 @@ function App() {
     if (response.ok) {
       const userData = await response.json();
       console.log('Пользователь сохранён:', userData);
+      setIsUserRegistered(true); // Установите состояние как зарегистрированное
     } else {
       console.error('Ошибка при сохранении пользователя');
     }
@@ -55,19 +69,21 @@ function App() {
           <Route
             path="/"
             element={
-              <Body
-                step={step}
-                userName={userName}
-                handleStart={handleStart}
-                handleNext={handleNext}
-                formData={formData}
-              />
+              isUserRegistered ? <Navigate to="/main" /> : (
+                <Body
+                  step={step}
+                  userName={userName}
+                  handleStart={handleStart}
+                  handleNext={handleNext}
+                  formData={formData}
+                />
+              )
             }
           />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/profile" element={<ProfilePage />} /> {/* Добавляем маршрут для ProfilePage */}
-          <Route path="/test" element={<Test />} /> {/* Добавляем маршрут для Test */}
-          <Route path="/zadaniya" element={<Zadaniya />} /> {/* Добавляем маршрут для Zadaniya */}
+          <Route path="/main" element={isUserRegistered ? <MainPage /> : <Navigate to="/" />} />
+          <Route path="/profile" element={isUserRegistered ? <ProfilePage /> : <Navigate to="/" />} />
+          <Route path="/test" element={isUserRegistered ? <Navigate to="/main" /> : <Test />} />
+          <Route path="/zadaniya" element={<Zadaniya />} />
         </Routes>
       </div>
     </Router>
