@@ -542,3 +542,63 @@ margin-bottom: 25px;
 .right{
   width: 40%;
 }
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px); /* Уменьшаем высоту на нужное значение */
+  margin-top: -10px;
+  box-sizing: border-box; /* Чтобы padding учитывался в высоте */
+  padding-top: 20px; /* Вместо отрицательного margin используем отступ сверху */
+  
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.chat-input button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #42036d83;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.question-header {
+  font-size: 14px; /* Меньший шрифт для заголовка вопросов */
+  color: #777; /* Цвет текста заголовка вопросов */
+  margin-bottom: 10px;
+}
+
+.question-button {
+  background-color: #7209e93b; /* Цвет фона кнопки */
+  color: white; /* Цвет текста кнопки */
+  border: none; /* Убираем рамку */
+  border-radius: 5px; /* Закругляем углы */
+  padding: 5px; /* Отступ внутри кнопки */
+  margin: 5px 0; /* Отступ между кнопками */
+  cursor: pointer; /* Указатель на кнопке */
+  width: 100%; /* Кнопка на всю ширину родителя */
+  text-align: left; /* Выравнивание текста по левому краю */
+}
+
+.question-button:hover {
+  background-color: #005bb5; /* Цвет фона при наведении */
+}

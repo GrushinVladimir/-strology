@@ -3,7 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const ProfilePage = ({ username }) => {  
+const ChatPage = ({ username }) => {  
   const navigate = useNavigate();
   const { user } = useTelegram();  
 
@@ -180,22 +180,24 @@ const ProfilePage = ({ username }) => {
 </div> 
       )}  
 
-<div className="menu">
-  <Link to="/main">
-    <img src="img/menu/Union.png" />
-    <span>Главная</span>
-  </Link>
-  <Link to="/chat">
-    <img src="img/menu/chat.png" />
-    <span>Чат</span>
-  </Link>
-  <Link to="/profile">
-    <img src="img/menu/profile.png" style={{ width: '13px' }} />
-    <span>Профиль</span>
-  </Link>
-</div>
+      <div className="menu">  
+        <Link to="/">  
+          <img src="img/menu/Union.png" alt="Главная" />  
+          <span>Главная</span>  
+        </Link>  
+        <a href="">  
+          <img src="img/menu/chat.png" alt="Чат" />  
+          <span>Чат</span>  
+        </a>  
+        <Link to="/profile">  
+          <img src="img/menu/profile.png" alt="Профиль" style={{ width: '13px' }} />  
+          <span>Профиль</span>  
+        </Link>  
+      </div>  
     </div>  
   );  
 };  
 
-export default ProfilePage;  
+
+
+export default ChatPage;

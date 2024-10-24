@@ -235,19 +235,19 @@ const MainPage = () => {
         </div>
 
         <div className="menu">
-          <a href="">
-            <img src="img/menu/Union.png" />
-            <span>Главная</span>
-          </a>
-          <a href="">
-            <img src="img/menu/chat.png" />
-            <span>Чат</span>
-          </a>
-          <Link to="/profile">
-            <img src="img/menu/profile.png" style={{ width: '13px' }} />
-            <span>Профиль</span>
-          </Link>
-        </div>
+  <Link to="/main">
+    <img src="img/menu/Union.png" />
+    <span>Главная</span>
+  </Link>
+  <Link to="/chat">
+    <img src="img/menu/chat.png" />
+    <span>Чат</span>
+  </Link>
+  <Link to="/profile">
+    <img src="img/menu/profile.png" style={{ width: '13px' }} />
+    <span>Профиль</span>
+  </Link>
+</div>
       </div>
     </div>
   );

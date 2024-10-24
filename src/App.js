@@ -2,14 +2,17 @@ import './App.css';
 import { useTelegram } from './components/hooks/useTelegram';
 import Header from './components/Header/Header';
 import Body from './components/Body/Body';
-import MainPage from './components/Body/main'; // Подключаем MainPage
+import MainPage from './components/Body/main';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Импортируем BrowserRouter и другие компоненты
-import ProfilePage from './components/Body/ProfilePage'; // Импорт ProfilePage
-import Test from './components/Body/test'; 
-import Zadaniya from './components/Body/zadaniya'; 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProfilePage from './components/Body/ProfilePage';
+import Test from './components/Body/test';
+import Zadaniya from './components/Body/zadaniya';
+import ChatPage from './components/Body/ChatPage';
+
+
 function App() {
-  const { onToggleButton, tg } = useTelegram();
+  const { tg } = useTelegram();
   const [step, setStep] = useState(0);
   const [userName, setUserName] = useState('');
   const [formData, setFormData] = useState({});
@@ -45,10 +48,13 @@ function App() {
             }
           />
           <Route path="/main" element={<MainPage />} />
-          <Route path="/profile" element={<ProfilePage />} /> {/* Добавляем маршрут для ProfilePage */}
-          <Route path="/test" element={<Test />} /> {/* Добавляем маршрут для ProfilePage */}
-          <Route path="/zadaniya" element={<Zadaniya />} /> {/* Добавляем маршрут для ProfilePage */}
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="/zadaniya" element={<Zadaniya />} />
+          <Route path="/chat" element={<ChatPage />} />
         </Routes>
+
+     
       </div>
     </Router>
   );

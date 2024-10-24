@@ -1,34 +1,31 @@
 import { useTelegram } from '../hooks/useTelegram';  
 import './Body.css';  
 import React, { useEffect, useState } from 'react';  
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Navigate } from 'react-router-dom'; 
 import DatePicker from 'react-datepicker';
 import './react-datepicker.css';
-import { registerLocale, setDefaultLocale } from 'react-datepicker';
+import { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
-import ProfilePage from './ProfilePage'; 
 import axios from 'axios';
 
-
-
 registerLocale('ru', ru);
-setDefaultLocale('ru'); 
 
-const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
+const Body = ({ handleStart }) => {  
   const { user } = useTelegram();  
+  const [step, setStep] = useState(0); 
   const [day, setDay] = useState('');   
   const [month, setMonth] = useState('');   
   const [year, setYear] = useState('');   
   const [placeOfBirth, setPlaceOfBirth] = useState('');   
   const [username, setUsername] = useState('');  
+  const [birthTime, setBirthTime] = useState(''); 
   const [unknownTime, setUnknownTime] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); 
   const [zodiacSign, setZodiacSign] = useState(''); 
   const [isRegistered, setIsRegistered] = useState(false); 
   const navigate = useNavigate(); 
-
-
-
+  const [startDate, setStartDate] = useState(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   // Функция для вычисления знака зодиака
   const getZodiacSign = (day, month) => {
@@ -59,8 +56,44 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     }
   };
 
+  // Проверка, зарегистрирован ли пользователь
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/checkUser', {
+          params: {
+            telegramId: user?.id
+          }
+        });
 
-  const handleFinish = () => {
+        if (response.data.exists) {
+          setIsRegistered(true); // Если пользователь существует
+        }
+      } catch (error) {
+        console.error('Ошибка при проверке пользователя:', error);
+      }
+    };
+
+    checkUser();
+  }, [user]);
+
+  useEffect(() => {
+    if (isRegistered) {
+      navigate('/main'); // Если пользователь уже зарегистрирован
+    }
+  }, [isRegistered, navigate]);
+
+  const handleNext = () => {
+    setStep((prevStep) => prevStep + 1);
+    setErrorMessage('');
+  };
+
+
+  const handleStartClick = () => {
+    handleNext();
+  };
+
+  const handleFinish = async () => {
     if (!day || !month || !year || !placeOfBirth || !username) {
       setErrorMessage('Пожалуйста, заполните все поля.');
       return;
@@ -68,182 +101,49 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
 
     const sign = getZodiacSign(day, month);
     setZodiacSign(sign);
-    navigate('/main', { state: { zodiacSign: sign } });
+
+    try {
+      // Отправка данных пользователя на сервер для сохранения
+      await axios.post('http://localhost:5000/api/users', {
+        telegramId: user?.id,
+        name: username,
+        birthDate: `${day}.${month}.${year}`,
+        birthTime: birthTime || 'Неизвестно',
+        birthPlace: placeOfBirth,
+        zodiacSign: sign
+      });
+
+      navigate('/main', { state: { zodiacSign: sign } });
+    } catch (error) {
+      console.error('Ошибка при сохранении данных пользователя:', error);
+      setErrorMessage('Ошибка при сохранении данных пользователя.');
+    }
   };
-
-  const handleNextWithValidation = (currentData) => {
-    setErrorMessage(''); // сброс сообщения об ошибке
-
-    // Валидация для каждого шага
-    if (step === 1) {
-        if (unknownTime) {
-            // Если выбрано "Я не знаю времени", передаем null
-            handleNext({ ...currentData, hour: null, minute: null });
-            return;
-        } else if (!hours[hourIndex] || !minutes[minuteIndex]) {
-            setErrorMessage('Укажите время рождения или выберите "Я не знаю времени".');
-            return;
-        }
-    }
-
-    if (step === 2 && (!day || !month || !year)) {
-        setErrorMessage('Заполните все поля даты рождения.');
-        return;
-    }
-
-    if (step === 3 && !placeOfBirth) {
-        setErrorMessage('Заполните поле места рождения.');
-        return;
-    }
-
-    if (step === 4 && !username) {
-        setErrorMessage('Введите ваше имя.');
-        return;
-    }
-
-
-    const selectedHour = unknownTime ? null : hours[hourIndex];
-    const selectedMinute = unknownTime ? null : minutes[minuteIndex];
-
-    handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });
-};
-
-
-  const date = new Date();
-  const localTimezoneOffset = date.getTimezoneOffset() * 60000; 
-  const moscowTimezoneOffset = 3 * 60 * 60 * 1000; 
-
-  const currentTimeInMoscow = new Date(date.getTime() + localTimezoneOffset + moscowTimezoneOffset);
-  const initialHourIndex = currentTimeInMoscow.getHours();
-  const initialMinuteIndex = currentTimeInMoscow.getMinutes();
-
-  const [hourIndex, setHourIndex] = useState(initialHourIndex + 1); 
-  const [minuteIndex, setMinuteIndex] = useState(initialMinuteIndex + 1); 
-
-  const hours = ['', ...Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0')), ''];
-  const minutes = ['', ...Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')), ''];
-
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/checkUser', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setIsRegistered(data.exists); // устанавливаем состояние регистрации пользователя
-          if (data.exists) {
-            // Если пользователь существует, перенаправляем его на страницу профиля
-            navigate('/profile'); // Замените на ваш путь профиля
-          }
-        } else {
-          console.error('Ошибка при проверке пользователя');
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
-      }
-    };
-
-    checkUser();
-  }, [navigate]); // Убедитесь, что `navigate` добавлен в зависимости
-
-  useEffect(() => {
-    if (isRegistered) {
-      navigate('/profile'); // Замените на ваш путь профиля
-    }
-  }, [isRegistered, navigate]);
-  
-//scripts time bd
-  useEffect(() => {
-    if (step === 1) {
-      const hourSelector = document.getElementById('hourSelector');
-      const minuteSelector = document.getElementById('minuteSelector');
-  
-      const itemHeight = 30; 
-  
-      const centerItem = (selector, index) => {
-        const offset = (selector.clientHeight / 2) - (itemHeight / 2); 
-        const scrollToPosition = index * itemHeight - offset;
-  
-        selector.scrollTo({
-          top: scrollToPosition,
-          behavior: 'smooth'
-        });
-      };
-  
-      if (hourSelector && minuteSelector) {
-        centerItem(hourSelector, hourIndex);
-        centerItem(minuteSelector, minuteIndex);
-      }
-  
-      const handleScroll = (selector, setIndex, maxLength) => {
-        let scrollTimeout;
-  
-        const scrollHandler = () => {
-          clearTimeout(scrollTimeout);
-  
-          const currentScrollTop = selector.scrollTop;
-          const midIndex = Math.floor((currentScrollTop + (selector.clientHeight / 2)) / itemHeight);
-  
-          if (midIndex >= 0 && midIndex < maxLength) {
-            setIndex(midIndex);
-          }
-          scrollTimeout = setTimeout(() => {
-            centerItem(selector, midIndex);
-          }, 150); 
-        };
-  
-        selector.addEventListener('scroll', scrollHandler);
-        return () => {
-          selector.removeEventListener('scroll', scrollHandler);
-          clearTimeout(scrollTimeout);
-        };
-      };
-      handleScroll(hourSelector, setHourIndex, hours.length);
-      handleScroll(minuteSelector, setMinuteIndex, minutes.length);
-    }
-  }, [step, hourIndex, minuteIndex]);
-
-
-  const [startDate, setStartDate] = useState(null);
-  const [calendarOpen, setCalendarOpen] = useState(false);
-
 
   const today = new Date();
 
   const handleDateChange = (date) => {
     setStartDate(date);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; 
-    const year = date.getFullYear();
-    
-    setDay(day); 
-    setMonth(month);
-    setYear(year);
+    setDay(date.getDate());
+    setMonth(date.getMonth() + 1); 
+    setYear(date.getFullYear());
   };
-
 
   const formatDate = (date) => {
     if (!date) {
       return (
-        <span style={{ display: 'flex', margin: '0'  ,  alignItems: 'center', 
-          height: '47px'
-}}>
+        <span style={{ display: 'flex', margin: '0', alignItems: 'center', height: '47px' }}>
           <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>День</span>
           <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>Мес</span>
           <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '1.4rem' }}>Год</span>
         </span>
       );
     }
-  
+
     const day = date.toLocaleDateString('ru-RU', { day: '2-digit' });
     const month = date.toLocaleDateString('ru-RU', { month: 'long' }); 
     const year = date.toLocaleDateString('ru-RU', { year: 'numeric' });
-  
+
     return (
       <span style={{ display: 'flex', margin: '0' }}>
         <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>{day}</span>
@@ -252,270 +152,252 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       </span>
     );
   };
- 
 
-  
-
-  //forms
   const renderStep = () => {  
-    // Если пользователь зарегистрирован, не отображайте шаги
-    if (isUserRegistered) {
-      return <Navigate to="/main" />;
-  }
+    if (isRegistered) {
+      return <Navigate to="/main" />; // Если пользователь уже зарегистрирован
+    }
     
     switch (step) {  
       case 0 :  
         return (  
           <div className='body'>  
             <h2 style={{marginTop:'20vh'}}>  
-              Давай знакомится,<br />  
-              {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
+              Давай знакомиться,<br />  
+              {user?.username || user?.first_name || 'Неизвестный пользователь'}!  
             </h2>  
             <span style={{opacity:'.9'}}>  
-              Ответь на 5 простых вопросов. <br />  
-              Это поможет нам узнать тебя получше.  
+              Ответь на несколько вопросов, чтобы мы могли узнать тебя лучше.  
             </span>  
-            <button onClick={handleStart} className='button posi'><span>Начать</span></button>  
+            <button onClick={handleStartClick} className='button posi'><span>Начать</span></button>  
             <img src="img/forms/oblaco.png" alt="" className="oblaco"  />
           </div> 
-           
-
         );  
-  
-        case 1:
-          return (
-            <div className='body'>
-              <div className="top-container">
-                <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
-                <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
-            </div>
-            <div className="image-container" style={{marginBottom: '3vh'}}>
-              <img src="img/forms/time.png" alt="" className="case-img"  />
-            </div>
-            <div className="center-container">
-                    <div className="time-selector">
-                        <div className="scroll-container" id="hourSelector">
-                            {hours.map((hour, index) => (
-                                <div key={index} className={`item ${index === hourIndex ? 'visible' : 'transparent'}`}>
-                                    {hour}
-                                </div>
-                            ))}
-                          
-                        </div>
-                        <span>:</span>
-                        <div className="scroll-container" id="minuteSelector">
-                            {minutes.map((minute, index) => (
-                                <div key={index} className={`item ${index === minuteIndex ? 'visible' : 'transparent'}`}>
-                                    {minute}
-                                </div>
-                            ))}
-                        </div>
-                    </div>  
-                    <button 
-                        onClick={() => {
-                            setUnknownTime(true); 
-                            setHourIndex(0); 
-                            setMinuteIndex(0); 
-                            handleNextWithValidation({ hour: null, minute: null });
-                        }}    
-                        className='button na'
-                        style={{
-                          position: 'relative',
-                          margin: '2vh auto auto',
-                          display: 'block',
-                          left: 'unset',
-                          transform: 'none',
-                          padding: '6px 15px'
-                      
 
-                        }}
-                    >
-                      <span>Не знаю</span> 
-                    
-                    </button>
-                </div>
-                <div className="bottom-container">
-                <button 
-                    onClick={() => handleNextWithValidation({})} 
-                    className='button'
-                >
-                    {errorMessage && <p className="error-message">{errorMessage}</p>}
-                    <span>Далее</span>
-                </button>
-                </div>
+      case 1:
+        return (
+          <div className='body'>
+            <div className="top-container">
+              <h2 style={{marginTop:'10vh'}}>Ваше имя</h2>
+              <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>
             </div>
-              );
-      
-              case 2:  
-              return (  
-                <div className='body'>
-                  <div className="top-container">
-                    <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
-                    <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
-                  </div>
-                  <div className="image-container" style={{marginBottom: '3vh'}}>
-                    <img className="case-img-ru" src="img/forms/Group 1.png" alt="" />
-                  </div>
-                  <div className="center-container">
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
-              
-
-
-                  }}>
-                    <div>
-                      {!calendarOpen && (
-                        <button  className='data'
-                          onClick={() => setCalendarOpen(true)} 
-                          style={{ 
-                            padding: '6px 0px',
-                            width:'210px',
-                            color: 'white', 
-                            border: 'none', 
-                            cursor: 'pointer' 
-                          }}
-                        >
-                          {formatDate(startDate)}
-                        </button>
-                      )}
-                      
-                      {calendarOpen && (
-                        <div style={{
-                          position: 'fixed',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          backgroundColor: 'rgb(0 0 0 / 80%)', 
-                          zIndex: 999, 
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          <div style={{  
-                            borderRadius: '10px',      
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
-                          }}>
-                            <DatePicker
-                              selected={startDate}
-                              onChange={handleDateChange} 
-                              dateFormat="dd/MM/yyyy"
-                              inline 
-                              popperPlacement="bottom"
-                              showYearDropdown 
-                              yearDropdownItemNumber={100}
-                              scrollableYearDropdown 
-                              maxDate={today} 
-                              locale="ru" 
-                            />
-                            <button 
-                              onClick={() => {
-                                setCalendarOpen(false); 
-                              
-                              }} 
-                              className='button'
-                              style={{
-                                dislpay: 'block',
-                                bottom: '0',
-                              
-                                padding: '10px 20px',
-                                
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                fontSize: '1rem',
-                                margin: '10px auto'
-                              }}
-                            >
-                              Установить
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-              </div>
-              <div className="bottom-container">
-                <button onClick={() => handleNextWithValidation({ day, month, year })} className='button'><span>Далее</span></button>
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <div className="image-container">
+              <img src="img/forms/imya.png" alt="" className="case-img"/>
             </div>
-            </div>
-          ); 
-  
-      case 3:  
-        return (  
-          <div className='body'>  
-          <div className="top-container">
-              <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
-              <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
-          </div>
-          <div className="image-container">
-            <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}/>
-          </div>
-          <div className="center-container  flex">
-            <input className="input-field " value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
-          </div>
-          <div className="bottom-container">
-            <button onClick={() => handleNextWithValidation({ placeOfBirth })} className='button'><span>Далее</span></button>  
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-          </div>
-          </div>  
-        );  
-  
-        case 4:  
-    return (  
-      <div className='body'>  
-      <div className="top-container">
-        <h2 style={{marginTop:'10vh'}}>Ваше имя</h2>  
-        <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
-      </div>
-      <div className="image-container">
-          <img src="img/forms/imya.png" alt=""  className="case-img"
-              />
-      </div>
-      <div className="center-container flex">
-      <input 
+            <div className="center-container flex">
+              <input 
                 className="input-field"  
                 type="text" 
                 placeholder="Введите имя" 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
-            />
-            
-     
-                  </div>   
-      <div className="bottom-container ">
-        <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
-      </div> 
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-      </div>  
-    );  
+              />
+            </div>   
+            <div className="bottom-container ">
+              <button onClick={() => {
+                if (!username) {
+                  setErrorMessage('Пожалуйста, введите ваше имя.');
+                } else {
+                  handleNext();
+                }
+              }} className='button'><span>Далее</span></button>
+            </div> 
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>  
+        );
 
-    case 5:
-      return (
-    <div className='body'>
-      <h2>Ваши данные</h2>
-      <p>Время рождения: {hours[hourIndex]}:{minutes[minuteIndex]}</p>
-      <p>Дата рождения: {day}.{month}.{year}</p>
-      <p>Место рождения: {placeOfBirth}</p>
-      <p>Имя пользователя: {username}</p>
-      <div className="bottom-container ">
-      <button onClick={() => handleFinish()} className='button'><span>Завершить</span></button>  
-      </div>
+      case 2:
+        return (
+          <div className='body'>
+            <div className="top-container">
+              <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
+              <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
+            </div>
+            <div className="image-container" style={{marginBottom: '3vh'}}>
+              <img className="case-img-ru" src="img/forms/Group 1.png" alt="" />
+            </div>
+            <div className="center-container">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'}}>
+                <div>
+                  {!calendarOpen && (
+                    <button  className='data'
+                      onClick={() => setCalendarOpen(true)} 
+                      style={{ 
+                        padding: '6px 0px',
+                        width:'210px',
+                        color: 'white', 
+                        border: 'none', 
+                        cursor: 'pointer' 
+                      }}
+                    >
+                      {formatDate(startDate)}
+                    </button>
+                  )}
+                  {calendarOpen && (
+                    <div style={{
+                      position: 'fixed',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: 'rgb(0 0 0 / 80%)', 
+                      zIndex: 999, 
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <div style={{  
+                        borderRadius: '10px',      
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)' 
+                      }}>
+                        <DatePicker
+                          selected={startDate}
+                          onChange={handleDateChange} 
+                          dateFormat="dd/MM/yyyy"
+                          inline 
+                          popperPlacement="bottom"
+                          showYearDropdown 
+                          yearDropdownItemNumber={100}
+                          scrollableYearDropdown 
+                          maxDate={today} 
+                          locale="ru" 
+                        />
+                        <button 
+                          onClick={() => {
+                            if (!startDate) {
+                              setErrorMessage('Пожалуйста, выберите дату рождения.');
+                            } else {
+                              setCalendarOpen(false); 
+                              setErrorMessage('');
+                              handleNext();
+                            }
+                          }} 
+                          className='button'
+                          style={{
+                            dislpay: 'block',
+                            bottom: '0',
+                            padding: '10px 20px',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            fontSize: '1rem',
+                            margin: '10px auto'
+                          }}
+                        >
+                          Установить
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className='body'>
+            <div className="top-container">
+              <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
+              <span style={{opacity:'.9'}}>Укажите время вашего рождения.</span>
+            </div>
+            <div className="image-container" style={{marginBottom: '3vh'}}>
+              <img src="img/forms/time.png" alt="" className="case-img" />
+            </div>
+            <div className="center-container flex">
+              <input 
+                className="input-field"  
+                type="time" 
+                placeholder="Введите время" 
+                value={birthTime} 
+                onChange={(e) => setBirthTime(e.target.value)} 
+              />
+            </div>   
+            <div className="bottom-container ">
+              <button onClick={() => {
+                if (!birthTime) {
+                  setErrorMessage('Пожалуйста, введите время рождения.');
+                } else {
+                  handleNext();
+                }
+              }} className='button'><span>Далее</span></button>
+            </div> 
+            <button 
+              onClick={() => {
+                setBirthTime('Неизвестно');
+                handleNext();
+              }} 
+              className='button na'
+              style={{
+                position: 'relative',
+                margin: '2vh auto auto',
+                display: 'block',
+                left: 'unset',
+                transform: 'none',
+                padding: '6px 15px'
+              }}
+            >
+              <span>Не знаю</span> 
+            </button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className='body'>  
+            <div className="top-container">
+              <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
+              <span style={{padding:'0 1rem', margin: '0.6rem 0rem', opacity:'.9'}}>Указание места рождения поможет определить положение планет, Луны и звёзд.</span>  
+            </div>
+            <div className="image-container">
+              <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto', marginTop: '10%', marginBottom: '2rem', position: 'relative', right: '-27px' }}/>
+            </div>
+            <div className="center-container flex">
+              <input className="input-field" value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
+            </div>
+            <div className="bottom-container">
+              <button onClick={() => {
+                if (!placeOfBirth) {
+                  setErrorMessage('Пожалуйста, введите место рождения.');
+                } else {
+                  handleNext();
+                }
+              }} className='button'><span>Далее</span></button>  
+              {errorMessage && <p className="error-message">{errorMessage}</p>}
+            </div>
+          </div>  
+        );
+
+      case 5:
+        return (
+          <div className='body'>
+            <h2>Ваши данные</h2>
+            <p>Имя пользователя: {username}</p>
+            <p>Дата рождения: {day}.{month}.{year}</p>
+            <p>Время рождения: {birthTime}</p>
+            <p>Место рождения: {placeOfBirth}</p>
+            <p>Знак зодиака: {getZodiacSign(day, month)}</p>
+            <div className="bottom-container ">
+              <button onClick={handleFinish} className='button'><span>Завершить</span></button>  
+            </div>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </div>
+        );
+
+      default:  
+        return null;  
+    }
+  };
+
+  return (
+    <div>
+      {renderStep()}
     </div>
-        
-      );
-  default:  
-    return null;  
-  }
-};
-
-return (
-  <div>
-    {renderStep()}
-  </div>
-);
+  );
 };
 
 export default Body;
-

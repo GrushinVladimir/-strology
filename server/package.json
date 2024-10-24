@@ -13,7 +13,9 @@
     "nodemon": "^3.1.7"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "mongoose": "^8.7.1",
     "node-fetch": "^3.3.2",
     "node-telegram-bot-api": "^0.66.0"
