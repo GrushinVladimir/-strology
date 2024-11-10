@@ -26,11 +26,14 @@
     "translate": "^3.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {  
+"scripts": {  
     "start": "concurrently \"npm run start-client\" \"npm run start-server\"",  
     "start-client": "cd client && npm start",  
-    "start-server": "cd server && npm start"   
-  }  ,
+    "start-server": "cd server && npm start",  
+    "build-client": "cd client && npm run build",
+    "build-server": "cd server && npm run build",      
+    "build": "npm run build-client"  
+} ,
   "browserslist": {
     "production": [
       ">0.2%",
