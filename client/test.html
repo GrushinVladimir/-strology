@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор времени</title>
+    <style>
+        .time-selector {
+            display: flex;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #7e5f8f;
+            width: 180px;
+            padding: 0px 30px;
+            margin: auto;
+            border-radius: 50px;
+        }
+        .scroll-container {
+            overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+            height: 88px; /* Высота контейнера со скроллом */
+            width: 70px;   /* Ширина контейнера */
+            margin: 0 10px;
+            position: relative;
+            scroll-behavior: smooth; /* Плавная прокрутка */
+        }
+        .scroll-item {
+            height: 30px; /* Высота каждого элемента */
+            line-height: 30px; /* Выравнивание текста по центру */
+            text-align: center;
+            transition: opacity 0.3s;
+            font-size: 2rem;
+        }
+        .transparent {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.3); /* Полупрозрачный цвет */
+        }
+        .visible {
+            color: rgb(255, 255, 255); /* Непрозрачный цвет для видимых элементов */
+        }
+        .tchk{
+            color: #fff;
+            font-size: 2rem; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="time-selector">
+    <div class="scroll-container" id="hourSelector"></div>
+    
+    <span class="tchk">:</span>
+    
+    <div class="scroll-container" id="minuteSelector"></div>
+</div>
+
+<script>
+    // Функция для создания элементов
+    function createScrollItems(container, count) {
+        for (let i = 0; i < count; i++) {
+            const item = document.createElement('div');
+            item.className = 'scroll-item transparent'; // Устанавливаем полупрозрачность по умолчанию
+            item.textContent = String(i).padStart(2, '0'); // Форматирование с ведущими нулями
+            container.appendChild(item);
+        }
+    }
+
+    // Заполнение часов и минут
+    const hourSelector = document.getElementById('hourSelector');
+    const minuteSelector = document.getElementById('minuteSelector');
+
+    createScrollItems(hourSelector, 24); // Создаем часы от 00 до 23
+    createScrollItems(minuteSelector, 60); // Создаем минуты от 00 до 59
+
+    // Устанавливаем начальные значения
+    const defaultHour = 12; // Начальное значение для часов
+    const defaultMinute = 0; // Начальное значение для минут
+
+    hourSelector.scrollTop = (defaultHour - 1) * 30; // Позиция по умолчанию (12:00)
+    minuteSelector.scrollTop = defaultMinute * 30;
+
+    // Функция для обновления состояния видимости элементов
+    function updateVisibility(selector) {
+        const items = selector.children;
+        const midIndex = Math.floor((selector.scrollTop + selector.clientHeight / 2) / 30); // Индекс элемента по середине
+
+        for (let i = 0; i < items.length; i++) {
+            items[i].classList.remove('visible');
+            items[i].classList.add('transparent');
+        }
+        
+        // Делаем центральный элемент видимым
+        items[midIndex].classList.add('visible');
+        items[midIndex].classList.remove('transparent');
+
+        // Делаем элементы сверху и снизу полупрозрачными
+        if (midIndex > 0) {
+            items[midIndex - 1].classList.add('transparent');
+            items[midIndex - 1].classList.remove('visible');
+        }
+        if (midIndex < items.length - 1) {
+            items[midIndex + 1].classList.add('transparent');
+            items[midIndex + 1].classList.remove('visible');
+        }
+    }
+
+    let isScrolling; // Флаг для проверки прокрутки
+    let previousScrollTop = hourSelector.scrollTop; // Предыдущее значение scrollTop
+
+    // Обработка события прокрутки для часов
+    hourSelector.addEventListener('scroll', function() {
+        clearTimeout(isScrolling);
+
+        // Устанавливаем таймер, который сработает через 150 мс
+        isScrolling = setTimeout(() => {
+            const currentScrollTop = hourSelector.scrollTop;
+            const midIndex = Math.floor((currentScrollTop + hourSelector.clientHeight / 2) / 30);
+
+            // Проверяем направление прокрутки
+            if (currentScrollTop > previousScrollTop && midIndex < hourSelector.children.length - 1) {
+                centerItem(hourSelector, midIndex); // Прокрутка вниз
+            } else if (currentScrollTop < previousScrollTop && midIndex > 0) {
+                centerItem(hourSelector, midIndex); // Прокрутка вверх
+            }
+
+            previousScrollTop = currentScrollTop; // Обновляем предыдущее значение scrollTop
+        }, 150); // Задержка в 150 мс
+
+        // Обновляем видимость элементов во время прокрутки
+        updateVisibility(hourSelector);
+    });
+
+    // Обработка события прокрутки для минут
+    minuteSelector.addEventListener('scroll', function() {
+        clearTimeout(isScrolling);
+
+        // Устанавливаем таймер, который сработает через 150 мс
+        isScrolling = setTimeout(() => {
+            const currentScrollTop = minuteSelector.scrollTop;
+            const midIndex = Math.floor((currentScrollTop + minuteSelector.clientHeight / 2) / 30);
+
+            // Проверяем направление прокрутки
+            if (currentScrollTop > previousScrollTop && midIndex < minuteSelector.children.length - 1) {
+                centerItem(minuteSelector, midIndex); // Прокрутка вниз
+            } else if (currentScrollTop < previousScrollTop && midIndex > 0) {
+                centerItem(minuteSelector, midIndex); // Прокрутка вверх
+            }
+
+            previousScrollTop = currentScrollTop; // Обновляем предыдущее значение scrollTop
+        }, 150); // Задержка в 150 мс
+
+        // Обновляем видимость элементов во время прокрутки
+        updateVisibility(minuteSelector);
+    });
+
+    // Прокрутка к выбранному элементу с учетом центрирования
+    function centerItem(selector, index) {
+        const itemHeight = 30; // Высота элемента
+        
+        // Рассчитываем необходимую прокрутку
+        const scrollToPosition = (index * itemHeight) - (selector.clientHeight / 2) + (itemHeight / 2);
+        selector.scrollTo({
+            top: scrollToPosition,
+            behavior: 'smooth'
+        });
+        
+        // Обновляем видимость элементов после прокрутки
+        updateVisibility(selector);
+    }
+
+    // Инициализация элементов
+    centerItem(hourSelector, defaultHour);
+    centerItem(minuteSelector, defaultMinute);
+</script>
+
+</body>
+</html>

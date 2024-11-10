@@ -1,0 +1,36 @@
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka-Thin.woff2') format('woff2') url('Dudka-Thin.woff') format('woff');
+	font-weight: 100;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka-ThinItalic.woff2') format('woff2') url('Dudka-ThinItalic.woff') format('woff');
+	font-weight: 100;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka.woff2') format('woff2') url('Dudka.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka-RegularItalic.woff2') format('woff2') url('Dudka-RegularItalic.woff') format('woff');
+	font-weight: 400;
+	font-style: italic;
+}
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka-Bold.woff2') format('woff2') url('Dudka-Bold.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'Dudka';
+	src: url('Dudka-BoldItalic.woff2') format('woff2') url('Dudka-BoldItalic.woff') format('woff');
+	font-weight: 700;
+	font-style: italic;
+}

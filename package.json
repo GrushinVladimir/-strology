@@ -1,0 +1,49 @@
+{
+  "name": "astrology",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@vitalets/google-translate-api": "^9.2.0",
+    "axios": "^1.7.7",
+    "body-parser": "^1.20.3",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "google-translate-api": "^2.3.0",
+    "http-proxy-middleware": "^3.0.2",
+    "mongoose": "^8.8.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "react": "^18.3.1",
+    "react-datepicker": "^7.4.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "react-scripts": "^5.0.1",
+    "translate": "^3.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {  
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\"",  
+    "start-client": "cd client && npm start",  
+    "start-server": "cd server && npm start"   
+  }  ,
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
