@@ -158,7 +158,6 @@ app.get('/api/users/:telegramId', async (req, res) => {
   });
 
 // Запуск сервера
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT || 5000, () => {
+    console.log(`Server is running on ${process.env.VERCEL_URL}`);
 });
