@@ -65,7 +65,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     setZodiacSign(sign);  
 
     const userData = {  
-        telegramId: user?.id,  
+       
         name: username,  
         birthDate: `${year}-${month}-${day}`, // Приведите к формату YYYY-MM-DD  
         birthTime: birthTime || 'Неизвестно',  
