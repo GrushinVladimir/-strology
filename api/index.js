@@ -140,7 +140,8 @@ app.get('/api/users/:telegramId', async (req, res) => {
     const { telegramId } = req.params;
   
     try {
-      const user = await User.findOne({ telegramId }); // Здесь предполагается, что вы ищете пользователя по telegramId в базе данных
+        const user = await User.findOne({ telegramId }).maxTimeMS(60000);
+        // Здесь предполагается, что вы ищете пользователя по telegramId в базе данных
       if (!user) {
         return res.status(404).json({ message: 'Пользователь не найден' });
       }
