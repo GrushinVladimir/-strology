@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 
 
 
+
 // Загрузка конфигурации
 dotenv.config();
 const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';
@@ -17,7 +18,8 @@ const webAppUrl = 'https://strology.vercel.app/';
 
 
 // Подключение к MongoDB
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Astro';
+const mongoURI = process.env.MONGO_URI;
+
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
