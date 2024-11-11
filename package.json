@@ -29,9 +29,9 @@
   "scripts": {
     "start": "concurrently \"npm run start-client\" \"npm run start-server\"",
     "start-client": "cd client && npm start",
-    "start-server": "cd server && npm start",
+    "start-server": "cd api && npm start", 
     "build-client": "cd client && npm run build",
-    "build-server": "cd server && npm run build",
+    "build-server": "cd api && npm run build",
     "build": "npm run build-client"
   },
   "browserslist": {
