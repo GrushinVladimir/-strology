@@ -65,7 +65,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     setZodiacSign(sign);  
 
     const userData = {  
-       
+        telegramId: user?.id,  
         name: username,  
         birthDate: `${year}-${month}-${day}`, // Приведите к формату YYYY-MM-DD  
         birthTime: birthTime || 'Неизвестно',  
@@ -76,7 +76,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     console.log('Данные для отправки:', userData); // Логируем данные  
 
     try {  
-        await axios.post('https://strology.vercel.app/api/users', userData);
+        await axios.post('https://strology.vercel.app/api/users', userData);  
         navigate('/main', { state: { zodiacSign: sign } });  
     } catch (error) {  
         console.error('Ошибка при сохранении данных пользователя:', error.response?.data || error.message);  

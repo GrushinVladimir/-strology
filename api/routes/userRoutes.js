@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
   const { telegramId, name, birthDate, birthTime, birthPlace, zodiacSign } = req.body;
   console.log('Полученные данные:', req.body);
 
-  if ( !name || !birthDate || !birthTime || !birthPlace || !zodiacSign) {
+  if (!telegramId || !name || !birthDate || !birthTime || !birthPlace || !zodiacSign) {
     return res.status(400).json({ message: 'Все поля обязательны для заполнения' });
   }
 
