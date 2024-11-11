@@ -76,7 +76,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     console.log('Данные для отправки:', userData); // Логируем данные  
 
     try {  
-        await axios.post('https://dynamic-hotteok-3b3216.netlify.app/api/users', userData);  
+        await axios.post('http://localhost:5000/api/users', userData);  
         navigate('/main', { state: { zodiacSign: sign } });  
     } catch (error) {  
         console.error('Ошибка при сохранении данных пользователя:', error.response?.data || error.message);  
