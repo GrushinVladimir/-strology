@@ -3,6 +3,7 @@ import axios from 'axios';
 import { load } from 'cheerio';
 import { useLocation, Link } from 'react-router-dom';
 
+
 const translateText = async (text) => {
   const apiKey = 'AIzaSyBjA1Vb3DcbyZGvy9I2drZlEUbOd6ApbVY';
   const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
@@ -128,11 +129,10 @@ const getMonthRange = () => {
   return `${OneDate(firstDay)} - ${formatDate(lastDay)}`;
 };
 
-const useTelegramId = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  return queryParams.get('telegramId');
-};
+const useTelegramId = () => {  
+  const hash = window.location.hash; // Получаем часть URL после '#'  
+  return hash ? hash.substring(1) : null; // Убираем '#' и возвращаем ID  
+};  
 
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
@@ -143,32 +143,32 @@ const MainPage = () => {
   const telegramId = useTelegramId();
   console.log('Telegram ID:', telegramId);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/users/${telegramId}`);
-        console.log('Response data:', response.data); // Лог данных
-        if (response.data && response.data.user) {
-          const user = response.data.user;
-          console.log('User data:', user); // Дополнительный лог
-          if (user.zodiacSign) {
-            setZodiacSign(user.zodiacSign);
-            console.log('Updated zodiacSign:', user.zodiacSign); // Лог обновленного знака зодиака
-            const userHoroscope = await getHoroscope(user.zodiacSign, 'today');
-            setHoroscope(userHoroscope);
-          } else {
-            console.error('Знак зодиака не найден в данных пользователя');
-          }
-        } else {
-          console.error('Данные пользователя не найдены');
-        }
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error);
-      }
-    };
-  
-    fetchUserData();
-  }, [telegramId]);
+  useEffect(() => {  
+    const fetchUserData = async () => {  
+      if (!telegramId) {  
+        console.error('Telegram ID не найден');  
+        return;  
+      }  
+      try {  
+        const response = await axios.get(`/api/users/${telegramId}`);  
+        console.log('Response data:', response.data);  
+        if (response.data && response.data.user) {  
+          const user = response.data.user;  
+          console.log('User data:', user);  
+          if (user.zodiacSign) {  
+            setZodiacSign(user.zodiacSign);  
+            // Обновите логику получения гороскопа и т. д.  
+          }  
+        } else {  
+          console.error('Данные пользователя не найдены');  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при получении данных пользователя:', error);  
+      }  
+    };  
+
+    fetchUserData();  
+  }, [telegramId]);  
 
   useEffect(() => {
     console.log('Zodiac sign updated:', zodiacSign);
