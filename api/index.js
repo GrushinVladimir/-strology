@@ -21,31 +21,40 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
-const bot = new TelegramBot(token);
+// Инициализация бота
+const bot = new TelegramBot(token, { polling: false });
 const serverUrl = 'https://strology.vercel.app';
-bot.setWebHook(`${serverUrl}/bot${token}`).then(() => {
-    console.log('Webhook установлен.');
-}).catch(err => {
-    console.error('Ошибка при установке вебхука:', err);
-});
+bot.setWebHook(`${serverUrl}/bot${token}`)
+    .then(() => console.log('Webhook установлен.'))
+    .catch(err => console.error('Ошибка при установке вебхука:', err));
 
 // Маршрут для обработки сообщений Telegram
 app.post(`/bot${token}`, async (req, res) => {
     const msg = req.body;
-    const chatId = msg.message.chat.id;
-
-    if (msg.message.text === '/start') {
-        handleStartCommand(chatId);
-    } else {
-        handleOtherMessages(chatId, msg.message);
+    if (msg.message) {
+        const chatId = msg.message.chat.id;
+        const text = msg.message.text;
+        
+        console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
+        
+        if (text === '/start') {
+            await handleStartCommand(chatId);
+        } else {
+            await handleOtherMessages(chatId, msg.message);
+        }
     }
     res.sendStatus(200);
 });
 
+// Хранение состояний пользователей
+const userStates = {};
+
 async function handleStartCommand(chatId) {
     try {
         const existingUser = await User.findOne({ telegramId: chatId });
+        
         if (existingUser) {
+            console.log(`Пользователь найден, перенаправляем на main: ${chatId}`);
             await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {
                 reply_markup: {
                     inline_keyboard: [
@@ -54,16 +63,15 @@ async function handleStartCommand(chatId) {
                 }
             });
         } else {
+            console.log(`Новый пользователь, отправляем на тест: ${chatId}`);
             await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');
             userStates[chatId] = { stage: 'zodiacSign' };
         }
     } catch (error) {
         console.error('Ошибка при обработке команды /start:', error);
-        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
+        await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
     }
 }
-
-const userStates = {};
 
 async function handleOtherMessages(chatId, msg) {
     const text = msg.text;
@@ -73,6 +81,7 @@ async function handleOtherMessages(chatId, msg) {
         userStates[chatId].zodiacSign = text;
         userStates[chatId].stage = 'completed';
 
+        console.log(`Знак зодиака ${text} сохранён для chatId: ${chatId}`);
         await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Регистрация завершена.`);
         
         const user = new User({
@@ -87,22 +96,6 @@ async function handleOtherMessages(chatId, msg) {
         await bot.sendMessage(chatId, 'Укажите ваш знак зодиака для регистрации.');
     }
 }
-
-// Эндпоинт для проверки пользователя по Telegram ID
-app.get('/check-user/:telegramId', async (req, res) => {
-    try {
-        const { telegramId } = req.params;
-        const user = await User.findOne({ telegramId });
-        if (user) {
-            res.json({ exists: true, user });
-        } else {
-            res.json({ exists: false });
-        }
-    } catch (error) {
-        console.error('Ошибка при проверке пользователя:', error);
-        res.status(500).send('Ошибка сервера');
-    }
-});
 
 // Эндпоинт для получения данных пользователя по Telegram ID
 app.get('/api/users/:telegramId', async (req, res) => {
