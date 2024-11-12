@@ -140,8 +140,7 @@ const MainPage = () => {
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [showTabContent, setShowTabContent] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
-  const telegramId = useTelegramId();
-  console.log('Telegram ID:', telegramId);
+
 
 
   useEffect(() => {
