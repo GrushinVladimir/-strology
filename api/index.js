@@ -147,5 +147,5 @@ async function handleOtherMessages(chatId, msg) {
 
 // Запуск сервера  
 app.listen(PORT, () => {  
-    console.log(`Сервер запущен на ${serverUrl}`);  
+    console.log(`Сервер запущен на1 ${serverUrl}`);  
 });
