@@ -35,8 +35,9 @@ function App() {
           setIsUserExist(true);
           navigate('/main');
         } else {
-          // Если пользователя нет, перенаправляем на страницу теста
-          navigate('/body');
+          // Если пользователя нет, перенаправляем на основную страницу приложения
+          setIsUserExist(false);
+          window.location.href = 'https://strology.vercel.app';  // Переход на основную страницу
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
