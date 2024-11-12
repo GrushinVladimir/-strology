@@ -137,6 +137,7 @@ const useTelegramId = () => {
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
   const [horoscope, setHoroscope] = useState('');
+  const [showTabContent, setShowTabContent] = useState(false)
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
