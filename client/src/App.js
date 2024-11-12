@@ -26,22 +26,30 @@ function App() {
     async function checkUser() {
       try {
         const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
+        if (!id) {
+          throw new Error("Telegram ID не найден");
+        }
+        
         setTelegramId(id);  // Сохраняем telegramId в состоянии
-
-        const response = await fetch('/api/users/${id}');
+  
+        const response = await fetch(`/api/users/${id}`);
+        if (!response.ok) {
+          throw new Error("Ошибка сети при получении данных пользователя");
+        }
+  
         const data = await response.json();
-
+  
         if (data.exists) {
           setIsUserExist(true);
           if (window.location.pathname === '/') {
-            navigate('/main/${id}');  // Передаем telegramId через URL
+            navigate(`/main/${id}`);  // Передаем telegramId через URL
           }
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
       }
     }
-
+  
     if (!isUserExist) {
       checkUser();
     }
