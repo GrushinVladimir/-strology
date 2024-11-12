@@ -1,12 +1,14 @@
 import { useTelegram } from '../hooks/useTelegram';  
 import './Body.css';  
 import React, { useEffect, useState } from 'react';  
+
 import DatePicker from 'react-datepicker';
 import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  
+import { useTelegram } from '../hooks/useTelegram';  
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
 
@@ -24,24 +26,6 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const [zodiacSign, setZodiacSign] = useState(''); // для хранения знака зодиака
   const navigate = useNavigate(); // для редиректа
 
-  useEffect(() => {  
-    const checkUserExists = async () => {  
-        if (user?.id) {  
-            try {  
-                const response = await axios.get(`https://strology.vercel.app/api/users/${user.id}`);  
-                if (response.data.exists) {  
-                    // Если пользователь существует, перенаправляем на главную страницу  
-                    navigate('/main', { state: { zodiacSign: response.data.zodiacSign } });  
-                }  
-            } catch (error) {  
-                console.error('Ошибка при проверке пользователя:', error);  
-                setErrorMessage('Не удалось проверить пользователя.');  
-            }  
-        }  
-    };  
-
-    checkUserExists();  
-}, [user, navigate]);  
 
   // Функция для вычисления знака зодиака
   const getZodiacSign = (day, month) => {
@@ -509,9 +493,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
 }  
   };  
   
-  return <>
-   {errorMessage && <p>{errorMessage}</p>}  
-  {renderStep()}</>;  
+  return <>{renderStep()}</>;  
 };  
   
 export default Body;

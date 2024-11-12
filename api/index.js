@@ -37,46 +37,11 @@ const app = express();
 app.use(cors());  
 app.use(bodyParser.json());  
 
+// Подключение маршрутов  
+app.use('/api/users', userRoutes); // Эндпоинт для сохранения пользователей  
+
 // Слушаем сообщения от Telegram  
 const bot = new TelegramBot(token, { polling: true });  
-
-// Проверка существующего пользователя через REST API  
-app.get('/check-user/:telegramId', async (req, res) => {  
-    const { telegramId } = req.params;  
-    try {  
-        const user = await User.findOne({ telegramId });  
-        if (user) {  
-            return res.json({ exists: true, user });  
-        }  
-        res.json({ exists: false });  
-    } catch (error) {  
-        console.error('Ошибка при проверке пользователя:', error);  
-        res.status(500).send('Ошибка сервера');  
-    }  
-});  
-
-// Получение данных пользователя  
-app.get('/api/users/:telegramId', async (req, res) => {  
-    const { telegramId } = req.params;  
-
-    try {  
-        const user = await User.findOne({ telegramId }).maxTimeMS(60000);  
-        if (!user) {  
-            return res.status(404).json({ message: 'Пользователь не найден' });  
-        }  
-        // Возвращаем данные пользователя, включая знак зодиака  
-        res.json({  
-            name: user.name,  
-            zodiacSign: user.zodiacSign,  
-            birthDate: user.birthDate,  
-            birthTime: user.birthTime,  
-            birthPlace: user.birthPlace,  
-        });  
-    } catch (error) {  
-        console.error('Ошибка при получении пользователя:', error);  
-        res.status(500).json({ message: 'Ошибка сервера' });  
-    }  
-});  
 
 // Обработка команды /start  
 bot.onText(/\/start/, async (msg) => {  
@@ -133,14 +98,14 @@ bot.on('message', async (msg) => {
                     break;  
                 case 'birthTime':  
                     userStates[chatId].birthTime = text;  
-                    userStates[chatId].stage = 'birthPlace';
-                    await bot.sendMessage(chatId, 'Введите место рождения (например, город):');  
+                    userStates[chatId].stage = 'birthPlace';  
+                    await bot.sendMessage(chatId, 'Введите место рождения:');  
                     break;  
                 case 'birthPlace':  
                     userStates[chatId].birthPlace = text;  
 
-                    // Сохранение пользователя в базе данных после завершения регистрации  
-                    const newUser = new User({  
+                    // Сохранение данных пользователя в базе данных  
+                    user = new User({  
                         telegramId: chatId,  
                         name: msg.from.first_name,  
                         zodiacSign: userStates[chatId].zodiacSign,  
@@ -148,10 +113,8 @@ bot.on('message', async (msg) => {
                         birthTime: userStates[chatId].birthTime,  
                         birthPlace: userStates[chatId].birthPlace  
                     });  
-
-                    await newUser.save();  
-                    delete userStates[chatId]; // Удаляем состояния пользователя  
-
+                    await user.save();  
+                    delete userStates[chatId];  
                     await bot.sendMessage(chatId, `Спасибо, ${msg.from.first_name}! Ваши данные сохранены.`);  
                     break;  
             }  
@@ -160,7 +123,45 @@ bot.on('message', async (msg) => {
         }  
     } catch (error) {  
         console.error('Ошибка при обработке сообщения:', error);  
-        await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
+        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
+    }  
+});  
+
+// Проверка существующего пользователя через REST API  
+app.get('/check-user/:telegramId', async (req, res) => {  
+    const { telegramId } = req.params;  
+    try {  
+        const user = await User.findOne({ telegramId });  
+        if (user) {  
+            return res.json({ exists: true, user });  
+        }  
+        res.json({ exists: false });  
+    } catch (error) {  
+        console.error('Ошибка при проверке пользователя:', error);  
+        res.status(500).send('Ошибка сервера');  
+    }  
+});  
+
+// Получение данных пользователя  
+app.get('/api/users/:telegramId', async (req, res) => {  
+    const { telegramId } = req.params;  
+
+    try {  
+        const user = await User.findOne({ telegramId }).maxTimeMS(60000);  
+        if (!user) {  
+            return res.status(404).json({ message: 'Пользователь не найден' });  
+        }  
+          // Возвращаем данные пользователя, включая знак зодиака  
+          res.json({  
+            name: user.name,  
+            zodiacSign: user.zodiacSign,  // Включаем знак зодиака  
+            birthDate: user.birthDate,  
+            birthTime: user.birthTime,  
+            birthPlace: user.birthPlace,  
+        });  
+    } catch (error) {  
+        console.error('Ошибка при получении пользователя:', error);  
+        res.status(500).json({ message: 'Ошибка сервера' });  
     }  
 });  
 
