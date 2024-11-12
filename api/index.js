@@ -1,3 +1,5 @@
+require('dotenv').config();  
+console.log('MONGO_URI:', process.env.MONGO_URI);  
 const TelegramBot = require('node-telegram-bot-api');
 
 const dotenv = require('dotenv');
@@ -7,7 +9,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
-require('dotenv').config();  
+
 const mongoose = require('mongoose');  
 
 
