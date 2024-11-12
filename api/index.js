@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const mongoose = require('mongoose');  
 
 // Загрузка конфигурации  
-const token = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_TELEGRAM_BOT_TOKEN';  
+const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';  
 const webAppUrl = 'https://strology.vercel.app/';  
 
 // Подключение к MongoDB  
