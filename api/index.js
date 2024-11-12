@@ -40,95 +40,92 @@ app.use(bodyParser.json());
 // Подключение маршрутов  
 app.use('/api/users', userRoutes); // Эндпоинт для сохранения пользователей  
 
-// Слушаем сообщения от Telegram
-bot.start(async (ctx) => {
-    const chatId = ctx.chat.id;
+// Слушаем сообщения от Telegram  
+const bot = new TelegramBot(token, { polling: true });  
 
-    try {
-        let user = await User.findOne({ telegramId: chatId });
+// Обработка команды /start  
+bot.onText(/\/start/, async (msg) => {  
+    const chatId = msg.chat.id;  
 
-        if (user) {
-            await bot.telegram.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {
-                reply_markup: {
-                    inline_keyboard: [
-                        [{ text: 'Перейти на главную', web_app: { url: `${webAppUrl}/main` } }]
-                    ]
-                }
-            });
-        } else {
-            ctx.session = { stage: 'zodiacSign' }; // Используем сессии для хранения состояния пользователя
-            await bot.telegram.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');
-        }
-    } catch (error) {
-        console.error('Ошибка при обработке команды /start:', error);
-        bot.telegram.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
-    }
-});
+    try {  
+        // Проверка, существует ли пользователь  
+        let user = await User.findOne({ telegramId: chatId });  
 
-// Логика для обработки остальных сообщений (регистрация)
-bot.on('text', async (ctx) => {
-    const chatId = ctx.chat.id;
-    const text = ctx.message.text;
+        if (user) {  
+            // Если пользователь существует, перенаправляем на страницу main  
+            await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {  
+                reply_markup: {  
+                    inline_keyboard: [  
+                        [{ text: 'Перейти на главную', web_app: { url: `${webAppUrl}/main` } }]  
+                    ]  
+                }  
+            });  
+        } else {  
+            // Если пользователь не зарегистрирован, начинаем процесс регистрации  
+            userStates[chatId] = { stage: 'zodiacSign' };  
+            await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');  
+        }  
+    } catch (error) {  
+        console.error('Ошибка при обработке команды /start:', error);  
+        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
+    }  
+});  
 
-    // Пропускаем обработку, если это команда /start
-    if (text === '/start') return;
+// Логика для обработки остальных сообщений (регистрация)  
+const userStates = {}; // Хранение состояния пользователя  
+bot.on('message', async (msg) => {  
+    const chatId = msg.chat.id;  
+    const text = msg.text;  
 
-    try {
-        let user = await User.findOne({ telegramId: chatId });
+    // Пропускаем обработку, если это команда /start  
+    if (text === '/start') return;  
 
-        if (!user && ctx.session) {
-            switch (ctx.session.stage) {
-                case 'zodiacSign':
-                    ctx.session.zodiacSign = text;
-                    ctx.session.stage = 'birthDate';
-                    await bot.telegram.sendMessage(chatId, 'Введите вашу дату рождения (например, 01.01.2000):');
-                    break;
-                case 'birthDate':
-                    ctx.session.birthDate = text;
-                    ctx.session.stage = 'birthTime';
-                    await bot.telegram.sendMessage(chatId, 'Введите время рождения (например, 14:30):');
-                    break;
-                case 'birthTime':
-                    ctx.session.birthTime = text;
-                    ctx.session.stage = 'birthPlace';
-                    await bot.telegram.sendMessage(chatId, 'Введите место рождения:');
-                    break;
-                case 'birthPlace':
-                    ctx.session.birthPlace = text;
+    try {  
+        let user = await User.findOne({ telegramId: chatId });  
 
-                    // Сохранение данных пользователя в базе данных
-                    user = new User({
-                        telegramId: chatId,
-                        name: ctx.from.first_name,
-                        zodiacSign: ctx.session.zodiacSign,
-                        birthDate: ctx.session.birthDate,
-                        birthTime: ctx.session.birthTime,
-                        birthPlace: ctx.session.birthPlace
-                    });
-                    await user.save();
-                    delete ctx.session; // Очистка сессии
-                    await bot.telegram.sendMessage(chatId, `Спасибо, ${ctx.from.first_name}! Ваши данные сохранены.`);
-                    break;
-            }
-        } else if (user) {
-            await bot.telegram.sendMessage(chatId, 'Вы уже зарегистрированы. Переходите на главную страницу приложения.');
-        }
-    } catch (error) {
-        console.error('Ошибка при обработке сообщения:', error);
-        bot.telegram.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
-    }
-});
+        if (!user && userStates[chatId]) {  
+            // Обработка этапов регистрации  
+            switch (userStates[chatId].stage) {  
+                case 'zodiacSign':  
+                    userStates[chatId].zodiacSign = text;  
+                    userStates[chatId].stage = 'birthDate';  
+                    await bot.sendMessage(chatId, 'Введите вашу дату рождения (например, 01.01.2000):');  
+                    break;  
+                case 'birthDate':  
+                    userStates[chatId].birthDate = text;  
+                    userStates[chatId].stage = 'birthTime';  
+                    await bot.sendMessage(chatId, 'Введите время рождения (например, 14:30):');  
+                    break;  
+                case 'birthTime':  
+                    userStates[chatId].birthTime = text;  
+                    userStates[chatId].stage = 'birthPlace';  
+                    await bot.sendMessage(chatId, 'Введите место рождения:');  
+                    break;  
+                case 'birthPlace':  
+                    userStates[chatId].birthPlace = text;  
 
-// Vercel требует, чтобы каждое API было экспортировано как функция
-export default function handler(req, res) {
-    if (req.method === 'POST') {
-        bot.handleUpdate(req.body); // Обработка обновлений от Telegram
-        res.status(200).send('OK');
-    } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-}
+                    // Сохранение данных пользователя в базе данных  
+                    user = new User({  
+                        telegramId: chatId,  
+                        name: msg.from.first_name,  
+                        zodiacSign: userStates[chatId].zodiacSign,  
+                        birthDate: userStates[chatId].birthDate,  
+                        birthTime: userStates[chatId].birthTime,  
+                        birthPlace: userStates[chatId].birthPlace  
+                    });  
+                    await user.save();  
+                    delete userStates[chatId];  
+                    await bot.sendMessage(chatId, `Спасибо, ${msg.from.first_name}! Ваши данные сохранены.`);  
+                    break;  
+            }  
+        } else if (user) {  
+            await bot.sendMessage(chatId, 'Вы уже зарегистрированы. Переходите на главную страницу приложения.');  
+        }  
+    } catch (error) {  
+        console.error('Ошибка при обработке сообщения:', error);  
+        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
+    }  
+});  
 
 // Проверка существующего пользователя через REST API  
 app.get('/check-user/:telegramId', async (req, res) => {  
