@@ -73,59 +73,23 @@ bot.onText(/\/start/, async (msg) => {
 
 // Логика для обработки остальных сообщений (регистрация)  
 const userStates = {}; // Хранение состояния пользователя  
-bot.on('message', async (msg) => {  
-    const chatId = msg.chat.id;  
-    const text = msg.text;  
+bot.on('message', async (msg) => {
+    const chatId = msg.chat.id;
+    const text = msg.text;
 
-    // Пропускаем обработку, если это команда /start  
-    if (text === '/start') return;  
-
-    try {  
-        let user = await User.findOne({ telegramId: chatId });  
-
-        if (!user && userStates[chatId]) {  
-            // Обработка этапов регистрации  
-            switch (userStates[chatId].stage) {  
-                case 'zodiacSign':  
-                    userStates[chatId].zodiacSign = text;  
-                    userStates[chatId].stage = 'birthDate';  
-                    await bot.sendMessage(chatId, 'Введите вашу дату рождения (например, 01.01.2000):');  
-                    break;  
-                case 'birthDate':  
-                    userStates[chatId].birthDate = text;  
-                    userStates[chatId].stage = 'birthTime';  
-                    await bot.sendMessage(chatId, 'Введите время рождения (например, 14:30):');  
-                    break;  
-                case 'birthTime':  
-                    userStates[chatId].birthTime = text;  
-                    userStates[chatId].stage = 'birthPlace';  
-                    await bot.sendMessage(chatId, 'Введите место рождения:');  
-                    break;  
-                case 'birthPlace':  
-                    userStates[chatId].birthPlace = text;  
-
-                    // Сохранение данных пользователя в базе данных  
-                    user = new User({  
-                        telegramId: chatId,  
-                        name: msg.from.first_name,  
-                        zodiacSign: userStates[chatId].zodiacSign,  
-                        birthDate: userStates[chatId].birthDate,  
-                        birthTime: userStates[chatId].birthTime,  
-                        birthPlace: userStates[chatId].birthPlace  
-                    });  
-                    await user.save();  
-                    delete userStates[chatId];  
-                    await bot.sendMessage(chatId, `Спасибо, ${msg.from.first_name}! Ваши данные сохранены.`);  
-                    break;  
-            }  
-        } else if (user) {  
-            await bot.sendMessage(chatId, 'Вы уже зарегистрированы. Переходите на главную страницу приложения.');  
-        }  
-    } catch (error) {  
-        console.error('Ошибка при обработке сообщения:', error);  
-        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
-    }  
-});  
+    if (text === '/start') {
+        await bot.sendMessage(chatId, 'Приложение Аstrology', {
+            reply_markup: {
+                inline_keyboard: [
+                    [{ text: 'Перейти', web_app: {url: webAppUrl}}]
+                ]
+            }
+        });
+    } else {
+        // Отправьте сообщение обратно
+        bot.sendMessage(chatId, 'Привет! Как я могу помочь?');
+    }
+});
 
 // Проверка существующего пользователя через REST API  
 app.get('/check-user/:telegramId', async (req, res) => {  
