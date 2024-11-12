@@ -1,6 +1,6 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const connectDB = require('./db'); // 
+const connectDB = require('./db');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,7 +14,6 @@ const webAppUrl = 'https://strology.vercel.app/';
 
 // Подключение к MongoDB
 const mongoURI = process.env.MONGO_URI;
-
 if (!mongoURI) {
     console.error('Ошибка: переменная окружения MONGO_URI не определена.');
     process.exit(1);
@@ -71,6 +70,7 @@ async function handleStartCommand(chatId) {
     try {
         let existingUser = await User.findOne({ telegramId: chatId });
         if (existingUser) {
+            // Если пользователь уже существует, перенаправляем его на главную страницу
             await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {
                 reply_markup: {
                     inline_keyboard: [
@@ -79,6 +79,7 @@ async function handleStartCommand(chatId) {
                 }
             });
         } else {
+            // Если пользователь новый, запускаем процесс регистрации
             userStates[chatId] = { stage: 'zodiacSign' };
             await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');
         }
@@ -92,29 +93,29 @@ async function handleStartCommand(chatId) {
 const userStates = {}; // Хранение состояния пользователя
 async function handleOtherMessages(chatId, msg) {
     const text = msg.text;
- // Пропускаем пустые сообщения
- if (!text) {
-    return;
-}
-
-try {
-    if (userStates[chatId] && userStates[chatId].stage === 'zodiacSign') {
-        // Здесь вы можете добавить логику для обработки зодиакального знака
-        userStates[chatId].zodiacSign = text; // Сохраняем введенный знак
-        userStates[chatId].stage = 'otherStage'; // Переход к следующему этапу
-
-        await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Теперь продолжайте...`); // Подтверждение выбора
-    } else {
-        // Обработка других возможных состояний или команд
-        await bot.sendMessage(chatId, 'Я не понимаю ваше сообщение. Пожалуйста, укажите свой знак зодиака.');
+    // Пропускаем пустые сообщения
+    if (!text) {
+        return;
     }
-} catch (error) {
-    console.error('Ошибка при обработке сообщений:', error);
-    await bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего запроса.');
-}
+
+    try {
+        if (userStates[chatId] && userStates[chatId].stage === 'zodiacSign') {
+            // Здесь вы можете добавить логику для обработки зодиакального знака
+            userStates[chatId].zodiacSign = text; // Сохраняем введенный знак
+            userStates[chatId].stage = 'otherStage'; // Переход к следующему этапу
+
+            await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Теперь продолжайте...`); // Подтверждение выбора
+        } else {
+            // Обработка других возможных состояний или команд
+            await bot.sendMessage(chatId, 'Я не понимаю ваше сообщение. Пожалуйста, укажите свой знак зодиака.');
+        }
+    } catch (error) {
+        console.error('Ошибка при обработке сообщений:', error);
+        await bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего запроса.');
+    }
 }
 
 // Запуск сервера
 app.listen(PORT, () => {
-console.log(`Сервер запущен на порту ${PORT}`);
+    console.log(`Сервер запущен на порту ${PORT}`);
 });
