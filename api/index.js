@@ -1,6 +1,6 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const connectDB = require('./db'); // Убедитесь, что эта функция корректно подключает к БД
+const connectDB = require('./db'); // ��бедитесь, что эта функция корректно подключает к БД
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -20,7 +20,7 @@ if (!mongoURI) {
     process.exit(1);
 }
 
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 90000 })
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
@@ -56,7 +56,6 @@ app.post(`/bot${token}`, (req, res) => {
         if (msg.message.text === '/start') {
             handleStartCommand(chatId);
         } else {
-            // Обработка других сообщений
             handleOtherMessages(chatId, msg.message);
         }
         
@@ -93,43 +92,29 @@ async function handleStartCommand(chatId) {
 const userStates = {}; // Хранение состояния пользователя
 async function handleOtherMessages(chatId, msg) {
     const text = msg.text;
+ // Пропускаем пустые сообщения
+ if (!text) {
+    return;
+}
 
-    // Пропускаем обработку, если это команда /start
-    if (text === '/start') return;
+try {
+    if (userStates[chatId] && userStates[chatId].stage === 'zodiacSign') {
+        // Здесь вы можете добавить логику для обработки зодиакального знака
+        userStates[chatId].zodiacSign = text; // Сохраняем введенный знак
+        userStates[chatId].stage = 'otherStage'; // Переход к следующему этапу
 
-    try {
-        let user = await User.findOne({ telegramId: chatId });
-
-        if (!user && userStates[chatId]) {
-            // Обработка сообщений в зависимости от стадии пользователя
-            const stage = userStates[chatId].stage;
-
-            if (stage === 'zodiacSign') {
-                await bot.sendMessage(chatId, 'Введите ваш знак зодиака:');
-                // Сохраняем состояние ожидания знака зодиака
-                userStates[chatId].stage = 'waitingForZodiac';
-            } else if (stage === 'waitingForZodiac') {
-                const zodiacSign = text; // Получаем введенный знак зодиака
-                // Здесь можно добавить логику валидации знака зодиака
-
-                // Сохраняем пользователя в базе данных
-                user = new User({ telegramId: chatId, zodiacSign });
-                await user.save();
-
-                await bot.sendMessage(chatId, `Поздравляем! Вы зарегистрированы с знаком зодиака: ${zodiacSign}`);
-                delete userStates[chatId]; // Удаляем состояние после регистрации
-            }
-        } else if (user) {
-            // Если пользователь уже зарегистрирован, можно просто ответить
-            await bot.sendMessage(chatId, `Ваш знак зодиака: ${user.zodiacSign}. Как я могу вам помочь?`);
-        }
-    } catch (error) {
-        console.error('Ошибка при обработке сообщения:', error);
-        await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
+        await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Теперь продолжайте...`); // Подтверждение выбора
+    } else {
+        // Обработка других возможных состояний или команд
+        await bot.sendMessage(chatId, 'Я не понимаю ваше сообщение. Пожалуйста, укажите свой знак зодиака.');
     }
+} catch (error) {
+    console.error('Ошибка при обработке сообщений:', error);
+    await bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего запроса.');
+}
 }
 
 // Запуск сервера
 app.listen(PORT, () => {
-    console.log(`Сервер запущен на порту ${PORT}`);
+console.log(`Сервер запущен на порту ${PORT}`);
 });
