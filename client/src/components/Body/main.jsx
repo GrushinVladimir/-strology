@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { load } from 'cheerio';
 import { useLocation, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const translateText = async (text) => {
   const apiKey = 'AIzaSyBjA1Vb3DcbyZGvy9I2drZlEUbOd6ApbVY';
@@ -131,27 +132,28 @@ const getMonthRange = () => {
 const useTelegramId = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  return queryParams.get('telegramId');
+  return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
 };
 
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
   const [horoscope, setHoroscope] = useState('');
-  const [showTabContent, setShowTabContent] = useState(false)
+  const [showTabContent, setShowTabContent] = useState(false);
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
-  const telegramId = useTelegramId();
+  const { telegramId } = useParams();
+  
 
   useEffect(() => {
-    if (!telegramId) return;
+    if (!telegramId) return; // Если нет telegramId, выходим из useEffect
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/api/users/${telegramId}`);
+        const response = await axios.get(`/api/users/${telegramId}`); // Запрос к серверу для получения данных
         if (response.data && response.data.user) {
           setUserData(response.data.user);
-          setZodiacSign(response.data.user.zodiacSign);
+          setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
         } else {
           console.error('Данные пользователя не найдены');
         }
@@ -160,8 +162,8 @@ const MainPage = () => {
       }
     };
 
-    fetchUserData();
-  }, [telegramId]);
+    fetchUserData(); // Загружаем данные пользователя
+  }, [telegramId]); // Используем telegramId в зависимости
 
   useEffect(() => {
     if (!zodiacSign) return;
