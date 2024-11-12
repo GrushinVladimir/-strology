@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const mongoose = require('mongoose');
+
 const dotenv = require('dotenv');
 const connectDB = require('./db');
 const express = require('express');
@@ -7,12 +7,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
+require('dotenv').config();  
+const mongoose = require('mongoose');  
 
 
 
 
 // Загрузка конфигурации
-dotenv.config();
+
 const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';
 const webAppUrl = 'https://strology.vercel.app/';
 
@@ -20,17 +22,13 @@ const webAppUrl = 'https://strology.vercel.app/';
 // Подключение к MongoDB  
 const mongoURI = process.env.MONGO_URI;  
 
-mongoose.connect(mongoURI, {  
-    useNewUrlParser: true,  
-    useUnifiedTopology: true,  
-})  
-.then(() => {  
-    console.log("MongoDB подключен");  
-})  
-.catch(err => {  
-    console.error("Ошибка подключения к MongoDB:", err);  
-    process.exit(1); // Завершение процесса при ошибке подключения  
-});  
+if (!mongoURI) {  
+    console.error('Ошибка: переменная окружения MONGO_URI не определена.');  
+    process.exit(1);  
+}  
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })  
+    .then(() => console.log('Успешно подключено к MongoDB'))  
+    .catch(err => console.error('Ошибка подключения к MongoDB:', err));   
 
 // Настройка Express  
 const app = express();  
