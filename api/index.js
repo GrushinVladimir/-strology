@@ -91,27 +91,27 @@ async function handleStartCommand(chatId) {
 
 // Логика для обработки остальных сообщений (регистрация)
 const userStates = {}; // Хранение состояния пользователя
-async function handleOtherMessages(chatId, msg) {
-    const text = msg.text;
-    // Пропускаем пустые сообщения
-    if (!text) {
-        return;
-    }
-
+async function handleStartCommand(chatId) {
     try {
-        if (userStates[chatId] && userStates[chatId].stage === 'zodiacSign') {
-            // Здесь вы можете добавить логику для обработки зодиакального знака
-            userStates[chatId].zodiacSign = text; // Сохраняем введенный знак
-            userStates[chatId].stage = 'otherStage'; // Переход к следующему этапу
-
-            await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Теперь продолжайте...`); // Подтверждение выбора
+        console.log(`Получена команда /start от пользователя: ${chatId}`);
+        let existingUser = await User.findOne({ telegramId: chatId });
+        if (existingUser) {
+            console.log(`Пользователь ${chatId} найден, переход на main`);
+            await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [{ text: 'Перейти на главную', web_app: { url: `${webAppUrl}/main` } }]
+                    ]
+                }
+            });
         } else {
-            // Обработка других возможных состояний или команд
-            await bot.sendMessage(chatId, 'Я не понимаю ваше сообщение. Пожалуйста, укажите свой знак зодиака.');
+            console.log(`Пользователь ${chatId} не найден, начало регистрации`);
+            userStates[chatId] = { stage: 'zodiacSign' };
+            await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');
         }
     } catch (error) {
-        console.error('Ошибка при обработке сообщений:', error);
-        await bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего запроса.');
+        console.error('Ошибка при обработке команды /start:', error);
+        bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');
     }
 }
 
@@ -119,3 +119,4 @@ async function handleOtherMessages(chatId, msg) {
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
 });
+as
