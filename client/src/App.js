@@ -1,9 +1,10 @@
 import './App.css';
 import { useTelegram } from './components/hooks/useTelegram';
 import Header from './components/Header/Header';
+import Body from './components/Body/Body';
+import MainPage from './components/Body/main';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import MainPage from './components/Body/main'; // Импортируем MainPage
 import ProfilePage from './components/Body/ProfilePage';
 import Test from './components/Body/test';
 import Zadaniya from './components/Body/zadaniya';
@@ -19,41 +20,43 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    tg.ready(); // Готовим Telegram API
+    tg.ready();
   }, [tg]);
 
   useEffect(() => {
     async function checkUser() {
       try {
         const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
-        if (!id) {
-          throw new Error("Telegram ID не найден");
-        }
-        
         setTelegramId(id);  // Сохраняем telegramId в состоянии
-  
+
         const response = await fetch(`/api/users/${id}`);
-        if (!response.ok) {
-          throw new Error("Ошибка сети при получении данных пользователя");
-        }
-  
         const data = await response.json();
-  
+
         if (data.exists) {
           setIsUserExist(true);
           if (window.location.pathname === '/') {
-            navigate(`/main/${id}`);  // Передаем telegramId через URL
+            navigate('/main');
           }
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
       }
     }
-  
+
     if (!isUserExist) {
       checkUser();
     }
-  }, [tg, navigate, isUserExist]); // Зависимости для useEffect
+  }, [tg, navigate, isUserExist]);
+
+  const handleStart = () => {
+    setUserName(userName);
+    setStep(1);
+  };
+
+  const handleNext = (data) => {
+    setFormData((prev) => ({ ...prev, ...data }));
+    setStep((prev) => prev + 1);
+  };
 
   return (
     <div className="App">
@@ -70,7 +73,7 @@ function App() {
             />
           }
         />
-         <Route path="/main/:telegramId" element={<MainPage />} />{/* Добавьте остальные маршруты здесь */}
+        <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/test" element={<Test />} />
         <Route path="/zadaniya" element={<Zadaniya />} />
