@@ -152,7 +152,7 @@ const MainPage = () => {
       return;
     }
   
-    const fetchUserData = async () => {
+    const intervalId = setInterval(async () => {
       try {
         const response = await axios.get(`/api/users/${telegramId}`);
         console.log('Данные пользователя:', response.data); // Отладка: выводим данные
@@ -162,6 +162,8 @@ const MainPage = () => {
             setZodiacSign(user.zodiacSign);
             const userHoroscope = await getHoroscope(user.zodiacSign, 'today');
             setHoroscope(userHoroscope);
+            setIsLoading(false); // Отключаем индикатор загрузки после получения данных
+            clearInterval(intervalId); // Останавливаем интервал после успешного получения данных
           } else {
             console.error('Знак зодиака не найден в данных пользователя');
           }
@@ -170,12 +172,10 @@ const MainPage = () => {
         }
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error);
-      } finally {
-        setIsLoading(false); // Отключаем индикатор загрузки после выполнения запроса
       }
-    };
+    }, 3000); // Повторный запрос каждые 3 секунды
   
-    fetchUserData();
+    return () => clearInterval(intervalId); // Очистка интервала при размонтировании компонента
   }, [telegramId]);
 
   useEffect(() => {
