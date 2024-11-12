@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const mongoose = require('mongoose');
 
 // Загрузка конфигурации
-const token = process.env.TELEGRAM_BOT_TOKEN || 'YOUR_DEFAULT_TOKEN';  // Замените на свой токен
+const token = process.env.TELEGRAM_BOT_TOKEN;  // Замените на свой токен
 const webAppUrl = 'https://strology.vercel.app/';
 
 // Подключение к MongoDB
@@ -46,24 +46,16 @@ bot.setWebHook(`${serverUrl}/bot${token}`).then(() => {
 
 // Обработка сообщений от Telegram
 app.post(`/bot${token}`, (req, res) => {
-    console.log('Получено сообщение:', req.body);
+    console.log('Получено сообщение:', req.body); // Логируем входящие данные
     const msg = req.body;
 
     if (msg.message && msg.message.chat && msg.message.chat.id && msg.message.text) {
         const chatId = msg.message.chat.id;
-
-        // Обработка команды /start
-        if (msg.message.text === '/start') {
-            handleStartCommand(chatId, msg.message.from);
-        } else {
-            handleOtherMessages(chatId, msg.message);
-        }
-
-        // Отправляем 200 OK статус
+        bot.sendMessage(chatId, 'Сообщение получено!');
         res.sendStatus(200);
     } else {
         console.log('Неправильный формат сообщения:', req.body);
-        res.sendStatus(400); // Неверный запрос
+        res.sendStatus(400);
     }
 });
 
