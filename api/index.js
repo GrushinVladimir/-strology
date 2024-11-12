@@ -28,7 +28,7 @@ if (!mongoURI) {
     console.error('Ошибка: переменная окружения MONGO_URI не определена.');  
     process.exit(1);  
 }  
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })  
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true,serverSelectionTimeoutMS: 90000 })  
     .then(() => console.log('Успешно подключено к MongoDB'))  
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));   
 
