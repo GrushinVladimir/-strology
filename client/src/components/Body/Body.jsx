@@ -76,7 +76,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     console.log('Данные для отправки:', userData); // Логируем данные  
 
     try {  
-        await axios.post('https://strology-git-master-artifex-97bd4d3c.vercel.app/api/users', userData);  
+        await axios.post('https://strology.vercel.app/api/users', userData);  
         navigate('/main', { state: { zodiacSign: sign } });  
     } catch (error) {  
         console.error('Ошибка при сохранении данных пользователя:', error.response?.data || error.message);  
@@ -245,7 +245,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         return (  
           <div className='body'>  
             <h2 style={{marginTop:'20vh'}}>  
-              Давай знакомится1,<br />  
+              Давай знакомится3,<br />  
               {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
             </h2>  
             <span style={{opacity:'.9'}}>  

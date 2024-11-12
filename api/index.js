@@ -18,7 +18,7 @@ const mongoose = require('mongoose');
 // Загрузка конфигурации
 
 const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';
-const webAppUrl = 'https://strology-git-master-artifex-97bd4d3c.vercel.app/';
+const webAppUrl = 'https://strology.vercel.app/';
 
 
 // Подключение к MongoDB  
