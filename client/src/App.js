@@ -36,7 +36,7 @@ function App() {
           navigate('/main');
         } else {
           // Если пользователя нет, перенаправляем на страницу теста
-          navigate('/test');
+          navigate('/body');
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
