@@ -135,15 +135,13 @@ const useTelegramId = () => {
   return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
 };
 
-const MainPage = () => {
+const MainPage = ({ telegramId }) => { // Получаем telegramId через пропсы
   const [zodiacSign, setZodiacSign] = useState(null);
   const [horoscope, setHoroscope] = useState('');
   const [showTabContent, setShowTabContent] = useState(false);
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
-  const { telegramId } = useParams();
-  
 
   useEffect(() => {
     if (!telegramId) return; // Если нет telegramId, выходим из useEffect
@@ -164,7 +162,7 @@ const MainPage = () => {
 
     fetchUserData(); // Загружаем данные пользователя
   }, [telegramId]); // Используем telegramId в зависимости
-
+  
   useEffect(() => {
     if (!zodiacSign) return;
 
