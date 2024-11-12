@@ -33,11 +33,7 @@ function App() {
         if (data.exists) {
           // Если пользователь существует, перенаправляем на main
           setIsUserExist(true);
-          navigate('/main');  // Перенаправление внутри приложения
-        } else {
-          // Если пользователя нет, перенаправляем на основную страницу приложения
-          setIsUserExist(false);
-          window.location.replace('https://strology.vercel.app');  // Перенаправление на основной сайт
+          navigate('/main');
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
