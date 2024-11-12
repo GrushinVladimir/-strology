@@ -245,7 +245,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         return (  
           <div className='body'>  
             <h2 style={{marginTop:'20vh'}}>  
-              Давай знакомится,<br />  
+              Давай знакомится1,<br />  
               {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
             </h2>  
             <span style={{opacity:'.9'}}>  
