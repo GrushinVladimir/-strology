@@ -1,5 +1,4 @@
 require('dotenv').config();
-console.log('MONGO_URI:', process.env.MONGO_URI);
 const TelegramBot = require('node-telegram-bot-api');
 const connectDB = require('./db'); // Убедитесь, что эта функция корректно подключает к БД
 const express = require('express');
@@ -20,6 +19,7 @@ if (!mongoURI) {
     console.error('Ошибка: переменная окружения MONGO_URI не определена.');
     process.exit(1);
 }
+
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 90000 })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
@@ -49,9 +49,17 @@ app.post(`/bot${token}`, (req, res) => {
     console.log('Получено сообщение:', req.body); // Логируем входящие данные
     const msg = req.body;
 
-    if (msg.message && msg.message.chat && msg.message.chat.id && msg.message.text) {
+    if (msg.message && msg.message.chat && msg.message.chat.id) {
         const chatId = msg.message.chat.id;
-        bot.sendMessage(chatId, 'Сообщение получено!');
+        
+        // Обработчик команд /start
+        if (msg.message.text === '/start') {
+            handleStartCommand(chatId);
+        } else {
+            // Обработка других сообщений
+            handleOtherMessages(chatId, msg.message);
+        }
+        
         res.sendStatus(200);
     } else {
         console.log('Неправильный формат сообщения:', req.body);
@@ -60,10 +68,9 @@ app.post(`/bot${token}`, (req, res) => {
 });
 
 // Логика обработки команды /start
-async function handleStartCommand(chatId, user) {
+async function handleStartCommand(chatId) {
     try {
         let existingUser = await User.findOne({ telegramId: chatId });
-
         if (existingUser) {
             await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {
                 reply_markup: {
@@ -94,40 +101,27 @@ async function handleOtherMessages(chatId, msg) {
         let user = await User.findOne({ telegramId: chatId });
 
         if (!user && userStates[chatId]) {
-            // Обработка этапов регистрации
-            switch (userStates[chatId].stage) {
-                case 'zodiacSign':
-                    userStates[chatId].zodiacSign = text;
-                    userStates[chatId].stage = 'birthDate';
-                    await bot.sendMessage(chatId, 'Введите вашу дату рождения (например, 01.01.2000):');
-                    break;
-                case 'birthDate':
-                    userStates[chatId].birthDate = text;
-                    userStates[chatId].stage = 'confirmation';
-                    await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${userStates[chatId].zodiacSign}. Ваша дата рождения: ${text}. Подтвердите регистрацию? (Да/Нет)`);
-                    break;
-                case 'confirmation':
-                    if (text.toLowerCase() === 'да') {
-                        const newUser = new User({
-                            telegramId: chatId,
-                            zodiacSign: userStates[chatId].zodiacSign,
-                            birthDate: userStates[chatId].birthDate
-                        });
-                        await newUser.save();
-                        delete userStates[chatId]; // Удаляем состояние после регистрации
-                        await bot.sendMessage(chatId, 'Вы успешно зарегистрированы! Используйте команду /start для доступа к приложениям.');
-                    } else if (text.toLowerCase() === 'нет') {
-                        delete userStates[chatId]; // Удаляем состояние при отказе
-                        await bot.sendMessage(chatId, 'Регистрация отменена. Вы можете начать заново с командой /start.');
-                    } else {
-                        await bot.sendMessage(chatId, 'Пожалуйста, ответьте "Да" или "Нет".');
-                    }
-                    break;
-                default:
-                    await bot.sendMessage(chatId, 'Неизвестный этап. Начните заново с команды /start.');
+            // Обработка сообщений в зависимости от стадии пользователя
+            const stage = userStates[chatId].stage;
+
+            if (stage === 'zodiacSign') {
+                await bot.sendMessage(chatId, 'Введите ваш знак зодиака:');
+                // Сохраняем состояние ожидания знака зодиака
+                userStates[chatId].stage = 'waitingForZodiac';
+            } else if (stage === 'waitingForZodiac') {
+                const zodiacSign = text; // Получаем введенный знак зодиака
+                // Здесь можно добавить логику валидации знака зодиака
+
+                // Сохраняем пользователя в базе данных
+                user = new User({ telegramId: chatId, zodiacSign });
+                await user.save();
+
+                await bot.sendMessage(chatId, `Поздравляем! Вы зарегистрированы с знаком зодиака: ${zodiacSign}`);
+                delete userStates[chatId]; // Удаляем состояние после регистрации
             }
-        } else {
-            await bot.sendMessage(chatId, 'Вы уже зарегистрированы. Пожалуйста, используйте команду /start для доступа к приложениям.');
+        } else if (user) {
+            // Если пользователь уже зарегистрирован, можно просто ответить
+            await bot.sendMessage(chatId, `Ваш знак зодиака: ${user.zodiacSign}. Как я могу вам помочь?`);
         }
     } catch (error) {
         console.error('Ошибка при обработке сообщения:', error);
