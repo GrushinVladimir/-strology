@@ -131,42 +131,26 @@ const getMonthRange = () => {
 const useTelegramId = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const telegramId = queryParams.get('telegramId');
-  console.log('Извлеченный telegramId:', telegramId); // Отладка: проверка, что telegramId извлекается корректно
-  return telegramId;
+  return queryParams.get('telegramId');
 };
 
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
   const [horoscope, setHoroscope] = useState('');
   const [activeTab, setActiveTab] = useState('Сегодня');
-  const [showTabContent, setShowTabContent] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
-  const [isLoading, setIsLoading] = useState(true); // Флаг для ожидания загрузки
+  const [userData, setUserData] = useState(null);
   const telegramId = useTelegramId();
-  console.log('Telegram ID:', telegramId);
 
   useEffect(() => {
-    if (!telegramId) {
-      console.log('Ожидание загрузки Telegram ID');
-      return;
-    }
-  
+    if (!telegramId) return;
+
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`/api/users/${telegramId}`);
-        console.log('Данные пользователя:', response.data); // Отладка: выводим данные
         if (response.data && response.data.user) {
-          const user = response.data.user;
-          if (user.zodiacSign) {
-            setZodiacSign(user.zodiacSign);
-            const userHoroscope = await getHoroscope(user.zodiacSign, 'today');
-            setHoroscope(userHoroscope);
-            clearInterval(intervalId); // Останавливаем интервал после получения данных
-            setIsLoading(false); // Отключаем индикатор загрузки после получения данных
-          } else {
-            console.error('Знак зодиака не найден в данных пользователя');
-          }
+          setUserData(response.data.user);
+          setZodiacSign(response.data.user.zodiacSign);
         } else {
           console.error('Данные пользователя не найдены');
         }
@@ -174,12 +158,8 @@ const MainPage = () => {
         console.error('Ошибка при получении данных пользователя:', error);
       }
     };
-  
-    // Устанавливаем интервал для повторных запросов
-    const intervalId = setInterval(fetchUserData, 3000); // Повторный запрос каждые 3 секунды
-  
-    // Чистим интервал при размонтировании компонента
-    return () => clearInterval(intervalId);
+
+    fetchUserData();
   }, [telegramId]);
 
   useEffect(() => {

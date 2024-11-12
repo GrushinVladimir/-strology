@@ -16,24 +16,25 @@ function App() {
   const [userName, setUserName] = useState('');
   const [formData, setFormData] = useState({});
   const [isUserExist, setIsUserExist] = useState(false);
-  const navigate = useNavigate();  // Инициализируем навигацию
+  const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId
+  const navigate = useNavigate();
 
   useEffect(() => {
     tg.ready();
   }, [tg]);
 
   useEffect(() => {
-    // Проверка, существует ли пользователь
     async function checkUser() {
       try {
-        const telegramId = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
-        const response = await fetch(`/api/users/${telegramId}`);
+        const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
+        setTelegramId(id);  // Сохраняем telegramId в состоянии
+
+        const response = await fetch(`/api/users/${id}`);
         const data = await response.json();
 
         if (data.exists) {
-          // Если пользователь существует, перенаправляем на main
           setIsUserExist(true);
-          if (window.location.pathname === '/') {  // Проверяем, не находимся ли мы уже на /main
+          if (window.location.pathname === '/') {
             navigate('/main');
           }
         }
@@ -42,9 +43,8 @@ function App() {
       }
     }
 
-    // Проверка пользователя только при первом рендере
     if (!isUserExist) {
-      checkUser();  // Запускаем проверку при загрузке компонента
+      checkUser();
     }
   }, [tg, navigate, isUserExist]);
 
@@ -73,7 +73,7 @@ function App() {
             />
           }
         />
-        <Route path="/main" element={<MainPage />} />
+        <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/test" element={<Test />} />
         <Route path="/zadaniya" element={<Zadaniya />} />
