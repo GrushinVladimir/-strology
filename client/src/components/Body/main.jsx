@@ -147,6 +147,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Запрос данных пользователя по Telegram ID
         const response = await axios.get(`/api/users/${telegramId}`);
         if (response.data && response.data.user) {
           const user = response.data.user;
@@ -165,7 +166,12 @@ const MainPage = () => {
       }
     };
 
-    fetchUserData();
+    // Проверка наличия Telegram ID перед запросом
+    if (telegramId) {
+      fetchUserData();
+    } else {
+      console.error('Telegram ID отсутствует');
+    }
   }, [telegramId]);
 
   useEffect(() => {
