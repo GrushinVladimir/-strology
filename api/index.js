@@ -1,6 +1,6 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const connectDB = require('./db'); // ��бедитесь, что эта функция корректно подключает к БД
+const connectDB = require('./db'); // 
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,7 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 const mongoose = require('mongoose');
 
 // Загрузка конфигурации
-const token = process.env.TELEGRAM_BOT_TOKEN;  // Замените на свой токен
+const token = process.env.TELEGRAM_BOT_TOKEN;  
 const webAppUrl = 'https://strology.vercel.app/';
 
 // Подключение к MongoDB
