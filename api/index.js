@@ -1,16 +1,21 @@
-const TelegramBot = require('node-telegram-bot-api');  
-const mongoose = require('mongoose');  
-const dotenv = require('dotenv');  
-const express = require('express');  
-const bodyParser = require('body-parser');  
-const cors = require('cors');  
-const User = require('./models/User');  
-const userRoutes = require('./routes/userRoutes');  
+const TelegramBot = require('node-telegram-bot-api');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const connectDB = require('./db');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const User = require('./models/User');
+const userRoutes = require('./routes/userRoutes');
 
-// Загрузка конфигурации  
-dotenv.config();  
-const token = process.env.TELEGRAM_BOT_TOKEN;  
-const webAppUrl = 'https://strology.vercel.app/';  
+
+
+
+// Загрузка конфигурации
+dotenv.config();
+const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';
+const webAppUrl = 'https://strology.vercel.app/';
+
 
 // Подключение к MongoDB  
 const mongoURI = process.env.MONGO_URI;  
