@@ -113,7 +113,9 @@ try {
     await bot.sendMessage(chatId, 'Произошла ошибка при обработке вашего запроса.');
 }
 }
-
+app.get('/status', (req, res) => {
+    res.json({ status: 'Server is running' });
+});
 // Запуск сервера
 app.listen(PORT, () => {
 console.log(`Сервер запущен на порту ${PORT}`);
