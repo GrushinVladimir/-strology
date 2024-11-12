@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { load } from 'cheerio';
-import { useLocation, Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useLocation, Link, useParams } from 'react-router-dom';
+
 
 const translateText = async (text) => {
   const apiKey = 'AIzaSyBjA1Vb3DcbyZGvy9I2drZlEUbOd6ApbVY';
