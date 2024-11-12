@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const mongoose = require('mongoose');  
 
 // Загрузка конфигурации  
-const token = process.env.TELEGRAM_BOT_TOKEN;  
+const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs';  
 const webAppUrl = 'https://strology.vercel.app/';  
 
 // Подключение к MongoDB  
@@ -38,10 +38,15 @@ const bot = new TelegramBot(token);
 // Устанавливаем вебхук  
 const PORT = process.env.PORT || 5000;  
 const serverUrl = process.env.VERCEL_URL || `http://localhost:${PORT}`;  
-bot.setWebHook(`${serverUrl}/bot${token}`);  
+bot.setWebHook(`${serverUrl}/bot${token}`).then(() => {
+    console.log('Webhook установлен.');
+}).catch(err => {
+    console.error('Ошибка при установке вебхука:', err);
+});
 
 // Обработка сообщений от Telegram  
 app.post(`/bot${token}`, (req, res) => {  
+    console.log('Получено сообщение:', req.body);
     const msg = req.body;  
     const chatId = msg.message.chat.id;  
 
