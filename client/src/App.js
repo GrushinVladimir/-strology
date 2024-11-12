@@ -33,15 +33,20 @@ function App() {
         if (data.exists) {
           // Если пользователь существует, перенаправляем на main
           setIsUserExist(true);
-          navigate('/main');
+          if (window.location.pathname === '/') {  // Проверяем, не находимся ли мы уже на /main
+            navigate('/main');
+          }
         }
       } catch (error) {
         console.error('Ошибка при проверке пользователя:', error);
       }
     }
 
-    checkUser();  // Запускаем проверку при загрузке компонента
-  }, [tg, navigate]);
+    // Проверка пользователя только при первом рендере
+    if (!isUserExist) {
+      checkUser();  // Запускаем проверку при загрузке компонента
+    }
+  }, [tg, navigate, isUserExist]);
 
   const handleStart = () => {
     setUserName(userName);
