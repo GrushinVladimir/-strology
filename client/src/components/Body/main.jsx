@@ -140,14 +140,17 @@ const MainPage = () => {
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [showTabContent, setShowTabContent] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // Флаг для ожидания загрузки
   const telegramId = useTelegramId();
-  console.log('Telegram ID:', telegramId);
-
 
   useEffect(() => {
+    if (!telegramId) {
+      console.log('Ожидание загрузки Telegram ID');
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
-        // Запрос данных пользователя по Telegram ID
         const response = await axios.get(`/api/users/${telegramId}`);
         if (response.data && response.data.user) {
           const user = response.data.user;
@@ -163,21 +166,18 @@ const MainPage = () => {
         }
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error);
+      } finally {
+        setIsLoading(false); // Отключаем индикатор загрузки после выполнения запроса
       }
     };
 
-    // Проверка наличия Telegram ID перед запросом
-    if (telegramId) {
-      fetchUserData();
-    } else {
-      console.error('Telegram ID отсутствует');
-    }
+    // Запрашиваем данные пользователя только если Telegram ID определен
+    fetchUserData();
   }, [telegramId]);
 
   useEffect(() => {
-    console.log('Zodiac sign updated:', zodiacSign);
     if (!zodiacSign) return;
-  
+
     const fetchAndTranslateHoroscope = async () => {
       const periodKey = {
         'Сегодня': 'today',
@@ -185,9 +185,8 @@ const MainPage = () => {
         'Неделя': 'week',
         'Месяц': 'month',
       }[activeTab] || '';
-  
+
       let formattedDate = '';
-  
       switch (activeTab) {
         case 'Сегодня':
           formattedDate = formatDate(new Date());
@@ -204,21 +203,23 @@ const MainPage = () => {
         default:
           return;
       }
-  
+
       setCurrentDate(formattedDate);
-  
-      const horoscopeText = await getHoroscope(zodiacSign, periodKey);
-      console.log('Horoscope text:', horoscopeText); // Лог текста гороскопа
-  
-      if (horoscopeText) {
-        const translatedText = await translateText(horoscopeText);
-        console.log('Translated horoscope text:', translatedText); // Лог переведенного текста
-        setHoroscope(translatedText);
-      } else {
+
+      try {
+        const horoscopeText = await getHoroscope(zodiacSign, periodKey);
+        if (horoscopeText) {
+          const translatedText = await translateText(horoscopeText);
+          setHoroscope(translatedText);
+        } else {
+          setHoroscope('Не удалось получить гороскоп');
+        }
+      } catch (error) {
+        console.error('Ошибка при получении гороскопа:', error);
         setHoroscope('Не удалось получить гороскоп');
       }
     };
-  
+
     fetchAndTranslateHoroscope();
   }, [activeTab, zodiacSign]);
 
