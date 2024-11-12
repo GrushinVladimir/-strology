@@ -128,11 +128,6 @@ const getMonthRange = () => {
   return `${OneDate(firstDay)} - ${formatDate(lastDay)}`;
 };
 
-const useTelegramId = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  return queryParams.get('telegramId');
-};
 
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
@@ -142,16 +137,18 @@ const MainPage = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [isLoading, setIsLoading] = useState(true); // Флаг для ожидания загрузки
   const telegramId = useTelegramId();
+  console.log('Telegram ID:', telegramId);
 
   useEffect(() => {
     if (!telegramId) {
       console.log('Ожидание загрузки Telegram ID');
       return;
     }
-
+  
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`/api/users/${telegramId}`);
+        console.log('Данные пользователя:', response.data); // Отладка: выводим данные
         if (response.data && response.data.user) {
           const user = response.data.user;
           if (user.zodiacSign) {
@@ -170,8 +167,7 @@ const MainPage = () => {
         setIsLoading(false); // Отключаем индикатор загрузки после выполнения запроса
       }
     };
-
-    // Запрашиваем данные пользователя только если Telegram ID определен
+  
     fetchUserData();
   }, [telegramId]);
 
