@@ -138,8 +138,11 @@ const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
   const [horoscope, setHoroscope] = useState('');
   const [activeTab, setActiveTab] = useState('Сегодня');
+  const [showTabContent, setShowTabContent] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
-  const telegramId = useLocation().search.split('=')[1]; // Получение telegramId из URL
+  const telegramId = useTelegramId();
+  console.log('Telegram ID:', telegramId);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
