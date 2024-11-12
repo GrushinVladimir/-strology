@@ -1,14 +1,12 @@
 import { useTelegram } from '../hooks/useTelegram';  
 import './Body.css';  
 import React, { useEffect, useState } from 'react';  
-
 import DatePicker from 'react-datepicker';
 import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  
-import { useTelegram } from '../hooks/useTelegram';  
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
 
