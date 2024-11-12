@@ -17,15 +17,31 @@ const token = process.env.TELEGRAM_BOT_TOKEN || '7431411001:AAHx9_TODfc7VOlRfcXe
 const webAppUrl = 'https://strology.vercel.app/';
 
 
-// Подключение к MongoDB
-const mongoURI = process.env.MONGO_URI;
+// Подключение к MongoDB  
+const mongoURI = process.env.MONGO_URI;  
 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log("MongoDB подключен"))
-  .catch(err => console.error("Ошибка подключения к MongoDB:", err));
+mongoose.connect(mongoURI, {  
+    useNewUrlParser: true,  
+    useUnifiedTopology: true,  
+}).then(() => {  
+    console.log("MongoDB подключен");  
+    // Проверка доступа к базе данных  
+    checkDatabaseAccess();  
+})  
+.catch(err => console.error("Ошибка подключения к MongoDB:", err));  
 
+// Функция для проверки доступа к базе данных  
+async function checkDatabaseAccess() {  
+    try {  
+        const dbList = await mongoose.connection.db.admin().listDatabases();  
+        console.log('Список баз данных:', dbList.databases);  
+    } catch (error) {  
+        console.error('Ошибка при проверке доступа к базе данных:', error);  
+    } finally {  
+        // Закрываем соединение после проверки  
+        await mongoose.connection.close();  
+    }  
+}  
 // Настройка Express
 const app = express();
 app.use(cors());
