@@ -128,6 +128,13 @@ const getMonthRange = () => {
   return `${OneDate(firstDay)} - ${formatDate(lastDay)}`;
 };
 
+const useTelegramId = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const telegramId = queryParams.get('telegramId');
+  console.log('Извлеченный telegramId:', telegramId); // Отладка: проверка, что telegramId извлекается корректно
+  return telegramId;
+};
 
 const MainPage = () => {
   const [zodiacSign, setZodiacSign] = useState(null);
