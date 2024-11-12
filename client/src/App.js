@@ -57,30 +57,34 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Body
-                step={step}
-                userName={userName}
-                handleStart={handleStart}
-                handleNext={handleNext}
-                formData={formData}
-              />
-            }
-          />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/zadaniya" element={<Zadaniya />} />
-          <Route path="/chat" element={<ChatPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Body
+              step={step}
+              userName={userName}
+              handleStart={handleStart}
+              handleNext={handleNext}
+              formData={formData}
+            />
+          }
+        />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/zadaniya" element={<Zadaniya />} />
+        <Route path="/chat" element={<ChatPage />} />
+      </Routes>
+    </div>
   );
 }
 
-export default App;
+export default function AppWithRouter() {
+  return (
+    <Router>
+      <App />
+    </Router>
+  );
+}
