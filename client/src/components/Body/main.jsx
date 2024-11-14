@@ -60,7 +60,7 @@ const getHoroscope = async (zodiacSign, period) => {
       url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
       break;
     case 'tomorrow':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
       break;
     case 'week':
       url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
