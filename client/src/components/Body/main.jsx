@@ -76,6 +76,9 @@ const getHoroscope = async (zodiacSign, period) => {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
+    // Для отладки: выводим весь HTML
+    console.log(data); // Посмотрите, что именно приходит от сервера
+
     // Находим текст гороскопа
     let horoscopeText = $('div.horoscope__content p').text().trim(); // Убедитесь, что это правильный селектор
 
@@ -85,6 +88,7 @@ const getHoroscope = async (zodiacSign, period) => {
     }
 
     // Возвращаем чистый текст гороскопа
+    console.log('Извлечённый гороскоп:', horoscopeText); // Проверяем, что гороскоп извлекается правильно
     return horoscopeText;
   } catch (error) {
     console.error('Ошибка при получении гороскопа:', error);
