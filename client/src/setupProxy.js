@@ -1,5 +1,3 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
 module.exports = function(app) {
   app.use(
     '/api',
@@ -7,7 +5,10 @@ module.exports = function(app) {
       target: 'https://www.horoscope.com',
       changeOrigin: true,
       pathRewrite: {
-        '^/api': '', // Удаляет префикс /api из URL
+        '^/api': '',
+      },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
       },
     })
   );
