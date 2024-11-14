@@ -1,4 +1,8 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+// Загрузите переменные окружения из .env файла
+dotenv.config();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -21,7 +25,7 @@ export default async function handler(req, res) {
       },
       {
         headers: {
-          Authorization: `Bearer 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`, // Здесь укажите ваш API-ключ
+          Authorization: process.env.OPENAI_API_KEY, // Получите API-ключ из переменной окружения
         },
       }
     );
