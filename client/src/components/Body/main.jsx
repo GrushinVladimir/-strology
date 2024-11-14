@@ -74,37 +74,17 @@ const getHoroscope = async (zodiacSign, period) => {
 
   try {
     const { data } = await axios.get(url);
-    const $ = load(data);
+    const $ = cheerio.load(data);
 
-    // Добавим логирование, чтобы проверить, что мы получаем
-    console.log('HTML data:', data);
-
-    // Пробуем найти текст гороскопа с помощью cheerio
-    let horoscopeText = $('.main-horoscope p').text();
-    console.log('Extracted horoscope text:', horoscopeText); // Логируем извлеченный текст
+    // Находим текст гороскопа
+    let horoscopeText = $('div.horoscope__content p').text().trim(); // Убедитесь, что это правильный селектор
 
     if (!horoscopeText) {
       console.error('Гороскоп не найден или не был извлечен!');
       return 'Не удалось получить гороскоп';
     }
 
-    // Обработка текста в зависимости от периода
-    switch (period) {
-      case 'today':
-      case 'tomorrow':
-        horoscopeText = horoscopeText.replace(/^\w+ \d{1,2}, \d{4} - \s*/, '');
-        break;
-      case 'week':
-        horoscopeText = horoscopeText.replace(/^\w+ \d{1,2}(, \d{4})? - \w+ \d{1,2}(, \d{4})? -?\s*/, '');
-        break;
-      case 'month':
-        horoscopeText = horoscopeText.replace(/^\w+ \d{4} - On \w+ \d{1,2}/, '');
-        horoscopeText = horoscopeText.replace(/^,\s*/, '');
-        horoscopeText = horoscopeText.charAt(0).toUpperCase() + horoscopeText.slice(1);
-        break;
-    }
-
-    horoscopeText = horoscopeText.replace('Learn More', '').trim();
+    // Возвращаем чистый текст гороскопа
     return horoscopeText;
   } catch (error) {
     console.error('Ошибка при получении гороскопа:', error);
