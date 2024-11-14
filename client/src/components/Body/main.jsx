@@ -57,16 +57,16 @@ const getHoroscope = async (zodiacSign, period) => {
 
   switch (period) {
     case 'today':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
       break;
     case 'tomorrow':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
       break;
     case 'week':
-      url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
       break;
     case 'month':
-      url = `/api/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
       break;
     default:
       return '';
@@ -93,7 +93,6 @@ const getHoroscope = async (zodiacSign, period) => {
     }
 
     horoscopeText = horoscopeText.replace('Learn More', '');
-
     return horoscopeText.trim();
   } catch (error) {
     console.error('Error fetching horoscope:', error);
