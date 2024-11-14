@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTelegram } from '../hooks/useTelegram';
-import axios from 'axios'; // Для отправки запросов на сервер
-import { Link } from 'react-router-dom'; // Импорт Link для навигации
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function ChatPage() {
   const { tg } = useTelegram();
@@ -11,7 +11,7 @@ function ChatPage() {
     { sender: 'bot', text: 'Ждёт ли меня болезнь в этом году?' },
     { sender: 'bot', text: 'Чего стоит избегать завтра?' },
     { sender: 'bot', text: 'Ждёт ли меня повышение на работе?' },
-      ]);
+  ]);
   const [inputMessage, setInputMessage] = useState('');
 
   const handleSendMessage = async (message) => {
@@ -19,19 +19,18 @@ function ChatPage() {
 
     if (finalMessage.trim() === '') return;
 
-    // Добавление пользовательского сообщения
     setMessages((prevMessages) => [
       ...prevMessages,
       { sender: 'user', text: finalMessage },
     ]);
 
     try {
-      // Отправка сообщения на бэкенд для запроса к ChatGPT
-      const response = await axios.post('http://localhost:5000/api/chat', {
+      // URL обновлен для обращения к API на Vercel
+      const response = await axios.post('/api/chat', {
         message: finalMessage,
+        topic: 'астрология',
       });
 
-      // Добавление ответа бота в чат
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: 'bot', text: response.data.reply || 'Ошибка: нет ответа.' }
@@ -44,7 +43,7 @@ function ChatPage() {
       ]);
     }
 
-    setInputMessage(''); // Очистка поля ввода
+    setInputMessage('');
   };
 
   const handleQuestionClick = (question) => {
@@ -52,7 +51,7 @@ function ChatPage() {
   };
 
   useEffect(() => {
-    tg.ready(); // Инициализация Telegram WebApp
+    tg.ready();
   }, [tg]);
 
   return (
