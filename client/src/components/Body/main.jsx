@@ -75,8 +75,20 @@ const getHoroscope = async (zodiacSign, period) => {
   try {
     const { data } = await axios.get(url);
     const $ = load(data);
-    let horoscopeText = $('.main-horoscope p').text();
 
+    // Добавим логирование, чтобы проверить, что мы получаем
+    console.log('HTML data:', data);
+
+    // Пробуем найти текст гороскопа с помощью cheerio
+    let horoscopeText = $('.main-horoscope p').text();
+    console.log('Extracted horoscope text:', horoscopeText); // Логируем извлеченный текст
+
+    if (!horoscopeText) {
+      console.error('Гороскоп не найден или не был извлечен!');
+      return 'Не удалось получить гороскоп';
+    }
+
+    // Обработка текста в зависимости от периода
     switch (period) {
       case 'today':
       case 'tomorrow':
@@ -92,10 +104,10 @@ const getHoroscope = async (zodiacSign, period) => {
         break;
     }
 
-    horoscopeText = horoscopeText.replace('Learn More', '');
-    return horoscopeText.trim();
+    horoscopeText = horoscopeText.replace('Learn More', '').trim();
+    return horoscopeText;
   } catch (error) {
-    console.error('Error fetching horoscope:', error);
+    console.error('Ошибка при получении гороскопа:', error);
     return 'Не удалось получить гороскоп';
   }
 };
