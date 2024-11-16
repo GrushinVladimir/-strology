@@ -208,8 +208,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
 
   return (
   <div className="main-page">
-          {zodiacSign && <h1>Ваш знак зодиака: {zodiacSign}</h1>}
-          {horoscope && <p>Гороскоп на сегодня: {horoscope}</p>}
+
     <h2 style={{ marginTop: '10vh' }}>Ваш знак</h2>
     {zodiacSign ? (
     <>
