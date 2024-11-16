@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { load } from 'cheerio';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link, useParams } from 'react-router-dom';
 
 
 const translateText = async (text) => {
