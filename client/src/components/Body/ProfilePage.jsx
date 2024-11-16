@@ -9,6 +9,7 @@ const useTelegramId = () => {
   return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
 };
 const ProfilePage = ({ telegramId }) => {  
+  const [zodiacSign, setZodiacSign] = useState(null);
   const navigate = useNavigate();
   const { user } = useTelegram();  
 
@@ -16,14 +17,33 @@ const ProfilePage = ({ telegramId }) => {
   const [phoneNumber, setPhoneNumber] = useState('');  
 
   useEffect(() => {  
+    
       const fetchPhoneNumber = async () => {  
           const response = await fetch('http://localhost:3000/api/contact'); // Замените на ваш адрес API  
           const data = await response.json();  
           setPhoneNumber(data.phoneNumber || 'Не предоставлен');  
       };  
 
-      fetchPhoneNumber();  
-  }, []);  
+      fetchPhoneNumber(); 
+      if (!telegramId) return; // Если нет telegramId, выходим из useEffect
+
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`/api/users/${telegramId}`); // Запрос к серверу для получения данных
+          if (response.data && response.data.user) {
+            setUserData(response.data.user);
+            setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
+          } else {
+            console.error('Данные пользователя не найдены');
+          }
+        } catch (error) {
+          console.error('Ошибка при получении данных пользователя:', error);
+        }
+      };
+  
+      fetchUserData(); // Загружаем данные пользователя
+
+    }, [telegramId]); // Используем telegramId в зависимости  
 
   return (  
     <div className='Prof'>  
