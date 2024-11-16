@@ -273,10 +273,10 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
             <img src="img/menu/chat.png" />
             <span>Чат</span>
           </Link>
-          <Link to="/profile">
-            <img src="img/menu/profile.png" style={{ width: '13px' }} />
-            <span>Профиль</span>
-          </Link>
+          <Link to={`/profile?telegramId=${telegramId}`}>
+        <img src="img/menu/profile.png" style={{ width: '13px' }} />
+        <span>Профиль</span>
+      </Link>
         </div>
       </div>
     </div>
