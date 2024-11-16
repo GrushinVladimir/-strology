@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
-const ProfilePage = ({ username }) => {  
+import { useLocation, Link, useParams } from 'react-router-dom';
+const useTelegramId = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
+};
+const ProfilePage = ({ telegramId }) => {  
   const navigate = useNavigate();
   const { user } = useTelegram();  
 
