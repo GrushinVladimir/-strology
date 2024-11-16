@@ -2,48 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-const useTelegramId = () => {
+const useTelegramID = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
 };
-const ProfilePage = ({ telegramId }) => {  
-  const [zodiacSign, setZodiacSign] = useState(null);
+const ProfilePage = ({ user }) => {  
   const navigate = useNavigate();
-  const { user } = useTelegram();  
+  const { user } = useTelegramID();  
 
 
   const [phoneNumber, setPhoneNumber] = useState('');  
 
   useEffect(() => {  
-    
       const fetchPhoneNumber = async () => {  
           const response = await fetch('http://localhost:3000/api/contact'); // Замените на ваш адрес API  
           const data = await response.json();  
           setPhoneNumber(data.phoneNumber || 'Не предоставлен');  
       };  
 
-      fetchPhoneNumber(); 
-      if (!telegramId) return; // Если нет telegramId, выходим из useEffect
-
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(`/api/users/${telegramId}`); // Запрос к серверу для получения данных
-          if (response.data && response.data.user) {
-            setUserData(response.data.user);
-            setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
-          } else {
-            console.error('Данные пользователя не найдены');
-          }
-        } catch (error) {
-          console.error('Ошибка при получении данных пользователя:', error);
-        }
-      };
-  
-      fetchUserData(); // Загружаем данные пользователя
-
-    }, [telegramId]); // Используем telegramId в зависимости  
+      fetchPhoneNumber();  
+  }, []);  
 
   return (  
     <div className='Prof'>  
@@ -66,7 +45,7 @@ const ProfilePage = ({ telegramId }) => {
                         />  
                       </div> 
                       <div>
-                        <p>Имя</p>           
+                        <p>Имя {userData.name}</p>           
                         <p>00.00.0000</p>  
                       </div> 
                 </div>
@@ -75,7 +54,7 @@ const ProfilePage = ({ telegramId }) => {
               </div>
           </div>  
           <div className="profile-desk">
-            <h4 style={{fontWeight: '200'}}>О вашем знаке: {zodiacSign}</h4>
+            <h4 style={{fontWeight: '200'}}>О вашем знаке: РЫБЫ</h4>
             <p>Хорошо развитая от природы интуиция позволяет Рыбам приспособиться к любому общественному порядку, быть своим в любой среде, находить наилучшие выходы из затруднительных положений и устанавливать деловые связи с неизменной выгодой для себя.</p>
           </div>
 
