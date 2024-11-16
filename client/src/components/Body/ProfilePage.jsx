@@ -3,10 +3,10 @@ import { useTelegram } from '../hooks/useTelegram';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-  const ProfilePage = ({ telegramId }) => {  
+const ProfilePage = ({ telegramId }) => {  
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);  // Состояние для хранения данных пользователя
-
+  
   useEffect(() => {
     async function fetchUserProfile() {
       try {
@@ -29,36 +29,39 @@ import { useNavigate } from 'react-router-dom';
 
   return (  
     <div className='Prof'>  
-        <div className='body-profile'>
-<button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}}>
-<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
-            <circle cx="11.5" cy="11.5" r="11" stroke="white"/>
-            <path d="M7.64645 11.6464C7.45118 11.8417 7.45118 12.1583 7.64645 12.3536L10.8284 15.5355C11.0237 15.7308 11.3403 15.7308 11.5355 15.5355C11.7308 15.3403 11.7308 15.0237 11.5355 14.8284L8.70711 12L11.5355 9.17157C11.7308 8.97631 11.7308 8.65973 11.5355 8.46447C11.3403 8.2692 11.0237 8.2692 10.8284 8.46447L7.64645 11.6464ZM16 11.5L8 11.5V12.5L16 12.5V11.5Z" fill="white"/>
-          </svg>           </button>
+    <div className='body-profile'>
+      <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}}>
+        {/* Ваш SVG-код кнопки назад */}
+      </button>
 
-        <div className="header-pofile">
-                  
-            <div className="line-profile">
-                <div className='top-profile-left'> 
-                      <div style={{width:'60px', height:'60px;'}}>
-                      <img   
-                          src={'https://via.placeholder.com/100'}  
-                          alt="Профиль" 
-                        />  
-                      </div> 
-                      <div>
-                        <p>Имя {userData.name}</p>           
-                        <p>00.00.0000</p>  
-                      </div> 
-                </div>
-              <div className='top-profile-right'>
-                0,00
+      <div className="header-pofile">
+        <div className="line-profile">
+          <div className='top-profile-left'> 
+            <div style={{width:'60px', height:'60px'}}>
+              <img src={'https://via.placeholder.com/100'} alt="Профиль" />
+            </div> 
+            {userData ? (
+              <div>
+                <p>{userData.name}</p>           {/* Выводим имя пользователя */}
+                <p>{userData.birthDate}</p>     {/* Выводим дату рождения */}
               </div>
-          </div>  
-          <div className="profile-desk">
-            <h4 style={{fontWeight: '200'}}>О вашем знаке: РЫБЫ</h4>
-            <p>Хорошо развитая от природы интуиция позволяет Рыбам приспособиться к любому общественному порядку, быть своим в любой среде, находить наилучшие выходы из затруднительных положений и устанавливать деловые связи с неизменной выгодой для себя.</p>
+            ) : (
+              <div>
+                <p>Загрузка...</p>   {/* Сообщение пока загружаются данные */}
+              </div>
+            )}
           </div>
+          <div className='top-profile-right'>
+            0,00
+          </div>
+        </div>  
+
+        {userData && (
+          <div className="profile-desk">
+            <h4 style={{fontWeight: '200'}}>О вашем знаке: {userData.zodiacSign}</h4>  {/* Вывод знака зодиака */}
+            <p>{userData.zodiacDescription}</p>  {/* Описание знака зодиака */}
+          </div>
+        )}
 
           <div className="center-profile">
             <div className="profile-block">
