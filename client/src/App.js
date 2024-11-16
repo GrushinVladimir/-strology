@@ -74,7 +74,7 @@ function App() {
           }
         />
         <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
         <Route path="/test" element={<Test />} />
         <Route path="/zadaniya" element={<Zadaniya />} />
         <Route path="/chat" element={<ChatPage />} />
