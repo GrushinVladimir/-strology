@@ -40,9 +40,7 @@ const ProfilePage = ({ telegramId }) => {
               </div> 
               {userData ? (
                 <div>
-                  <p>{userData.telegramId}</p>
-                  <p>{userData.birthDate}</p> {/* Проверьте, если у вас есть поле birthDate */}
-                  {zodiacSign || 'Не найден'}
+                  <p>{userData.name}</p>
                 </div>
               ) : (
                 <p>Пользователь не найден</p>
