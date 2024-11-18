@@ -4,38 +4,27 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = ({ telegramId }) => {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [zodiacSign, setZodiacSign] = useState(null);
 
   useEffect(() => {
-    async function fetchUserProfile() {
-      if (!telegramId) {
-        console.error('telegramId is undefined');
-        setError('ID пользователя не задан.');
-        setLoading(false);
-        return;
-      }
+    if (!telegramId) return;
 
+    const fetchUserData = async () => {
       try {
-        const response = await fetch(`/api/users/${telegramId}`);
-        
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.status}`);
+        const response = await axios.get(`/api/users/${telegramId}`);
+        if (response.data && response.data.user) {
+          setUserData(response.data.user);
+          setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
+        } else {
+          console.error('Данные пользователя не найдены');
         }
-
-        const data = await response.json();
-        setUserData(data);
       } catch (error) {
-        console.error('Ошибка при получении профиля:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        console.error('Ошибка при получении данных пользователя:', error);
       }
-    }
+    };
 
-    fetchUserProfile();
+    fetchUserData();
   }, [telegramId]);
 
   return (
@@ -57,8 +46,9 @@ const ProfilePage = ({ telegramId }) => {
                 <p>{error}</p>
               ) : userData ? (
                 <div>
-                  <p>{userData.user.first_name} {userData.user.last_name}</p>
+                  <p>{userData.telegramId}</p>
                   <p>{userData.birthDate}</p> {/* Проверьте, если у вас есть поле birthDate */}
+                  {zodiacSign || 'Не найден'}
                 </div>
               ) : (
                 <p>Пользователь не найден</p>
@@ -71,7 +61,7 @@ const ProfilePage = ({ telegramId }) => {
 
         {userData && (
           <div className="profile-desk">
-            <h4 style={{fontWeight: '200'}}>О вашем знаке: {userData.zodiacSign}</h4>  {/* Вывод знака зодиака */}
+            <h4 style={{fontWeight: '200'}}>О вашем знаке: {zodiacSign || 'Не найден'}</h4>  {/* Вывод знака зодиака */}
             <p>{userData.zodiacDescription}</p>  {/* Описание знака зодиака */}
           </div>
         )}
