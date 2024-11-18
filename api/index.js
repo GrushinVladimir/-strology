@@ -97,40 +97,17 @@ async function handleOtherMessages(chatId, msg) {
     }
 }
 
+// Эндпоинт для получения данных пользователя по Telegram ID
 app.get('/api/users/:telegramId', async (req, res) => {
-    const { telegramId } = req.params;
-    console.log('Запрос на получение пользователя с telegramId:', telegramId); // Лог для отладки
-
     try {
-        // Проверка пользователя
+        const { telegramId } = req.params;
         const user = await User.findOne({ telegramId });
         if (!user) {
-            console.log('Пользователь не найден123'); // Лог для подтверждения
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
-
-        console.log('Пользователь найден:', user); // Лог для подтверждения
-
-        // Используем getUserProfilePhotos для получения фотографий профиля
-        const photos = await bot.getUserProfilePhotos(telegramId);
-        let photoUrls = [];
-
-        if (photos && photos.total_count > 0) {
-            photoUrls = photos.photos.map(photoArray => {
-                // Возвращаем самый большой доступный размер (обычно это последний элемент)
-                const largestPhoto = photoArray[photoArray.length - 1]; 
-                return `https://api.telegram.org/file/bot${token}/${largestPhoto.file_path}`;
-            });
-        }
-
-        res.json({
-            user: {
-                ...user.toObject(), // Включаем остальные данные пользователя
-                avatarUrl: photoUrls.length > 0 ? photoUrls[0] : null // Добавляем первую фотографию как avatarUrl
-            }
-        });
+        res.json(user);
     } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error);
+        console.error('Ошибка при получении пользователя:', error);
         res.status(500).json({ message: 'Ошибка сервера' });
     }
 });
