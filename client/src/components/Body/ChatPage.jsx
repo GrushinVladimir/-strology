@@ -3,8 +3,8 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-// Ваш API-ключ
-const API_KEY = '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';
+// API-ключ будет храниться в переменной окружения
+const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
 function ChatPage() {
   const { tg } = useTelegram();
