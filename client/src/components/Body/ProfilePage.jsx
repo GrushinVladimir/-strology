@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const ProfilePage = ({ telegramId }) => {
   const [userData, setUserData] = useState(null);
   const [zodiacSign, setZodiacSign] = useState(null);
