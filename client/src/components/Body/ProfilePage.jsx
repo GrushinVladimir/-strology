@@ -3,21 +3,28 @@ import { useTelegram } from '../hooks/useTelegram';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const ProfilePage = ({ telegramId }) => {  
+const ProfilePage = ({ telegramId }) => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);  // Состояние для хранения данных пользователя
-  
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);   // Состояние загрузки
+  const [error, setError] = useState(null);        // Состояние ошибки
+
   useEffect(() => {
     async function fetchUserProfile() {
       try {
-        const response = await fetch(`/api/users/${telegramId}`);  // Запрос к API для получения данных по telegramId
-        const data = await response.json();
-
-        if (data) {
-          setUserData(data);  // Устанавливаем данные пользователя в состояние
+        const response = await fetch(`/api/users/${telegramId}`);
+        
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.status}`);
         }
+
+        const data = await response.json();
+        setUserData(data);
       } catch (error) {
         console.error('Ошибка при получении профиля:', error);
+        setError(error.message); // Устанавливаем сообщение об ошибке
+      } finally {
+        setLoading(false); // Завершаем загрузку
       }
     }
 
@@ -26,35 +33,36 @@ const ProfilePage = ({ telegramId }) => {
     }
   }, [telegramId]);
 
+  return (
+    <div className='Prof'>
+      <div className='body-profile'>
+        <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}}>
+          {/* Ваш SVG-код кнопки назад */}
+        </button>
 
-  return (  
-    <div className='Prof'>  
-    <div className='body-profile'>
-      <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}}>
-        {/* Ваш SVG-код кнопки назад */}
-      </button>
-
-      <div className="header-pofile">
-        <div className="line-profile">
-          <div className='top-profile-left'> 
-            <div style={{width:'60px', height:'60px'}}>
-              <img src={'https://via.placeholder.com/100'} alt="Профиль" />
-            </div> 
-            {userData ? (
-              <div>
-                <p>{userData.name}</p>           {/* Выводим имя пользователя */}
-                <p>{userData.birthDate}</p>     {/* Выводим дату рождения */}
-              </div>
-            ) : (
-              <div>
-                <p>Загрузка...</p>   {/* Сообщение пока загружаются данные */}
-              </div>
-            )}
+        <div className="header-pofile">
+          <div className="line-profile">
+            <div className='top-profile-left'> 
+              <div style={{width:'60px', height:'60px'}}>
+                <img src={'https://via.placeholder.com/100'} alt="Профиль" />
+              </div> 
+              {loading ? (
+                <p>Загрузка...</p> // Индикатор загрузки
+              ) : error ? (
+                <p>{error}</p> // Сообщение об ошибке
+              ) : userData ? (
+                <div>
+                  <p>{userData.name}</p>
+                  <p>{userData.birthDate}</p>
+                </div>
+              ) : (
+                <p>Пользователь не найден</p> // Если данные отсутствуют
+              )}
+            </div>
+            <div className='top-profile-right'>
+              0,00
+            </div>
           </div>
-          <div className='top-profile-right'>
-            0,00
-          </div>
-        </div>  
 
         {userData && (
           <div className="profile-desk">
