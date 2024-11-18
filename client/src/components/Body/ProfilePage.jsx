@@ -36,7 +36,7 @@ const ProfilePage = ({ telegramId }) => {
           <div className="line-profile">
             <div className='top-profile-left'> 
               <div style={{width:'60px', height:'60px'}}>
-                <img src={'https://via.placeholder.com/100'} alt="Профиль" />
+              <img src={userData ? userData.avatarUrl : 'https://via.placeholder.com/100'} alt="Профиль" />
               </div> 
               {userData ? (
                 <div>

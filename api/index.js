@@ -98,16 +98,32 @@ async function handleOtherMessages(chatId, msg) {
 }
 
 // Эндпоинт для получения данных пользователя по Telegram ID
-app.get('/api/users/:telegramId', async (req, res) => {
+app.get('/api/users/:telegramId/photos', async (req, res) => {
     try {
         const { telegramId } = req.params;
+
+        // Получение информации о пользователе из базы данных
         const user = await User.findOne({ telegramId });
         if (!user) {
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
-        res.json(user);
+
+        // Используем getUserProfilePhotos для получения фотографий профиля
+        const photos = await bot.getUserProfilePhotos(telegramId);
+        
+        if (photos && photos.total_count > 0) {
+            // Вернем массив ссылок на фотографии
+            const photoUrls = photos.photos.map(photoArray => {
+                // Возвращаем самый большой доступный размер (обычно это последний элемент)
+                const largestPhoto = photoArray[photoArray.length - 1]; 
+                return `https://api.telegram.org/file/bot${token}/${largestPhoto.file_path}`;
+            });
+            res.json(photoUrls);
+        } else {
+            res.status(404).json({ message: 'У данного пользователя нет фотографий профиля.' });
+        }
     } catch (error) {
-        console.error('Ошибка при получении пользователя:', error);
+        console.error('Ошибка при получении фотографий пользователя:', error);
         res.status(500).json({ message: 'Ошибка сервера' });
     }
 });
