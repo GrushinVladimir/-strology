@@ -5,15 +5,21 @@ const router = express.Router();
 // Проверка, зарегистрирован ли пользователь по telegramId
 router.get('/:telegramId', async (req, res) => {
   const { telegramId } = req.params;
-  console.log('Проверка пользователя с telegramId:', telegramId); // Лог для отладки
+
+  if (!telegramId) {
+    console.log('telegramId отсутствует'); // Лог для отладки
+    return res.status(400).json({ message: 'Отсутствует telegramId' });
+  }
+
+  console.log('Проверка пользователя с telegramId:', telegramId);
 
   try {
     const user = await User.findOne({ telegramId });
     if (user) {
-      console.log('Пользователь найден:', user); // Лог для подтверждения
+      console.log('Пользователь найден:', user);
       return res.status(200).json({ exists: true, user });
     }
-    console.log('Пользователь не найден'); // Лог для подтверждения отсутствия пользователя
+    console.log('Пользователь не найден');
     res.status(200).json({ exists: false });
   } catch (error) {
     console.error('Ошибка при проверке пользователя:', error);
