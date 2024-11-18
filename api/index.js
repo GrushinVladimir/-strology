@@ -98,14 +98,18 @@ async function handleOtherMessages(chatId, msg) {
 }
 
 app.get('/api/users/:telegramId', async (req, res) => {
-    try {
-        const { telegramId } = req.params;
+    const { telegramId } = req.params;
+    console.log('Запрос на получение пользователя с telegramId:', telegramId); // Лог для отладки
 
-        // Получение информации о пользователе из базы данных
+    try {
+        // Проверка пользователя
         const user = await User.findOne({ telegramId });
         if (!user) {
+            console.log('Пользователь не найден'); // Лог для подтверждения
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
+
+        console.log('Пользователь найден:', user); // Лог для подтверждения
 
         // Используем getUserProfilePhotos для получения фотографий профиля
         const photos = await bot.getUserProfilePhotos(telegramId);
