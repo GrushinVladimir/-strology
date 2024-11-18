@@ -6,11 +6,18 @@ import { useNavigate } from 'react-router-dom';
 const ProfilePage = ({ telegramId }) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);   // Состояние загрузки
-  const [error, setError] = useState(null);        // Состояние ошибки
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchUserProfile() {
+      if (!telegramId) {
+        console.error('telegramId is undefined');
+        setError('ID пользователя не задан.');
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch(`/api/users/${telegramId}`);
         
@@ -22,15 +29,13 @@ const ProfilePage = ({ telegramId }) => {
         setUserData(data);
       } catch (error) {
         console.error('Ошибка при получении профиля:', error);
-        setError(error.message); // Устанавливаем сообщение об ошибке
+        setError(error.message);
       } finally {
-        setLoading(false); // Завершаем загрузку
+        setLoading(false);
       }
     }
 
-    if (telegramId) {
-      fetchUserProfile();
-    }
+    fetchUserProfile();
   }, [telegramId]);
 
   return (
@@ -47,16 +52,16 @@ const ProfilePage = ({ telegramId }) => {
                 <img src={'https://via.placeholder.com/100'} alt="Профиль" />
               </div> 
               {loading ? (
-                <p>Загрузка...</p> // Индикатор загрузки
+                <p>Загрузка...</p>
               ) : error ? (
-                <p>{error}</p> // Сообщение об ошибке
+                <p>{error}</p>
               ) : userData ? (
                 <div>
-                  <p>{userData.name}</p>
-                  <p>{userData.birthDate}</p>
+                  <p>{userData.user.first_name} {userData.user.last_name}</p>
+                  <p>{userData.birthDate}</p> {/* Проверьте, если у вас есть поле birthDate */}
                 </div>
               ) : (
-                <p>Пользователь не найден</p> // Если данные отсутствуют
+                <p>Пользователь не найден</p>
               )}
             </div>
             <div className='top-profile-right'>
