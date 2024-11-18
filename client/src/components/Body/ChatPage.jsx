@@ -3,6 +3,9 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+// Ваш API-ключ
+const API_KEY = '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';
+
 function ChatPage() {
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
@@ -25,15 +28,26 @@ function ChatPage() {
     ]);
 
     try {
-      // URL обновлен для обращения к API на Vercel
-      const response = await axios.post('/api/chat', {
-        message: finalMessage,
-        topic: 'астрология',
-      });
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: 'Ты астрологический помощник по имени Стеша.' },
+            { role: 'user', content: finalMessage },
+          ],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        }
+      );
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: response.data.reply || 'Ошибка: нет ответа.' }
+        { sender: 'bot', text: response.data.choices[0].message.content || 'Ошибка: нет ответа.' },
       ]);
     } catch (error) {
       console.error('Ошибка при отправке сообщения:', error);
@@ -59,7 +73,7 @@ function ChatPage() {
       <div className="chat-header">
         <h2>Спроси Стешу</h2>
       </div>
-      
+
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div
@@ -79,7 +93,7 @@ function ChatPage() {
           </div>
         ))}
       </div>
-      
+
       <div className="chat-input">
         <input
           type="text"
