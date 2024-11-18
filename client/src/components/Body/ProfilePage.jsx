@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';  
-import { useTelegram } from '../hooks/useTelegram';  
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 const ProfilePage = ({ telegramId }) => {
   const [userData, setUserData] = useState(null);
@@ -40,11 +38,7 @@ const ProfilePage = ({ telegramId }) => {
               <div style={{width:'60px', height:'60px'}}>
                 <img src={'https://via.placeholder.com/100'} alt="Профиль" />
               </div> 
-              {loading ? (
-                <p>Загрузка...</p>
-              ) : error ? (
-                <p>{error}</p>
-              ) : userData ? (
+              {userData ? (
                 <div>
                   <p>{userData.telegramId}</p>
                   <p>{userData.birthDate}</p> {/* Проверьте, если у вас есть поле birthDate */}
