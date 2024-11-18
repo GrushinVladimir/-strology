@@ -105,7 +105,7 @@ app.get('/api/users/:telegramId', async (req, res) => {
         // Проверка пользователя
         const user = await User.findOne({ telegramId });
         if (!user) {
-            console.log('Пользователь не найден'); // Лог для подтверждения
+            console.log('Пользователь не найден123'); // Лог для подтверждения
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
 
