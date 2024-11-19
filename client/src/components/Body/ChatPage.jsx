@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 // API-ключ будет храниться в переменной окружения
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
+console.log('API Key из ENV:', process.env.REACT_APP_CHATGPT_API_KEY);
 console.log('API Key:', API_KEY)
 function ChatPage() {
   const { tg } = useTelegram();
@@ -24,7 +25,7 @@ function ChatPage() {
       console.error('API Key отсутствует. Проверьте настройки.');
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: 'Ошибка: API Key отсутствует.' },
+        { sender: 'bot', text: 'Ошибка: API Key отсутствует. Пожалуйста, обратитесь к администратору.' },
       ]);
       return;
     }
@@ -54,15 +55,16 @@ function ChatPage() {
         }
       );
   
+      const botMessage = response.data.choices?.[0]?.message?.content || 'Ошибка: нет ответа.';
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: response.data.choices[0].message.content || 'Ошибка: нет ответа.' },
+        { sender: 'bot', text: botMessage },
       ]);
     } catch (error) {
       console.error('Ошибка при отправке сообщения:', error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: 'Ошибка при получении ответа. Проверьте настройки API.' },
+        { sender: 'bot', text: 'Ошибка при получении ответа от API. Проверьте ключ или доступ к API.' },
       ]);
     }
   
