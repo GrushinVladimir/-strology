@@ -55,7 +55,6 @@ const ProfilePage = ({ telegramId }) => {
               <div style={{ width: '60px', height: '60px' }}>
                 <img src={getAvatarUrl(userData)} alt="Профиль" />
               </div>
-              { user?.first_name || userName || 'Неизвестный пользователь'}!
               {userData ? (
                 <div>
                   <p>{userData.name}</p>
