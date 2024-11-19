@@ -10,7 +10,16 @@ import axios from 'axios';
 
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
+const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
+console.log('API Key из ENV:', process.env.REACT_APP_CHAT_API_KEY);
 
+if (API_KEY) {
+ console.log('API Key:', API_KEY);
+ // Используйте API_KEY здесь
+} else {
+ console.error('API_KEY не найден!');
+ // Обработайте ситуацию, когда API_KEY не найден. Например, покажите сообщение об ошибке пользователю.
+}
 const Body = ({ step, userName, handleStart, handleNext, formData }) => {  
   const { user } = useTelegram();  
   const [day, setDay] = useState('');   
