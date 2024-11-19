@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // API-ключ будет храниться в переменной окружения
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
-
+console.log('API Key:', API_KEY)
 function ChatPage() {
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
