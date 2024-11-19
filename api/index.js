@@ -10,8 +10,6 @@ const userRoutes = require('./routes/userRoutes');
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
-const apiRoutes = require('./api/bot'); // Путь к вашему api/index.js
-
 
 const app = express();
 app.use(cors());
@@ -22,8 +20,6 @@ app.use('/api/users', userRoutes);
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
-app.use('/api', apiRoutes);
-
 
 // Инициализация бота
 const bot = new TelegramBot(token, { polling: false });

@@ -3,10 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-// API-ключ будет храниться в переменной окружения
-const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
-console.log('API Key из ENV:', process.env.REACT_APP_CHATGPT_API_KEY);
-console.log('API Key:', API_KEY)
+
 
 function ChatPage() {
   const [apiKey, setApiKey] = useState('');
@@ -76,10 +73,6 @@ function ChatPage() {
   const handleQuestionClick = (question) => {
     handleSendMessage(question);
   };
-
-  useEffect(() => {
-    tg.ready();
-  }, [tg]);
   useEffect(() => {
     const fetchApiKey = async () => {
         try {
@@ -94,6 +87,10 @@ function ChatPage() {
 }, []);
 
 console.log('API Key:', apiKey);
+  useEffect(() => {
+    tg.ready();
+  }, [tg]);
+
   return (
     <div className="chat-container">
       <div className="chat-header">
