@@ -70,7 +70,8 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         birthDate: `${year}-${month}-${day}`, // Приведите к формату YYYY-MM-DD  
         birthTime: birthTime || 'Неизвестно',  
         birthPlace: placeOfBirth,  
-        zodiacSign: sign,  
+        zodiacSign: sign, 
+
     };  
 
     console.log('Данные для отправки:', userData); // Логируем данные  

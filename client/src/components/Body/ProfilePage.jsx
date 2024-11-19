@@ -2,8 +2,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useTelegram } from '../hooks/useTelegram';  
 
 const ProfilePage = ({ telegramId }) => {
+  const { user } = useTelegram();
   const [userData, setUserData] = useState(null);
   const [zodiacSign, setZodiacSign] = useState(null);
   const [loading, setLoading] = useState(true); // Состояние загрузки
@@ -36,8 +38,8 @@ const ProfilePage = ({ telegramId }) => {
 
   const getAvatarUrl = (user) => {
     console.log('User data for avatar:', user); // Логируем данные пользователя
-    return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // Используйте photo_url, если он есть
-  };
+    return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // URL по умолчанию
+};
 
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке
   if (error) return <p>{error}</p>; // Сообщение об ошибке
@@ -53,7 +55,7 @@ const ProfilePage = ({ telegramId }) => {
           <div className="line-profile">
             <div className='top-profile-left'> 
               <div style={{ width: '60px', height: '60px' }}>
-                <img src={getAvatarUrl(userData)} alt="Профиль" />
+                <img src={getAvatarUrl(user)} alt="Профиль" />
               </div>
               {userData ? (
                 <div>
