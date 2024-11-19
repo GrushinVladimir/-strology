@@ -35,6 +35,7 @@ const ProfilePage = ({ telegramId }) => {
   }, [telegramId]);
 
   const getAvatarUrl = (user) => {
+    console.log('User data for avatar:', user); // Логируем данные пользователя
     return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // Используйте photo_url, если он есть
   };
 
