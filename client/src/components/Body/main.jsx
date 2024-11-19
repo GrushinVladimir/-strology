@@ -57,30 +57,30 @@ const getHoroscope = async (zodiacSign, period) => {
 
   switch (period) {
     case 'today':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
       break;
     case 'tomorrow':
       url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
       break;
     case 'week':
-      url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
       break;
     case 'month':
-      url = `/api/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
       break;
     default:
       return '';
   }
 
   try {
-    const { data } = await axios.get(url);  // Здесь мы отправляем запрос на локальный путь /api
+    const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     // Для отладки: выводим весь HTML
-    console.log(data);  // Посмотрите, что именно приходит от сервера
+    console.log(data);
 
     // Находим текст гороскопа
-    let horoscopeText = $('div.horoscope__content p').text().trim();  // Убедитесь, что это правильный селектор
+    let horoscopeText = $('div.horoscope__content p').text().trim();
 
     if (!horoscopeText) {
       console.error('Гороскоп не найден или не был извлечен!');
@@ -88,7 +88,7 @@ const getHoroscope = async (zodiacSign, period) => {
     }
 
     // Возвращаем чистый текст гороскопа
-    console.log('Извлечённый гороскоп:', horoscopeText);  // Проверяем, что гороскоп извлекается правильно
+    console.log('Извлечённый гороскоп:', horoscopeText);
     return horoscopeText;
   } catch (error) {
     console.error('Ошибка при получении гороскопа:', error);
