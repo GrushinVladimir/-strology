@@ -77,7 +77,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     console.log('Данные для отправки:', userData); // Логируем данные  
 
     try {  
-        await axios.post('https://strology.vercel.app/api/users', userData);  
+        await axios.post('https://strology.vercel.app/pages/api/users', userData);  
         navigate('/main', { state: { zodiacSign: sign } });  
     } catch (error) {  
         console.error('Ошибка при сохранении данных пользователя:', error.response?.data || error.message);  
