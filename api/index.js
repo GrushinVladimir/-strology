@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
-const apiRoutes = require('./api/index'); // Путь к вашему api/index.js
+const apiRoutes = require('./api/bot'); // Путь к вашему api/index.js
 
 
 const app = express();
