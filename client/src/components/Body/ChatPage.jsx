@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 console.log('API Key из ENV:', process.env.REACT_APP_CHATGPT_API_KEY);
 console.log('API Key:', API_KEY)
+
 function ChatPage() {
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
@@ -20,7 +21,7 @@ function ChatPage() {
 
   const handleSendMessage = async (message) => {
     const finalMessage = message || inputMessage;
-  
+
     if (!API_KEY) {
       console.error('API Key отсутствует. Проверьте настройки.');
       setMessages((prevMessages) => [
@@ -29,21 +30,20 @@ function ChatPage() {
       ]);
       return;
     }
-  
+
     if (finalMessage.trim() === '') return;
-  
+
     setMessages((prevMessages) => [
       ...prevMessages,
       { sender: 'user', text: finalMessage },
     ]);
-  
+
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
-          model: 'gpt-4o-mini',
+          model: 'gpt-4', // используйте правильную модель, например gpt-4
           messages: [
-            { role: 'system', content: 'Ты астрологический помощник по имени Стеша.' },
             { role: 'user', content: finalMessage },
           ],
         },
@@ -54,7 +54,7 @@ function ChatPage() {
           },
         }
       );
-  
+
       const botMessage = response.data.choices?.[0]?.message?.content || 'Ошибка: нет ответа.';
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -67,7 +67,7 @@ function ChatPage() {
         { sender: 'bot', text: 'Ошибка при получении ответа от API. Проверьте ключ или доступ к API.' },
       ]);
     }
-  
+
     setInputMessage('');
   };
 
