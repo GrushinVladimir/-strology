@@ -8,12 +8,16 @@ const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
-
+const { Configuration, OpenAIApi } = require('openai');
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
-
+// Создание экземпляра OpenAI API
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY, // Убедитесь, что ваш API-ключ установлен в переменных окружения
+});
+const openai = new OpenAIApi(configuration);
 // Подключение к MongoDB
 const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
