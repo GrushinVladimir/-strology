@@ -119,19 +119,22 @@ app.get('/api/users/:telegramId', async (req, res) => {
 
 // Эндпоинт для обработки запросов к OpenAI
 app.post('/api/chat-completion', async (req, res) => {
-    const { message } = req.body;
+    const { model, message } = req.body;
 
-    // Проверяем наличие сообщения
-    if (!message) {
-        return res.status(400).json({ message: 'Сообщение не указано' });
+    if (!model || !message) {
+        return res.status(400).json({ error: 'Модель и сообщение обязательны' });
     }
 
     try {
-        const aiResponse = await getOpenAIResponse(message);
-        res.json({ response: aiResponse });
+        const openaiResponse = await openai.createChatCompletion({
+            model: model,
+            messages: [{ role: 'user', content: message }],
+        });
+        
+        res.json(openaiResponse.data);
     } catch (error) {
-        console.error('Ошибка при получении ответа от OpenAI:', error);
-        res.status(500).json({ message: 'Ошибка сервера', error: error.message }); // Добавление информации об ошибке
+        console.error('Ошибка при вызове OpenAI API:', error);
+        res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
 });
 
