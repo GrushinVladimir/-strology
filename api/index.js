@@ -24,10 +24,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 app.use('/api', apiRoutes);
 
-// Другие настройки сервера
-app.listen(5000, () => {
-    console.log('Сервер запущен на порту 5000');
-});
+
 // Инициализация бота
 const bot = new TelegramBot(token, { polling: false });
 const serverUrl = 'https://strology.vercel.app';
