@@ -19,6 +19,8 @@ const zodiacSigns = {
 export default async function handler(req, res) {
   const { sign, period } = req.query;
 
+  console.log('Received request with sign:', sign, 'and period:', period); // Логируем параметры
+
   if (!sign || !period) {
     return res.status(400).json({ error: 'Missing sign or period' });
   }
