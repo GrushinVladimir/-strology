@@ -40,7 +40,7 @@ const zodiacImages = {
 
 const getHoroscope = async (zodiacSign, period) => {
   try {
-    const response = await axios.get(`pages/api/horoscope?sign=${encodeURIComponent(zodiacSign)}&period=${period}`);
+    const response = await axios.get(`../api/horoscope?sign=${encodeURIComponent(zodiacSign)}&period=${period}`);
     return response.data.horoscope;
   } catch (error) {
     console.error('Error fetching horoscope:', error);
