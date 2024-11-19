@@ -121,12 +121,17 @@ app.get('/api/users/:telegramId', async (req, res) => {
 app.post('/api/chat-completion', async (req, res) => {
     const { message } = req.body;
 
+    // Проверяем наличие сообщения
+    if (!message) {
+        return res.status(400).json({ message: 'Сообщение не указано' });
+    }
+
     try {
         const aiResponse = await getOpenAIResponse(message);
         res.json({ response: aiResponse });
     } catch (error) {
         console.error('Ошибка при получении ответа от OpenAI:', error);
-        res.status(500).json({ message: 'Ошибка сервера' });
+        res.status(500).json({ message: 'Ошибка сервера', error: error.message }); // Добавление информации об ошибке
     }
 });
 
