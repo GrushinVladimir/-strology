@@ -6,7 +6,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
-const axios = require('axios'); // добавляем axios для работы с OpenAI API
 
 const app = express();
 
@@ -114,48 +113,47 @@ app.get('/api/users/:telegramId', async (req, res) => {
         res.json(user);
     } catch (error) {
         console.error('Ошибка при получении пользователя:', error);
-        res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+        res.status(500).json({ message: 'Ошибка сервера' });
     }
 });
 
-// Эндпоинт для запроса к OpenAI API
-app.post('/api/openai', async (req, res) => {
+// Эндпоинт для обработки запросов к OpenAI
+app.post('/api/chat-completion', async (req, res) => {
+    const { message } = req.body;
+
     try {
-        const { message } = req.body;
-
-        // Проверяем, что сообщение передано
-        if (!message) {
-            return res.status(400).json({ message: 'Сообщение не предоставлено' });
-        }
-
-        // Здесь необходимо указать ваш API ключ OpenAI
-        const openaiApiKey = process.env.OPENAI_API_KEY;
-
-        // Запрос к OpenAI API
-        const response = await axios.post(
-            'https://api.openai.com/v1/chat/completions',
-            {
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${openaiApiKey}`,
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-
-        // Возвращаем ответ от OpenAI клиенту
-        const reply = response.data.choices[0].message.content;
-        res.json({ reply });
+        const aiResponse = await getOpenAIResponse(message);
+        res.json({ response: aiResponse });
     } catch (error) {
-        console.error('Ошибка при обращении к OpenAI API:', error);
-        res.status(500).json({ message: 'Ошибка при обращении к OpenAI API' });
+        console.error('Ошибка при получении ответа от OpenAI:', error);
+        res.status(500).json({ message: 'Ошибка сервера' });
     }
 });
+
+// Функция для получения ответа от OpenAI
+async function getOpenAIResponse(message) {
+    // Здесь будет логика для работы с OpenAI API
+    // Например, используя axios или другой HTTP-клиент
+    const openai = require('openai'); // Убедитесь, что у вас установлен пакет openai
+    const apiKey = process.env.OPENAI_API_KEY;
+    
+    openai.apiKey = apiKey;
+
+    try {
+        const response = await openai.Completion.create({
+            model: "text-davinci-003",
+            prompt: message,
+            max_tokens: 100,
+        });
+        return response.choices[0].text.trim();
+    } catch (error) {
+        console.error('Ошибка при вызове OpenAI API:', error);
+        throw new Error('Не удалось получить ответ от AI');
+    }
+}
 
 // Запуск сервера
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
+});
