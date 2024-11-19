@@ -1,10 +1,14 @@
+javascript
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-const ProfilePage = ({ telegramId, telegramData }) => {
+
+const ProfilePage = ({ telegramId }) => {
   const [userData, setUserData] = useState(null);
   const [zodiacSign, setZodiacSign] = useState(null);
-  const navigate = useNavigate(); // Добавьте импорт useNavigate
+  const [loading, setLoading] = useState(true); // Состояние загрузки
+  const [error, setError] = useState(null); // Состояние ошибки
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!telegramId) return;
@@ -17,9 +21,13 @@ const ProfilePage = ({ telegramId, telegramData }) => {
           setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
         } else {
           console.error('Данные пользователя не найдены');
+          setError('Данные пользователя не найдены');
         }
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error);
+        setError('Ошибка при получении данных пользователя');
+      } finally {
+        setLoading(false); // Завершаем загрузку
       }
     };
 
@@ -27,9 +35,11 @@ const ProfilePage = ({ telegramId, telegramData }) => {
   }, [telegramId]);
 
   const getAvatarUrl = (user) => {
-    return telegramData && telegramData.user ? telegramData.user.photo_url : 'https://via.placeholder.com/100'; // запасное изображение
+    return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // Используйте photo_url, если он есть
   };
-  console.log('Данные пользователя:', userData);
+
+  if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке
+  if (error) return <p>{error}</p>; // Сообщение об ошибке
 
   return (
     <div className='Prof'>
@@ -41,8 +51,8 @@ const ProfilePage = ({ telegramId, telegramData }) => {
         <div className="header-pofile">
           <div className="line-profile">
             <div className='top-profile-left'> 
-              <div style={{width:'60px', height:'60px'}}>
-              <img src={getAvatarUrl(userData)} alt="Профиль" />
+              <div style={{ width: '60px', height: '60px' }}>
+                <img src={getAvatarUrl(userData)} alt="Профиль" />
               </div>
               {userData ? (
                 <div>
