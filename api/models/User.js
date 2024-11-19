@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     birthTime: { type: String, required: true },
     birthDate: { type: String, required: true },
     birthPlace: { type: String, required: true },
+    photoUrl: { type: String, required: true },
 });
 
 module.exports = mongoose.model('User', userSchema);

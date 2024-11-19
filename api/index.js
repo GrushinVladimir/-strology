@@ -101,10 +101,24 @@ async function handleOtherMessages(chatId, msg) {
 app.get('/api/users/:telegramId', async (req, res) => {
     try {
         const { telegramId } = req.params;
-        const user = await User.findOne({ telegramId });
+        let user = await User.findOne({ telegramId });
+
         if (!user) {
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
+
+        // Получаем фото профиля пользователя
+        const profilePhotos = await bot.getUserProfilePhotos(telegramId);
+
+        if (profilePhotos && profilePhotos.photos.length > 0) {
+            const photoFileId = profilePhotos.photos[0][0].file_id;
+            const photoUrl = await bot.getFileLink(photoFileId);
+            user.photoUrl = photoUrl; // Сохраняем ссылку на фото в объекте пользователя
+            
+            // Обновляем информацию о пользователе в БД
+            await User.updateOne({ telegramId }, { photoUrl });
+        }
+
         res.json(user);
     } catch (error) {
         console.error('Ошибка при получении пользователя:', error);
