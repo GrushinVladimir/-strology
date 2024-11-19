@@ -3,10 +3,18 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+// API-ключ будет храниться в переменной окружения
+const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
+console.log('API Key из ENV:', process.env.REACT_APP_CHAT_API_KEY);
 
-
+if (API_KEY) {
+ console.log('API Key:', API_KEY);
+ // Используйте API_KEY здесь
+} else {
+ console.error('API_KEY не найден!');
+ // Обработайте ситуацию, когда API_KEY не найден. Например, покажите сообщение об ошибке пользователю.
+}
 function ChatPage() {
-
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },
@@ -73,8 +81,6 @@ function ChatPage() {
     handleSendMessage(question);
   };
 
-
-console.log('API Key:', apiKey);
   useEffect(() => {
     tg.ready();
   }, [tg]);
