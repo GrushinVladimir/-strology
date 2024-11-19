@@ -40,7 +40,7 @@ function ChatPage() {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
-          model: 'gpt-4p-mini',
+          model: 'gpt-4o-mini',
           messages: [
             { role: 'system', content: 'Ты астрологический помощник по имени Стеша.' },
             { role: 'user', content: finalMessage },
