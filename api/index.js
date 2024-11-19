@@ -14,6 +14,26 @@ const mongoURI = process.env.MONGO_URI;
 const api = process.env.REACT_APP_CHAT_API_KEY;
   console.log('API Key из ENV:', api);
 
+  app.post('/api/chat-completion', async (req, res) => {
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(req.body)
+        });
+
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Ошибка при запросе к OpenAI:', error);
+        res.status(500).json({ message: 'Ошибка при запросе к OpenAI' });
+    }
+});
+
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
