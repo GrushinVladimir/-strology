@@ -7,13 +7,7 @@ import { Link } from 'react-router-dom';
 const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
 console.log('API Key из ENV:', process.env.REACT_APP_CHAT_API_KEY);
 
-if (API_KEY) {
- console.log('API Key:', API_KEY);
- // Используйте API_KEY здесь
-} else {
- console.error('API_KEY не найден!');
- // Обработайте ситуацию, когда API_KEY не найден. Например, покажите сообщение об ошибке пользователю.
-}
+
 function ChatPage() {
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
@@ -46,12 +40,11 @@ function ChatPage() {
 
     try {
       const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
+        'https://strology.vercel.app/api/chat-completion',
         {
           model: 'gpt-4o-mini', // используйте правильную модель, например gpt-4
-          messages: [
-            { role: 'user', content: finalMessage },
-          ],
+          message: finalMessage,
+
         },
         {
           headers: {
