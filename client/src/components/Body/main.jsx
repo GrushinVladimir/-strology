@@ -51,50 +51,18 @@ const zodiacImages = {
   Козерог: 'img/zhak/kozerog.png',
 };
 
-const getHoroscope = async (zodiacSign, period) => {
-  const signNumber = zodiacSigns[zodiacSign];
-  let url = '';
+const getHoroscope = async (zodiacSign, period) => {  
+  try {  
+    const response = await axios.get(`/api/horoscope`, {  
+      params: { zodiacSign, period }, // Передаем параметры в запросе  
+    });  
 
-  switch (period) {
-    case 'today':
-      url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
-      break;
-    case 'tomorrow':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
-      break;
-    case 'week':
-      url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
-      break;
-    case 'month':
-      url = `/api/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
-      break;
-    default:
-      return '';
-  }
-
-  try {
-    const { data } = await axios.get(url);  // Здесь мы отправляем запрос на локальный путь /api
-    const $ = cheerio.load(data);
-
-    // Для отладки: выводим весь HTML
-    console.log(data);  // Посмотрите, что именно приходит от сервера
-
-    // Находим текст гороскопа
-    let horoscopeText = $('div.horoscope__content p').text().trim();  // Убедитесь, что это правильный селектор
-
-    if (!horoscopeText) {
-      console.error('Гороскоп не найден или не был извлечен!');
-      return 'Не удалось получить гороскоп';
-    }
-
-    // Возвращаем чистый текст гороскопа
-    console.log('Извлечённый гороскоп:', horoscopeText);  // Проверяем, что гороскоп извлекается правильно
-    return horoscopeText;
-  } catch (error) {
-    console.error('Ошибка при получении гороскопа:', error);
-    return 'Не удалось получить гороскоп';
-  }
-};
+    return response.data.horoscope;  
+  } catch (error) {  
+    console.error('Ошибка при получении гороскопа:', error);  
+    return 'Не удалось получить гороскоп';  
+  }  
+};  
 
 const OneDate = (date) => {
   const day = date.getDate().toString().padStart(2, '0');
