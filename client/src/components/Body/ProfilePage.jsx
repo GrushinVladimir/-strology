@@ -9,14 +9,7 @@ const ProfilePage = ({ telegramId }) => {
   const [loading, setLoading] = useState(true); // Состояние загрузки
   const [error, setError] = useState(null); // Состояние ошибки
   const navigate = useNavigate();
-  const userDatas = {  
-    telegramId: user?.id,  
-    name: username,  
-    birthDate: `${year}-${month}-${day}`, // Приведите к формату YYYY-MM-DD  
-    birthTime: birthTime || 'Неизвестно',  
-    birthPlace: placeOfBirth,  
-    zodiacSign: sign,  
-};  
+
   useEffect(() => {
     if (!telegramId) return;
 
@@ -62,7 +55,7 @@ const ProfilePage = ({ telegramId }) => {
               <div style={{ width: '60px', height: '60px' }}>
                 <img src={getAvatarUrl(userData)} alt="Профиль" />
               </div>
-              {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!
+              { user?.first_name || userName || 'Неизвестный пользователь'}!
               {userData ? (
                 <div>
                   <p>{userData.name}</p>
