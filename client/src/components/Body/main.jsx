@@ -53,43 +53,16 @@ const zodiacImages = {
 
 const getHoroscope = async (zodiacSign, period) => {
   const signNumber = zodiacSigns[zodiacSign];
-  let url = '';
-
-  switch (period) {
-    case 'today':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
-      break;
-    case 'tomorrow':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
-      break;
-    case 'week':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
-      break;
-    case 'month':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
-      break;
-    default:
-      return '';
-  }
-
   try {
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
-
-    // Для отладки: выводим весь HTML
-    console.log(data);
-
-    // Находим текст гороскопа
-    let horoscopeText = $('div.horoscope__content p').text().trim();
-
-    if (!horoscopeText) {
-      console.error('Гороскоп не найден или не был извлечен!');
+    const response = await axios.get(`/api/horoscope?sign=${signNumber}&period=${period}`);
+    
+    if (response.data.horoscope) {
+      console.log('Извлечённый гороскоп:', response.data.horoscope);
+      return response.data.horoscope;
+    } else {
+      console.error('Гороскоп не найден.');
       return 'Не удалось получить гороскоп';
     }
-
-    // Возвращаем чистый текст гороскопа
-    console.log('Извлечённый гороскоп:', horoscopeText);
-    return horoscopeText;
   } catch (error) {
     console.error('Ошибка при получении гороскопа:', error);
     return 'Не удалось получить гороскоп';
