@@ -29,7 +29,7 @@ function App() {
         const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
         setTelegramId(id);  // Сохраняем telegramId в состоянии
 
-        const response = await fetch(`pages/api/users/${id}`);
+        const response = await fetch(`./pages/api/users/${id}`);
         const data = await response.json();
 
         if (data.exists) {
