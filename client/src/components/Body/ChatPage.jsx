@@ -9,6 +9,8 @@ console.log('API Key из ENV:', process.env.REACT_APP_CHATGPT_API_KEY);
 console.log('API Key:', API_KEY)
 
 function ChatPage() {
+  const [apiKey, setApiKey] = useState('');
+
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },
@@ -78,7 +80,20 @@ function ChatPage() {
   useEffect(() => {
     tg.ready();
   }, [tg]);
+  useEffect(() => {
+    const fetchApiKey = async () => {
+        try {
+            const response = await axios.get('/api/config');
+            setApiKey(response.data.apiKey);
+        } catch (error) {
+            console.error('Ошибка при получении API-ключа:', error);
+        }
+    };
 
+    fetchApiKey();
+}, []);
+
+console.log('API Key:', apiKey);
   return (
     <div className="chat-container">
       <div className="chat-header">
