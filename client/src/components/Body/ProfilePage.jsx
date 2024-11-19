@@ -4,6 +4,7 @@ import axios from 'axios';
 const ProfilePage = ({ telegramId }) => {
   const [userData, setUserData] = useState(null);
   const [zodiacSign, setZodiacSign] = useState(null);
+  const navigate = useNavigate(); // Добавьте импорт useNavigate
 
   useEffect(() => {
     if (!telegramId) return;
@@ -25,6 +26,10 @@ const ProfilePage = ({ telegramId }) => {
     fetchUserData();
   }, [telegramId]);
 
+  const getAvatarUrl = (user) => {
+    return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // Используйте photo_url, если он есть
+  };
+
   return (
     <div className='Prof'>
       <div className='body-profile'>
@@ -36,7 +41,7 @@ const ProfilePage = ({ telegramId }) => {
           <div className="line-profile">
             <div className='top-profile-left'> 
               <div style={{width:'60px', height:'60px'}}>
-                <img src={userData ? userData.avatarUrl : 'https://via.placeholder.com/100'} alt="Профиль" />
+              <img src={getAvatarUrl(userData)} alt="Профиль" />
               </div>
               {userData ? (
                 <div>
