@@ -1,6 +1,6 @@
 // api/horoscope.js  
-import axios from 'axios';  
-import { load } from 'cheerio';  
+const axios = require('axios');  
+const { load } = require('cheerio');  
 
 const zodiacSigns = {  
   Водолей: 11,  
@@ -17,7 +17,7 @@ const zodiacSigns = {
   Козерог: 10,  
 };  
 
-export default async function handler(req, res) {  
+async function handler(req, res) {  
   const { zodiacSign, period } = req.query;  
 
   const signNumber = zodiacSigns[zodiacSign];  
@@ -55,3 +55,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to fetch horoscope' });  
   }  
 }  
+
+// Экспорт функции обработчика  
+module.exports = handler;  

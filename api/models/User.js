@@ -1,13 +1,13 @@
-// models/User.js  
-import mongoose from 'mongoose';  
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({  
-    telegramId: { type: String, required: true, unique: true },  
-    name: { type: String, required: true },  
-    zodiacSign: { type: String },  
-    photoUrl: { type: String },  
-});  
+const userSchema = new mongoose.Schema({
+    telegramId: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    zodiacSign: { type: String, required: true },
+    birthTime: { type: String, required: true },
+    birthDate: { type: String, required: true },
+    birthPlace: { type: String, required: true },
+    photoUrl: { type: String, required: false },
+});
 
-const User = mongoose.model('User', userSchema);  
-
-export default User; // Добавьте это, если ещё не добавлено  
+module.exports = mongoose.model('User', userSchema);
