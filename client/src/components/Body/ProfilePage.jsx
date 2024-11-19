@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-const ProfilePage = ({ telegramId }) => {
+const ProfilePage = ({ telegramId, telegramData }) => {
   const [userData, setUserData] = useState(null);
   const [zodiacSign, setZodiacSign] = useState(null);
   const navigate = useNavigate(); // Добавьте импорт useNavigate
