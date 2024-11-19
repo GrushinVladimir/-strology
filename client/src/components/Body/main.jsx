@@ -40,7 +40,7 @@ const zodiacImages = {
 
 const getHoroscope = async (zodiacSign, period) => {
   try {
-    const response = await axios.get(`/api/horoscope?sign=${encodeURIComponent(zodiacSign)}&period=${period}`);
+    const response = await axios.get('https://strology-jade.vercel.app/api/horoscope?sign=Скорпион&period=today');
     return response.data.horoscope;
   } catch (error) {
     console.error('Error fetching horoscope:', error);
