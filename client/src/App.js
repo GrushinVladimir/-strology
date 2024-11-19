@@ -9,7 +9,16 @@ import ProfilePage from './components/Body/ProfilePage';
 import Test from './components/Body/test';
 import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage';
+const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
+console.log('API Key из ENV:', process.env.REACT_APP_CHAT_API_KEY);
 
+if (API_KEY) {
+ console.log('API Key:', API_KEY);
+ // Используйте API_KEY здесь
+} else {
+ console.error('API_KEY не найден!');
+ // Обработайте ситуацию, когда API_KEY не найден. Например, покажите сообщение об ошибке пользователю.
+}
 
 function App() {
   const { tg } = useTelegram();
