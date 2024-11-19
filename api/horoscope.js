@@ -6,19 +6,19 @@ export default async function handler(req, res) {
   let url = '';
   switch (period) {
     case 'today':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${sign}`;
+      url = `/api/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
       break;
     case 'tomorrow':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${sign}`;
+      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
       break;
     case 'week':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${sign}`;
+      url = `/api/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
       break;
     case 'month':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${sign}`;
+      url = `/api/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
       break;
     default:
-      return res.status(400).json({ error: 'Invalid period' });
+      return '';
   }
 
   try {
