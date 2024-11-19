@@ -44,16 +44,35 @@ function ChatPage() {
           },
         }
       );
-
+    
+      console.log('Ответ от API:', response); // Добавлено для отладки
+    
       setMessages((prevMessages) => [
         ...prevMessages,
         { sender: 'bot', text: response.data.choices[0].message.content || 'Ошибка: нет ответа.' },
       ]);
     } catch (error) {
       console.error('Ошибка при отправке сообщения:', error);
+      let errorMessage = 'Ошибка при получении ответа. Попробуйте снова.';
+    
+      // Дополнительная информация о ошибке
+      if (error.response) {
+        // Сервер ответил статусом, отличным от 2xx
+        console.error('Ответ сервера:', error.response.data);
+        errorMessage += ` Ошибка сервера: ${error.response.data.message || error.response.statusText}`;
+      } else if (error.request) {
+        // Запрос был отправлен, но ответа не получено
+        console.error('Запрос:', error.request);
+        errorMessage += ' Не удалось получить ответ от сервера.';
+      } else {
+        // Произошла ошибка при настройке запроса
+        console.error('Ошибка:', error.message);
+        errorMessage += ' Произошла ошибка при отправке запроса.';
+      }
+    
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: 'Ошибка при получении ответа. Попробуйте снова.' },
+        { sender: 'bot', text: errorMessage },
       ]);
     }
 
