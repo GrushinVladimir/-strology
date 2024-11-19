@@ -11,6 +11,9 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
 
+const API_KEY = process.env.CHAT_API_KEY;
+console.log('API Key из ENV:', process.env.CHAT_API_KEY);
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
