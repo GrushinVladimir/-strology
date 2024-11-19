@@ -2,12 +2,32 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 
 const zodiacSigns = {
-  // Добавьте сюда ваши знаки зодиака и их соответствующие номера
+  Водолей: 11,
+  Рыбы: 12,
+  Овен: 1,
+  Телец: 2,
+  Близнецы: 3,
+  Рак: 4,
+  Лев: 5,
+  Дева: 6,
+  Весы: 7,
+  Скорпион: 8,
+  Стрелец: 9,
+  Козерог: 10,
 };
 
 export default async function handler(req, res) {
   const { sign, period } = req.query;
-  const signNumber = zodiacSigns[sign];
+
+  if (!sign || !period) {
+    return res.status(400).json({ error: 'Missing sign or period' });
+  }
+
+  const signNumber = zodiacSigns[sign.toLowerCase()];
+
+  if (!signNumber) {
+    return res.status(400).json({ error: 'Invalid zodiac sign' });
+  }
 
   let url = '';
   switch (period) {

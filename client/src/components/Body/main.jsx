@@ -21,20 +21,7 @@ const translateText = async (text) => {
   }
 };
 
-const zodiacSigns = {
-  Водолей: 11,
-  Рыбы: 12,
-  Овен: 1,
-  Телец: 2,
-  Близнецы: 3,
-  Рак: 4,
-  Лев: 5,
-  Дева: 6,
-  Весы: 7,
-  Скорпион: 8,
-  Стрелец: 9,
-  Козерог: 10,
-};
+
 
 const zodiacImages = {
   Водолей: 'img/zhak/vodoley.png',
