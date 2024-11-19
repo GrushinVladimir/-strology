@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 
 function ChatPage() {
-  const [apiKey, setApiKey] = useState('');
 
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
@@ -73,18 +72,7 @@ function ChatPage() {
   const handleQuestionClick = (question) => {
     handleSendMessage(question);
   };
-  useEffect(() => {
-    const fetchApiKey = async () => {
-        try {
-            const response = await axios.get('/api/config');
-            setApiKey(response.data.apiKey);
-        } catch (error) {
-            console.error('Ошибка при получении API-ключа:', error);
-        }
-    };
 
-    fetchApiKey();
-}, []);
 
 console.log('API Key:', apiKey);
   useEffect(() => {
