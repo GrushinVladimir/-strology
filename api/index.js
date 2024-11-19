@@ -24,7 +24,13 @@ const api = process.env.REACT_APP_CHAT_API_KEY;
             },
             body: JSON.stringify(req.body)
         });
-
+        
+        if (!response.ok) {
+            const errorData = await response.text(); // Считываем текст ответа
+            console.error('Ошибка OpenAI:', errorData);
+            return res.status(response.status).json({ message: 'Ошибка при запросе к OpenAI', details: errorData });
+        }
+        
         const data = await response.json();
         res.json(data);
     } catch (error) {
