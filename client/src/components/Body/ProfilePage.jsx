@@ -27,7 +27,7 @@ const ProfilePage = ({ telegramId }) => {
   }, [telegramId]);
 
   const getAvatarUrl = (user) => {
-    return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100'; // Используйте photo_url, если он есть
+    return telegramData && telegramData.user ? telegramData.user.photo_url : 'https://via.placeholder.com/100'; // запасное изображение
   };
   console.log('Данные пользователя:', userData);
 
