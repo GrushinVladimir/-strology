@@ -98,7 +98,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })   => {
   useEffect(() => {  
     tg.ready();  
   }, [tg]);  
-  
+
   if (loading) {  
     return <div>Загрузка...</div>;  
   }  
@@ -120,7 +120,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })   => {
             ) : (  
               <button  
                 className="question-button"  
-                onClick={() => handleQuestionClick(message.text)}  
+                onClick={() => handleSendMessage(inputMessage)}  
               >  
                 {message.text}  
               </button>  
