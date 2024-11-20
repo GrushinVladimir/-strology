@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';  
 import { useTelegram } from '../hooks/useTelegram';  
-import { Link } from 'react-router-dom';  
-import { useNavigate } from 'react-router-dom';  
-import axios from 'axios';   
+import { Link, useNavigate } from 'react-router-dom';  
+import axios from 'axios';  
 
 const Zadaniya = ({ telegramId }) => {  
   const navigate = useNavigate();  
@@ -32,6 +31,7 @@ const Zadaniya = ({ telegramId }) => {
   const fetchTestResults = async () => {  
     try {  
       const response = await axios.get(`/api/test-results/${telegramId}`);  
+      console.log('Результаты теста:', response.data); // Добавили лог для отладки  
       if (response.data && response.data.length > 0) {  
         setTestCompleted(true); // Тест пройден, если есть результаты  
       } else {  
@@ -49,7 +49,7 @@ const Zadaniya = ({ telegramId }) => {
     fetchTestResults();  
     const intervalId = setInterval(fetchUserData, 10000);  
     return () => clearInterval(intervalId);  
-  }, [telegramId]);   
+  }, [telegramId]);  
 
   return (  
     <div className='Zadaniys'>  
@@ -76,13 +76,13 @@ const Zadaniya = ({ telegramId }) => {
           <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
           <span className='right'>Х 10</span>  
         </div>  
-        
+
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: 2</span>  
           <span className='right'>{isTestCompleted ? 'Получить' : 'Не выполнено'}</span>  
         </div>  
-      </div>   
+      </div>  
 
       <div className="menu">  
         <Link to="/">  
@@ -98,8 +98,8 @@ const Zadaniya = ({ telegramId }) => {
           <span>Профиль</span>  
         </Link>  
       </div>  
-    </div>   
+    </div>  
   );  
 };  
 
-export default Zadaniya;  
+export default Zadaniya; 
