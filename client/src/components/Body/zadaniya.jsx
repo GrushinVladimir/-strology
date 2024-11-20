@@ -50,7 +50,11 @@ const Zadaniya = ({ telegramId }) => {
     const intervalId = setInterval(fetchUserData, 10000);  
     return () => clearInterval(intervalId);  
   }, [telegramId]);   
-
+  const handleQuestionAsked = () => {  
+    if (remainingQuestions > 0) {  
+      setRemainingQuestions(remainingQuestions - 1);  
+    }  
+  };  
   return (  
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
@@ -74,7 +78,7 @@ const Zadaniya = ({ telegramId }) => {
         </div>  
         <div className="zadaniya-block">  
           <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
-          <span className='right'>Х 10</span>  
+          <span className='right'>{remainingQuestions} (осталось)</span>  
         </div>  
         
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
