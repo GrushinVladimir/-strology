@@ -57,7 +57,7 @@ const questions = [
   },  
 ];  
 
-const Test = ({ telegramId }) => {  
+const Test = () => {  
   const { telegramId } = useTelegram();
   const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
