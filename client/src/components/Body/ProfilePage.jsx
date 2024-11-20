@@ -63,7 +63,7 @@ const ProfilePage = ({ telegramId }) => {
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке  
   if (error) return <p>{error}</p>; // Сообщение об ошибке  
   const handleInviteClick = () => {  
-    const inviteLink = 'https://t.me/your_bot_username'; // Замените на вашу ссылку  
+    const inviteLink = 'https://t.me/@mygoroskopbot_lite_new_bot'; // Замените на вашу ссылку  
     window.open(inviteLink, '_blank'); // Открытие ссылки в новой вкладке  
   };
   return (  
