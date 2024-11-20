@@ -112,7 +112,7 @@ const ProfilePage = ({ telegramId }) => {
                               fontSize: '15px'  
                             }}  
             
-                          >Выполнено</button>   
+                          >Готово</button>   
             ) : (  
               <Link to="/test">  
                <button className='button na'   
