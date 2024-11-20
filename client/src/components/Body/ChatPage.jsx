@@ -88,13 +88,13 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
 
   const handleQuestionClick = (question) => {  
     if (remainingQuestions > 0) {  
-      decrementQuestions(); // Уменьшаем оставшиеся вопросы в первую очередь  
-      handleSendMessage(question); // Затем отправляем выбранный вопрос  
+      console.log("Вопрос задан, оставшиеся вопросы:", remainingQuestions); // Для отладки  
+      decrementQuestions();   
+      handleSendMessage(question);   
     } else {  
       alert('Вы исчерпали лимит вопросов.');  
     }  
   };  
-
 
   useEffect(() => {  
     tg.ready();  
@@ -121,7 +121,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
             ) : (  
               <button  
                 className="question-button"  
-                onClick={() => handleSendMessage(message.text)}  
+                onClick={() => handleQuestionClick(message.text)}
               >  
                 {message.text}  
               </button>  
@@ -137,7 +137,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
           onChange={(e) => setInputMessage(e.target.value)}  
           placeholder="Задай вопрос звездам..."  
         />  
-        <button onClick={() => handleSendMessage()}>Отправить</button>  
+        <button onClick={() => handleQuestionClick()}>Отправить</button>  
       </div>  
 
       <div className="tabs-and-content">  
