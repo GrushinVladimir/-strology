@@ -11,7 +11,12 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
+
 const app = express();
+
+
+console.log('API_KEY:', API_KEY);
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
@@ -28,8 +33,8 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
     .then(() => console.log('Webhook установлен.'))
     .catch(err => console.error('Ошибка при установке вебхука:', err));
 
-    
-console.log('API_KEY:', API_KEY);
+
+
 
 // Эндпоинт для получения API_KEY
 app.get('/api/config', (req, res) => {
