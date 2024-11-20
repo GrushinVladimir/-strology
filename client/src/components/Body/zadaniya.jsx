@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';  
-import { useTelegram } from '../hooks/useTelegram';  
+import { useTelegram } from '../hooks/useTelegram';   
 import { Link } from 'react-router-dom';  
 import { useNavigate } from 'react-router-dom';  
-import axios from 'axios';  // Не забудьте импортировать axios, если он еще не импортирован  
+import axios from 'axios'; 
 
 const Zadaniya = ({ telegramId }) => {  
   const navigate = useNavigate();  
@@ -10,7 +10,11 @@ const Zadaniya = ({ telegramId }) => {
   const [userData, setUserData] = useState(null);  
   const [isTestCompleted, setTestCompleted] = useState(false); // Добавлено состояние  
   const [loading, setLoading] = useState(true); // Для отслеживания состояния загрузки  
-  const [error, setError] = useState(null); // Для ошибок  
+  const [error, setError] = useState(null); // Для ошибок 
+  const [zodiacSign, setZodiacSign] = useState(null);  
+
+
+
 
   const fetchUserData = async () => {  
     try {  
@@ -45,9 +49,15 @@ const Zadaniya = ({ telegramId }) => {
   };  
 
   useEffect(() => {  
-    fetchUserData();  
-    fetchTestResults(); // Вызов для получения результатов теста сразу при загрузке компонента  
-  }, [telegramId]); // Зависимость от telegramId  
+    if (!telegramId) return;  
+
+    fetchUserData(); // Первый вызов для загрузки данных  
+    fetchTestResults(); // Получаем результаты теста  
+
+    const intervalId = setInterval(fetchUserData, 10000); // Повторный запрос каждые 10 секунд  
+
+    return () => clearInterval(intervalId); // Очистка интервала при размонтировании  
+  }, [telegramId]); 
 
   return (  
     <div className='Zadaniys'>  
