@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {  
     const { userId, answers, dateCompleted } = req.body;  
-  
+    console.log('Сохранение результатов для userId:', userId); 
     const newTestResult = new TestResult({  
         userId,  
         answers,  
@@ -13,7 +13,8 @@ router.post('/', async (req, res) => {
   
     try {  
         await newTestResult.save();  
-        res.status(201).json({ message: 'Результаты теста успешно сохранены' });  
+        res.status(201).json({ message: 'Результаты теста успешно сохранены' }); 
+        
     } catch (error) {  
         console.error('Ошибка при сохранении результатов теста:', error);  
         res.status(500).json({ message: 'Ошибка сервера' });  
@@ -24,7 +25,7 @@ router.post('/', async (req, res) => {
 
   router.get('/:telegramId', async (req, res) => {  
     try {  
-        const results = await TestResult.find({ userId: req.params.userId });  
+        const results = await TestResult.find({ userId: req.params.telegramId });  
         res.json(results);  
     } catch (error) {  
         console.error('Ошибка при получении результатов теста:', error);  
