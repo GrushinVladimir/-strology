@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
-const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
+const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
 
 const app = express();
 
