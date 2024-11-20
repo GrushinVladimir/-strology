@@ -33,18 +33,17 @@ const ProfilePage = ({ telegramId }) => {
   // Функция для получения результатов теста  
   const fetchTestResults = async () => {  
     try {  
-        const response = await axios.get(`/api/test-results/${telegramId}`);  
-        console.log('Полученные результаты теста:', response.data); // Отладка  
-        if (response.data && response.data.length > 0) {  
-            setTestCompleted(true);  
-        } else {  
-            setTestCompleted(false);  
-        }  
+      const response = await axios.get(`/api/test-results/${telegramId}`);  
+      if (response.data && response.data.length > 0) {  
+        setTestCompleted(true); // Тест пройден, если есть результаты  
+      } else {  
+        setTestCompleted(false); // Тест не пройден  
+      }  
     } catch (error) {  
-        console.error('Ошибка при получении результатов теста:', error);  
-        setTestCompleted(false);  
+      console.error('Ошибка при получении результатов теста:', error);  
+      setTestCompleted(false); // Присваиваем значение, если возникла ошибка при получении результатов  
     }  
-}; 
+  };  
 
   useEffect(() => {  
     if (!telegramId) return;  
