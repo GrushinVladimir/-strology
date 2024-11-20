@@ -9,6 +9,7 @@ const ProfilePage = ({ telegramId }) => {
   const [zodiacSign, setZodiacSign] = useState(null);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
+  const [testCompleted, setTestCompleted] = useState(false); // Статус выполнения теста  
   const navigate = useNavigate();  
 
   const fetchUserData = async () => {  
@@ -29,10 +30,26 @@ const ProfilePage = ({ telegramId }) => {
     }  
   };  
 
+  // Функция для получения результатов теста  
+  const fetchTestResults = async () => {  
+    try {  
+      const response = await axios.get(`/api/test-results/${telegramId}`);  
+      if (response.data && response.data.length > 0) {  
+        setTestCompleted(true); // Тест пройден, если есть результаты  
+      } else {  
+        setTestCompleted(false); // Тест не пройден  
+      }  
+    } catch (error) {  
+      console.error('Ошибка при получении результатов теста:', error);  
+      setTestCompleted(false); // Присваиваем значение, если возникла ошибка при получении результатов  
+    }  
+  };  
+
   useEffect(() => {  
     if (!telegramId) return;  
 
     fetchUserData(); // Первый вызов для загрузки данных  
+    fetchTestResults(); // Получаем результаты теста  
 
     const intervalId = setInterval(fetchUserData, 10000); // Повторный запрос каждые 10 секунд  
 
@@ -45,7 +62,6 @@ const ProfilePage = ({ telegramId }) => {
 
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке  
   if (error) return <p>{error}</p>; // Сообщение об ошибке  
-
   return (  
     <div className='Prof'>  
       <div className='body-profile'>  
