@@ -3,7 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
 
-const ChatPage = ({ remainingQuestions, setRemainingQuestions })  => {  
+const ChatPage = ({ remainingQuestions, decrementQuestions })   => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  
@@ -89,11 +89,11 @@ const ChatPage = ({ remainingQuestions, setRemainingQuestions })  => {
   const handleQuestionClick = (question) => {  
     if (remainingQuestions > 0) {  
       handleSendMessage(question); // Отправка выбранного вопроса  
-      setRemainingQuestions(remainingQuestions - 1); // Уменьшение оставшихся вопросов  
+      decrementQuestions(); // Уменьшение оставшихся вопросов  
     } else {  
       alert('Вы исчерпали лимит вопросов.');  
     }  
-  };  
+  }; 
 
   useEffect(() => {  
     tg.ready();  

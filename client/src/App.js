@@ -19,7 +19,46 @@ function App() {
   const [isUserExist, setIsUserExist] = useState(false);
   const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId
   const navigate = useNavigate();
-  const [remainingQuestions, setRemainingQuestions] = useState(10);
+  const initialQuestionsCount = 10; // Начальное количество вопросов  
+  const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
+  
+    // Функция для загрузки количества оставшихся вопросов  
+    const loadRemainingQuestions = () => {  
+      const storedData = localStorage.getItem('remainingQuestions');  
+      const storedTime = localStorage.getItem('questionsTimestamp'); 
+      // Если данные существуют, проверяем срок их актуальности  
+      if (storedData && storedTime) {  
+        const timestamp = new Date(storedTime);  
+        const now = new Date();  
+        const daysDifference = Math.floor((now - timestamp) / (1000 * 60 * 60 * 24));  
+  
+        if (daysDifference < 7) {  
+          setRemainingQuestions(parseInt(storedData, 10));  
+        } else {  
+          // Если прошло больше 7 дней, сбрасываем  
+          localStorage.removeItem('remainingQuestions');  
+          localStorage.removeItem('questionsTimestamp');  
+        }  
+      }  
+    };  
+  
+    // Функция для сохранения текущего количества вопросов  
+    const saveRemainingQuestions = (count) => {  
+      localStorage.setItem('remainingQuestions', count);  
+      localStorage.setItem('questionsTimestamp', new Date().toISOString());  
+    };  
+  
+    useEffect(() => {  
+      loadRemainingQuestions();  
+    }, []);  
+  
+    const decrementQuestions = () => {  
+      if (remainingQuestions > 0) {  
+        const newCount = remainingQuestions - 1;  
+        setRemainingQuestions(newCount);  
+        saveRemainingQuestions(newCount);  
+      }  
+    };  
   useEffect(() => {
     tg.ready();
   }, [tg]);
@@ -77,7 +116,7 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
         <Route path="/test" element={<Test />} />
-        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions}/>} />
+        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} setRemainingQuestions={setRemainingQuestions}/>} />
         <Route path="/chat" element={<ChatPage             remainingQuestions={remainingQuestions}  
             setRemainingQuestions={setRemainingQuestions}/>} />
       </Routes>

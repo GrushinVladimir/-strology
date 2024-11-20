@@ -51,6 +51,7 @@ const Zadaniya = ({ telegramId, remainingQuestions }) => {
     return () => clearInterval(intervalId);  
   }, [telegramId]);   
 
+
   return (  
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
