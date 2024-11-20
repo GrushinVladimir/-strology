@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './react-datepicker.css';  
 import { useNavigate } from 'react-router-dom';  
 import axios from 'axios';  // Импортируем axios  
+import { useTelegram } from '../hooks/useTelegram';  
 
 const questions = [  
   {  
@@ -58,6 +59,7 @@ const questions = [
 ];  
 
 const Test = () => {  
+  const { telegramId } = useTelegram();
   const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
   const [selectedOption, setSelectedOption] = useState(null);  
@@ -82,7 +84,7 @@ const Test = () => {
     const testResults = {  
       answers,  
       dateCompleted: new Date().toISOString(),  
-      userId: 'someUserId', // Здесь укажите ID пользователя, если есть такой идентификатор  
+      userId: telegramId, // Здесь укажите ID пользователя, если есть такой идентификатор  
     };  
 
     try {  
