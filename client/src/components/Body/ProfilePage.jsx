@@ -123,11 +123,26 @@ const ProfilePage = ({ telegramId }) => {
               <p>Поддержка</p>  
             </div>  
           </div>  
+        </div> 
+</div>  
+     
 
-        </div>   
-      </div>  
+<div className="menu">
+  <Link to="/main">
+    <img src="img/menu/Union.png" />
+    <span>Главная</span>
+  </Link>
+  <Link to="/chat">
+    <img src="img/menu/chat.png" />
+    <span>Чат</span>
+  </Link>
+  <Link to="/profile">
+    <img src="img/menu/profile.png" style={{ width: '13px' }} />
+    <span>Профиль</span>
+  </Link>
+</div>
     </div>  
   );  
-}  
+};  
 
 export default ProfilePage;  
