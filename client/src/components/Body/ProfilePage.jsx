@@ -62,6 +62,7 @@ const ProfilePage = ({ telegramId }) => {
 
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке  
   if (error) return <p>{error}</p>; // Сообщение об ошибке  
+
   return (  
     <div className='Prof'>  
       <div className='body-profile'>  
@@ -124,8 +125,17 @@ const ProfilePage = ({ telegramId }) => {
                     fontSize: '15px'  
                   }}  
                 >Летс гоу</button>  
-              </Link>  
-            </div>  
+              </Link>
+              </div>  
+          </div>  
+
+          {/* Отображение статуса выполнения теста */}  
+          <div className="test-status">  
+            {testCompleted ? (  
+              <p style={{ color: 'green' }}>Тест выполнен!</p>  
+            ) : (  
+              <p style={{ color: 'red' }}>Тест не выполнен.</p>  
+            )}  
           </div>  
 
           <div className="bottom-profile">  
@@ -133,30 +143,29 @@ const ProfilePage = ({ telegramId }) => {
               <p>Часто задаваемые вопросы</p>  
             </div>  
             <div>  
-              <p>Пригласить друга </p>  
+              <p>Пригласить друга</p>  
             </div>  
             <div>  
               <p>Поддержка</p>  
             </div>  
           </div>  
-        </div> 
-</div>  
-     
+        </div>   
+      </div>  
 
-<div className="menu">
-  <Link to="/main">
-    <img src="img/menu/Union.png" />
-    <span>Главная</span>
-  </Link>
-  <Link to="/chat">
-    <img src="img/menu/chat.png" />
-    <span>Чат</span>
-  </Link>
-  <Link to="/profile">
-    <img src="img/menu/profile.png" style={{ width: '13px' }} />
-    <span>Профиль</span>
-  </Link>
-</div>
+      <div className="menu">  
+        <Link to="/main">  
+          <img src="img/menu/Union.png" alt="Главная" />  
+          <span>Главная</span>  
+        </Link>  
+        <Link to="/chat">  
+          <img src="img/menu/chat.png" alt="Чат" />  
+          <span>Чат</span>  
+        </Link>  
+        <Link to="/profile">  
+          <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
+          <span>Профиль</span>  
+        </Link>  
+      </div>  
     </div>  
   );  
 };  
