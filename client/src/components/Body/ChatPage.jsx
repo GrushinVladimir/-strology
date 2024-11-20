@@ -21,7 +21,7 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
-        const response = await fetch('/api/config');
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/config`);  
         if (!response.ok) {
           throw new Error('Сеть не отвечает');
         }
