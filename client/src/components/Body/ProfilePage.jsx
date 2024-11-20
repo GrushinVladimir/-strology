@@ -100,33 +100,23 @@ const ProfilePage = ({ telegramId }) => {
             <div className="profile-block">  
               <p>Пройти тест на знак зодиака</p>  
                         {/* Отображение статуса выполнения теста */}  
-          <div className="test-status">  
+         
             {testCompleted ? (  
-                            <button className='button na'   
-                            style={{  
-                              position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px',  
-                              bottom: '0',  
-                              transform: 'translateX(-50%)',  
-                              left: '50%',  
-                              width: '115px',  
-                              fontSize: '15px'  
-                            }}  
-            
-                          >Готово</button>   
+              <p style={{ color: 'green' }}>Тест выполнен!</p>  
             ) : (  
               <Link to="/test">  
-               <button className='button na'   
-                            style={{  
-                              position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px',  
-                              bottom: '0',  
-                              transform: 'translateX(-50%)',  
-                              left: '50%',  
-                              width: '115px',  
-                              fontSize: '15px'  
-                            }}  
-            
-                          >Летс гоу</button>   
-            </Link>  
+              <button className='button na'   
+                style={{  
+                  position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px',  
+                  bottom: '0',  
+                  transform: 'translateX(-50%)',  
+                  left: '50%',  
+                  width: '115px',  
+                  fontSize: '15px'  
+                }}  
+
+              >Летс гоу</button>   
+            </Link> 
             )}  
           
  
