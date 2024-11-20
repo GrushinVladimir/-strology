@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 
 // API-ключ будет храниться в переменной окружения
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
+console.log('API Key из ENV:', process.env.REACT_APP_CHATGPT_API_KEY);
 console.log('API Key:', API_KEY)
+
 function ChatPage() {
   const { tg } = useTelegram();
   const [messages, setMessages] = useState([
@@ -20,6 +22,15 @@ function ChatPage() {
   const handleSendMessage = async (message) => {
     const finalMessage = message || inputMessage;
 
+    if (!API_KEY) {
+      console.error('API Key отсутствует. Проверьте настройки.');
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'bot', text: 'Ошибка: API Key отсутствует. Пожалуйста, обратитесь к администратору.' },
+      ]);
+      return;
+    }
+
     if (finalMessage.trim() === '') return;
 
     setMessages((prevMessages) => [
@@ -31,9 +42,8 @@ function ChatPage() {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-4o-mini', // используйте правильную модель, например gpt-4
           messages: [
-            { role: 'system', content: 'Ты астрологический помощник по имени Стеша.' },
             { role: 'user', content: finalMessage },
           ],
         },
@@ -44,35 +54,17 @@ function ChatPage() {
           },
         }
       );
-    
-      console.log('Ответ от API:', response); // Добавлено для отладки
-    
+
+      const botMessage = response.data.choices?.[0]?.message?.content || 'Ошибка: нет ответа.';
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: response.data.choices[0].message.content || 'Ошибка: нет ответа.' },
+        { sender: 'bot', text: botMessage },
       ]);
     } catch (error) {
       console.error('Ошибка при отправке сообщения:', error);
-      let errorMessage = 'Ошибка при получении ответа. Попробуйте снова.';
-    
-      // Дополнительная информация о ошибке
-      if (error.response) {
-        // Сервер ответил статусом, отличным от 2xx
-        console.error('Ответ сервера:', error.response.data);
-        errorMessage += ` Ошибка сервера: ${error.response.data.message || error.response.statusText}`;
-      } else if (error.request) {
-        // Запрос был отправлен, но ответа не получено
-        console.error('Запрос:', error.request);
-        errorMessage += ' Не удалось получить ответ от сервера.';
-      } else {
-        // Произошла ошибка при настройке запроса
-        console.error('Ошибка:', error.message);
-        errorMessage += ' Произошла ошибка при отправке запроса.';
-      }
-    
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: 'bot', text: errorMessage },
+        { sender: 'bot', text: 'Ошибка при получении ответа от API. Проверьте ключ или доступ к API.' },
       ]);
     }
 
