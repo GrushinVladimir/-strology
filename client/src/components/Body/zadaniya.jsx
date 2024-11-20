@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';  
-import { useTelegram } from '../hooks/useTelegram';   
+import { useTelegram } from '../hooks/useTelegram';  
 import { Link } from 'react-router-dom';  
 import { useNavigate } from 'react-router-dom';  
-import axios from 'axios'; 
+import axios from 'axios';   
 
 const Zadaniya = ({ telegramId }) => {  
   const navigate = useNavigate();  
   const { user } = useTelegram();  
   const [userData, setUserData] = useState(null);  
-  const [isTestCompleted, setTestCompleted] = useState(false); // Добавлено состояние  
-  const [loading, setLoading] = useState(true); // Для отслеживания состояния загрузки  
-  const [error, setError] = useState(null); // Для ошибок 
-  const [zodiacSign, setZodiacSign] = useState(null);  
-
-
-
+  const [isTestCompleted, setTestCompleted] = useState(false);  
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);  
 
   const fetchUserData = async () => {  
     try {  
@@ -29,11 +25,10 @@ const Zadaniya = ({ telegramId }) => {
       console.error('Ошибка при получении данных пользователя:', error);  
       setError('Ошибка при получении данных пользователя');  
     } finally {  
-      setLoading(false); // Завершение загрузки  
+      setLoading(false);  
     }  
   };  
 
-  // Функция для получения результатов теста  
   const fetchTestResults = async () => {  
     try {  
       const response = await axios.get(`/api/test-results/${telegramId}`);  
@@ -44,20 +39,17 @@ const Zadaniya = ({ telegramId }) => {
       }  
     } catch (error) {  
       console.error('Ошибка при получении результатов теста:', error);  
-      setTestCompleted(false); // Присваиваем значение, если возникла ошибка при получении результатов  
+      setTestCompleted(false);  
     }  
   };  
 
   useEffect(() => {  
     if (!telegramId) return;  
-
-    fetchUserData(); // Первый вызов для загрузки данных  
-    fetchTestResults(); // Получаем результаты теста  
-
-    const intervalId = setInterval(fetchUserData, 10000); // Повторный запрос каждые 10 секунд  
-
-    return () => clearInterval(intervalId); // Очистка интервала при размонтировании  
-  }, [telegramId]); 
+    fetchUserData();  
+    fetchTestResults();  
+    const intervalId = setInterval(fetchUserData, 10000);  
+    return () => clearInterval(intervalId);  
+  }, [telegramId]);   
 
   return (  
     <div className='Zadaniys'>  
@@ -88,7 +80,7 @@ const Zadaniya = ({ telegramId }) => {
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: 2</span>  
-          <span className='right'>{isTestCompleted ? 'Не выполнено' : 'Получить'}</span>  
+          <span className='right'>{isTestCompleted ? 'Получить' : 'Не выполнено'}</span>  
         </div>  
       </div>   
 
