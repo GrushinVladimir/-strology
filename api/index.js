@@ -38,7 +38,7 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
 
 // Эндпоинт для получения API_KEY
 app.get('/api/config', (req, res) => {
-    res.json({ apiKey: process.env.REACT_APP_CHATGPT_API_KEY });
+    res.json({ apiKey: process.env.REACT_APP_CHAT_API_KEY });
 });
 
 // Маршрут для обработки сообщений Telegram
