@@ -58,7 +58,7 @@ const questions = [
 ];  
 
 const Test = () => {  
-  const { telegramId } = useTelegram();
+  const { telegramId } = useTelegram(); // Получаем telegramId  
   const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
   const [selectedOption, setSelectedOption] = useState(null);  
@@ -100,7 +100,6 @@ const Test = () => {
       return (  
         <div className='body'>  
           <h2>Тест завершён!</h2> 
-          {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
  
           <button onClick={handleFinish}>Сохранить результаты</button>  
         </div>  
@@ -131,6 +130,8 @@ const Test = () => {
             />  
           ))}  
           </div>  
+         
+
           <h2 style={{ marginTop: '20vh' }}>{question}</h2>  
           <p className='victor-desc'>{description}</p>  
           <div>  
