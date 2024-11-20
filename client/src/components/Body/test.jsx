@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './react-datepicker.css';  
 import { useNavigate } from 'react-router-dom';  
 import axios from 'axios';  // Импортируем axios  
-
+import { useTelegram } from '../hooks/useTelegram';  
 const questions = [  
   {  
     question: "Вы бы предпочли работать с людьми или с техникой?",  
@@ -57,7 +57,8 @@ const questions = [
   },  
 ];  
 
-const Test = () => {  
+const Test = ({ telegramId }) => {  
+  const { telegramId } = useTelegram();
   const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
   const [selectedOption, setSelectedOption] = useState(null);  
@@ -78,23 +79,21 @@ const Test = () => {
   };  
 
   const handleFinish = async () => {  
-    // Формируем объект с результатами теста  
+    // Используем telegramId полученный из хука  
     const testResults = {  
       answers,  
       dateCompleted: new Date().toISOString(),  
-      userId: 'someUserId', // Здесь укажите ID пользователя, если есть такой идентификатор  
+      userId: telegramId, // Теперь используем telegramId  
     };  
 
     try {  
-      // Отправляем результаты на сервер  
-      await axios.post('https://strology.vercel.app/api/test-results', testResults);  
-      // Перенаправляем на профиль по завершении  
-      navigate('/profile');  
+      const response = await axios.post('/api/test-results', testResults);  
+      console.log(response.data.message);  
     } catch (error) {  
-      console.error('Ошибка при сохранении результатов теста:', error.response?.data || error.message);  
-      // Можно добавить обработку ошибки, например, вывести уведомление  
+      console.error('Ошибка при сохранении результатов:', error);  
     }  
   };  
+
 
   const renderStep = () => {  
     if (step >= questions.length) {  
