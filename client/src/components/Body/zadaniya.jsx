@@ -88,7 +88,7 @@ const Zadaniya = ({ telegramId }) => {
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: 2</span>  
-          <span className='right'>{isTestCompleted ? 'ПолучитьДа' : 'Получить'}</span>  
+          <span className='right'>{isTestCompleted ? 'Не выполнено' : 'Получить'}</span>  
         </div>  
       </div>   
 
