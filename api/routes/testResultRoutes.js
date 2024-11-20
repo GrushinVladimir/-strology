@@ -6,22 +6,12 @@ const router = express.Router();
 
 
 
-router.post('/', async (req, res) => {  
-    const { userId, answers, dateCompleted } = req.body;  
-  
-    const newTestResult = new TestResult({  
-        userId,  
-        answers,  
-        dateCompleted,  
-    });  
-  
+router.get('/:telegramId', async (req, res) => {  
     try {  
-        await newTestResult.save();  
-        res.status(201).json({ message: 'Результаты теста успешно сохранены' });  
+        const results = await TestResult.find({ userId: req.params.telegramId });  
+        res.json(results);  
     } catch (error) {  
-        console.error('Ошибка при сохранении результатов теста:', error);  
+        console.error('Ошибка при получении результатов теста:', error);  
         res.status(500).json({ message: 'Ошибка сервера' });  
     }  
-  });  
-  
-  module.exports = router;  
+ }); 
