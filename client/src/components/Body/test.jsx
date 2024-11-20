@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './react-datepicker.css';  
 import { useNavigate } from 'react-router-dom';  
 import axios from 'axios';  // Импортируем axios  
-import { useTelegram } from '../hooks/useTelegram';  
+
 const questions = [  
   {  
     question: "Вы бы предпочли работать с людьми или с техникой?",  
@@ -58,7 +58,6 @@ const questions = [
 ];  
 
 const Test = () => {  
-  const { telegramId } = useTelegram(); // Получаем telegramId  
   const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
   const [selectedOption, setSelectedOption] = useState(null);  
@@ -79,28 +78,29 @@ const Test = () => {
   };  
 
   const handleFinish = async () => {  
-    // Используем telegramId полученный из хука  
+    // Формируем объект с результатами теста  
     const testResults = {  
       answers,  
       dateCompleted: new Date().toISOString(),  
-      userId: telegramId, // Теперь используем telegramId  
+      userId: 'someUserId', // Здесь укажите ID пользователя, если есть такой идентификатор  
     };  
 
     try {  
-      const response = await axios.post('/api/test-results', testResults);  
-      console.log(response.data.message);  
+      // Отправляем результаты на сервер  
+      await axios.post('https://strology.vercel.app/api/test-results', testResults);  
+      // Перенаправляем на профиль по завершении  
+      navigate('/profile');  
     } catch (error) {  
-      console.error('Ошибка при сохранении результатов:', error);  
+      console.error('Ошибка при сохранении результатов теста:', error.response?.data || error.message);  
+      // Можно добавить обработку ошибки, например, вывести уведомление  
     }  
   };  
-
 
   const renderStep = () => {  
     if (step >= questions.length) {  
       return (  
         <div className='body'>  
-          <h2>Тест завершён!</h2> 
- 
+          <h2>Тест завершён!</h2>  
           <button onClick={handleFinish}>Сохранить результаты</button>  
         </div>  
       );  
@@ -130,8 +130,6 @@ const Test = () => {
             />  
           ))}  
           </div>  
-         
-
           <h2 style={{ marginTop: '20vh' }}>{question}</h2>  
           <p className='victor-desc'>{description}</p>  
           <div>  
