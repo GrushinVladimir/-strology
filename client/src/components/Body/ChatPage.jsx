@@ -88,8 +88,8 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
 
   const handleQuestionClick = (question) => {  
     if (remainingQuestions > 0) {  
-      handleSendMessage(question); // Отправка выбранного вопроса  
-      decrementQuestions(); // Уменьшение оставшихся вопросов  
+      decrementQuestions(); // Уменьшаем оставшиеся вопросы в первую очередь  
+      handleSendMessage(question); // Затем отправляем выбранный вопрос  
     } else {  
       alert('Вы исчерпали лимит вопросов.');  
     }  
