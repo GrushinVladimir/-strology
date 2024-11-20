@@ -128,7 +128,7 @@ const ProfilePage = ({ telegramId }) => {
                           >Летс гоу</button>   
             </Link>  
             )}  
-          </div>  
+          
  
             </div>  
             <div className="profile-block">  
