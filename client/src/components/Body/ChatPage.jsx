@@ -120,7 +120,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })   => {
             ) : (  
               <button  
                 className="question-button"  
-                onClick={() => handleSendMessage(inputMessage)}  
+                onClick={() => handleSendMessage(message.text)}  
               >  
                 {message.text}  
               </button>  
