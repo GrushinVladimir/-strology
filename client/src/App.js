@@ -9,7 +9,6 @@ import ProfilePage from './components/Body/ProfilePage';
 import Test from './components/Body/test';
 import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage';
-import Horoscope from './components/Horoscope';
 
 
 function App() {
@@ -123,7 +122,6 @@ function App() {
         />
         <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
-        <Route path="/horoscope" element={<Horoscope telegramId={telegramId}/>} />
         <Route path="/test" element={<Test />} />
         <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
         <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
