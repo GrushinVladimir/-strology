@@ -22,12 +22,10 @@ function App() {
   const initialQuestionsCount = 10; // Начальное количество вопросов  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
-  // Функция для загрузки количества оставшихся вопросов  
-  const loadRemainingQuestions = () => {  
+    const loadRemainingQuestions = () => {  
     const storedData = localStorage.getItem('remainingQuestions');  
     const storedTime = localStorage.getItem('questionsTimestamp');  
 
-    // Если данные существуют, проверяем срок их актуальности  
     if (storedData) {  
       const timestamp = new Date(storedTime);  
       const now = new Date();  
@@ -36,15 +34,13 @@ function App() {
       if (daysDifference < 7) {  
         setRemainingQuestions(parseInt(storedData, 10));  
       } else {  
-        // Если прошло больше 7 дней, сбрасываем  
         localStorage.removeItem('remainingQuestions');  
         localStorage.removeItem('questionsTimestamp');  
-        setRemainingQuestions(initialQuestionsCount); // Сбросить на 10  
+        setRemainingQuestions(initialQuestionsCount);  
       }  
     }  
   };  
 
-  // Функция для сохранения текущего количества вопросов  
   const saveRemainingQuestions = (count) => {  
     localStorage.setItem('remainingQuestions', count);  
     localStorage.setItem('questionsTimestamp', new Date().toISOString());  
@@ -58,18 +54,18 @@ function App() {
     if (remainingQuestions > 0) {  
       const newCount = remainingQuestions - 1;  
       setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount); // Сохраняем новое значение  
+      saveRemainingQuestions(newCount);  
     }  
   };  
 
   const handleGetMoreQuestions = () => {  
-    setRemainingQuestions(10); // Сброс до 10  
-    saveRemainingQuestions(10); // Сохранение нового значения в localStorage  
+    setRemainingQuestions(initialQuestionsCount);  
+    saveRemainingQuestions(initialQuestionsCount);  
     alert('Получение новых вопросов...');  
-  }; 
+  };  
 
 
-  
+
   useEffect(() => {
     tg.ready();
   }, [tg]);
@@ -127,9 +123,8 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
         <Route path="/test" element={<Test />} />
-        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} setRemainingQuestions={setRemainingQuestions}/>} />
-        <Route path="/chat" element={<ChatPage             remainingQuestions={remainingQuestions}  
-            setRemainingQuestions={setRemainingQuestions}/>} />
+        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
+        <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
       </Routes>
     </div>
   );
