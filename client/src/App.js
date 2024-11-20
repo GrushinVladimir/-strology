@@ -21,44 +21,55 @@ function App() {
   const navigate = useNavigate();
   const initialQuestionsCount = 10; // Начальное количество вопросов  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
-  
-    // Функция для загрузки количества оставшихся вопросов  
-    const loadRemainingQuestions = () => {  
-      const storedData = localStorage.getItem('remainingQuestions');  
-      const storedTime = localStorage.getItem('questionsTimestamp'); 
-      // Если данные существуют, проверяем срок их актуальности  
-      if (storedData && storedTime) {  
-        const timestamp = new Date(storedTime);  
-        const now = new Date();  
-        const daysDifference = Math.floor((now - timestamp) / (1000 * 60 * 60 * 24));  
-  
-        if (daysDifference < 7) {  
-          setRemainingQuestions(parseInt(storedData, 10));  
-        } else {  
-          // Если прошло больше 7 дней, сбрасываем  
-          localStorage.removeItem('remainingQuestions');  
-          localStorage.removeItem('questionsTimestamp');  
-        }  
+
+  // Функция для загрузки количества оставшихся вопросов  
+  const loadRemainingQuestions = () => {  
+    const storedData = localStorage.getItem('remainingQuestions');  
+    const storedTime = localStorage.getItem('questionsTimestamp');  
+
+    // Если данные существуют, проверяем срок их актуальности  
+    if (storedData) {  
+      const timestamp = new Date(storedTime);  
+      const now = new Date();  
+      const daysDifference = Math.floor((now - timestamp) / (1000 * 60 * 60 * 24));  
+
+      if (daysDifference < 7) {  
+        setRemainingQuestions(parseInt(storedData, 10));  
+      } else {  
+        // Если прошло больше 7 дней, сбрасываем  
+        localStorage.removeItem('remainingQuestions');  
+        localStorage.removeItem('questionsTimestamp');  
+        setRemainingQuestions(initialQuestionsCount); // Сбросить на 10  
       }  
-    };  
+    }  
+  };  
+
+  // Функция для сохранения текущего количества вопросов  
+  const saveRemainingQuestions = (count) => {  
+    localStorage.setItem('remainingQuestions', count);  
+    localStorage.setItem('questionsTimestamp', new Date().toISOString());  
+  };  
+
+  useEffect(() => {  
+    loadRemainingQuestions();  
+  }, []);  
+
+  const decrementQuestions = () => {  
+    if (remainingQuestions > 0) {  
+      const newCount = remainingQuestions - 1;  
+      setRemainingQuestions(newCount);  
+      saveRemainingQuestions(newCount); // Сохраняем новое значение  
+    }  
+  };  
+
+  const handleGetMoreQuestions = () => {  
+    setRemainingQuestions(10); // Сброс до 10  
+    saveRemainingQuestions(10); // Сохранение нового значения в localStorage  
+    alert('Получение новых вопросов...');  
+  }; 
+
+
   
-    // Функция для сохранения текущего количества вопросов  
-    const saveRemainingQuestions = (count) => {  
-      localStorage.setItem('remainingQuestions', count);  
-      localStorage.setItem('questionsTimestamp', new Date().toISOString());  
-    };  
-  
-    useEffect(() => {  
-      loadRemainingQuestions();  
-    }, []);  
-  
-    const decrementQuestions = () => {  
-      if (remainingQuestions > 0) {  
-        const newCount = remainingQuestions - 1;  
-        setRemainingQuestions(newCount);  
-        saveRemainingQuestions(newCount);  
-      }  
-    };  
   useEffect(() => {
     tg.ready();
   }, [tg]);

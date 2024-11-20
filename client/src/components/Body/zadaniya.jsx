@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';  
 import axios from 'axios';   
 
-const Zadaniya = ({ telegramId, remainingQuestions }) => {  
+const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handleGetMoreQuestions }) => {  
   const navigate = useNavigate();  
   const { user } = useTelegram();  
   const [userData, setUserData] = useState(null);  

@@ -93,12 +93,12 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })   => {
     } else {  
       alert('Вы исчерпали лимит вопросов.');  
     }  
-  }; 
+  };  
 
   useEffect(() => {  
     tg.ready();  
   }, [tg]);  
-
+  
   if (loading) {  
     return <div>Загрузка...</div>;  
   }  
