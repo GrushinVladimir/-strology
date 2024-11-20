@@ -11,6 +11,7 @@ const Zadaniya = ({ telegramId }) => {
   const [isTestCompleted, setTestCompleted] = useState(false);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
+  const [remainingQuestions, setRemainingQuestions] = useState(10); // Начальное значение X 10  
 
   const fetchUserData = async () => {  
     try {  
