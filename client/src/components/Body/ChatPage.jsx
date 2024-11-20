@@ -3,7 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
 
-const ChatPage = () => {  
+const ChatPage = ({ remainingQuestions, setRemainingQuestions })  => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  

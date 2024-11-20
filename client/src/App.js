@@ -19,7 +19,7 @@ function App() {
   const [isUserExist, setIsUserExist] = useState(false);
   const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId
   const navigate = useNavigate();
-
+  const [remainingQuestions, setRemainingQuestions] = useState(10);
   useEffect(() => {
     tg.ready();
   }, [tg]);
@@ -77,8 +77,9 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
         <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
         <Route path="/test" element={<Test />} />
-        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId}/>} />
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions}/>} />
+        <Route path="/chat" element={<ChatPage             remainingQuestions={remainingQuestions}  
+            setRemainingQuestions={setRemainingQuestions}/>} />
       </Routes>
     </div>
   );
