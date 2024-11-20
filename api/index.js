@@ -28,6 +28,9 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
     .then(() => console.log('Webhook установлен.'))
     .catch(err => console.error('Ошибка при установке вебхука:', err));
 
+    
+console.log('API_KEY:', API_KEY);
+
 // Эндпоинт для получения API_KEY
 app.get('/api/config', (req, res) => {
     res.json({ apiKey: process.env.REACT_APP_CHATGPT_API_KEY });
