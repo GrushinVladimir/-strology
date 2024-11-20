@@ -33,7 +33,7 @@ const ProfilePage = ({ telegramId }) => {
   // Функция для получения результатов теста  
   const fetchTestResults = async () => {  
     try {  
-      const response = await axios.get(`/api/test-results/${telegramId}`);  
+      const response = await axios.get(`/api/routes/test-results/${telegramId}`);  
       if (response.data && response.data.length > 0) {  
         setTestCompleted(true); // Тест пройден, если есть результаты  
       } else {  
