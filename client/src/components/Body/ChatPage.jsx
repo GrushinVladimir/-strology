@@ -20,7 +20,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
   useEffect(() => {  
     const fetchApiKey = async () => {  
       try {  
-        const response = await fetch(`https://strology.vercel.app/api/config`);  
+        const response = await fetch(`/api/config`);  
         if (!response.ok) {  
           throw new Error('Сеть не отвечает');  
         }  

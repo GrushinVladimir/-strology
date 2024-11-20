@@ -63,8 +63,13 @@ const ProfilePage = ({ telegramId }) => {
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке  
   if (error) return <p>{error}</p>; // Сообщение об ошибке  
   const handleInviteClick = () => {  
-    const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Замените на вашу ссылку  
-    window.open(inviteLink, '_blank'); // Открытие ссылки в новой вкладке  
+    if (remainingInvites > 0) {  
+      const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на вашего бота  
+      window.open(inviteLink, '_blank'); // Открытие ссылки в новой вкладке  
+      setRemainingInvites(remainingInvites - 1); // Уменьшение количества оставшихся приглашений  
+    } else {  
+      alert('Вы исчерпали лимит приглашений!');  
+    }  
   };
   return (  
     <div className='Prof'>  
