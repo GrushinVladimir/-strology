@@ -62,7 +62,10 @@ const ProfilePage = ({ telegramId }) => {
 
   if (loading) return <p>Загрузка...</p>; // Сообщение о загрузке  
   if (error) return <p>{error}</p>; // Сообщение об ошибке  
-
+  const handleInviteClick = () => {  
+    const inviteLink = 'https://t.me/your_bot_username'; // Замените на вашу ссылку  
+    window.open(inviteLink, '_blank'); // Открытие ссылки в новой вкладке  
+  };
   return (  
     <div className='Prof'>  
       <div className='body-profile'>  
@@ -145,7 +148,9 @@ const ProfilePage = ({ telegramId }) => {
               <p>Часто задаваемые вопросы</p>  
             </div>  
             <div>  
-              <p>Пригласить друга</p>  
+            <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>  
+        Пригласить друга  
+      </p> 
             </div>  
             <div>  
               <p>Поддержка</p>  
