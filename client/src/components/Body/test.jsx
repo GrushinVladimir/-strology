@@ -99,7 +99,9 @@ const Test = () => {
     if (step >= questions.length) {  
       return (  
         <div className='body'>  
-          <h2>Тест завершён!</h2>  
+          <h2>Тест завершён!</h2> 
+          {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
+ 
           <button onClick={handleFinish}>Сохранить результаты</button>  
         </div>  
       );  
