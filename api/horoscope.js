@@ -32,41 +32,23 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid zodiac sign.' });
   }
 
-  let url = '';
-
-  switch (period) {
-    case 'today':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
-      break;
-    case 'tomorrow':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-tomorrow.aspx?sign=${signNumber}`;
-      break;
-    case 'week':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-weekly.aspx?sign=${signNumber}`;
-      break;
-    case 'month':
-      url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-monthly.aspx?sign=${signNumber}`;
-      break;
-    default:
-      return res.status(400).json({ error: 'Invalid period parameter.' });
-  }
+  // Формируем URL для конкретного периода
+  const url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;
 
   try {
-    const { data } = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-      },
-    });
-
+    // Получаем HTML страницы
+    const { data } = await axios.get(url);
     const $ = load(data);
-    // Проверьте и обновите селектор, если нужно
-    const horoscopeText = $('.main-horoscope p').text().trim(); 
 
+    // Ищем элемент, содержащий текст гороскопа
+    const horoscopeText = $('.main-horoscope p').text().trim();
+
+    // Проверяем, был ли найден текст
     if (!horoscopeText) {
-      console.error('Horoscope element not found in the HTML:', data);
       return res.status(404).json({ error: 'Horoscope not found.' });
     }
 
+    // Возвращаем гороскоп в JSON формате
     return res.status(200).json({ horoscope: horoscopeText });
   } catch (error) {
     console.error('Error fetching horoscope:', error.message);
