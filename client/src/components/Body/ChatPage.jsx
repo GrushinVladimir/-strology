@@ -92,7 +92,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
       decrementQuestions();   
       handleSendMessage(question);   
     } else {  
-      alert('Вы исчерпали лимит вопросов.');  
+      handleSendMessage(question);   
     }  
   };  
 
