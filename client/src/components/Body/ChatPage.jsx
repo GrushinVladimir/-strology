@@ -15,7 +15,6 @@ const ChatPage = ({ remainingQuestions, setRemainingQuestions })  => {
     { sender: 'bot', text: 'Ждёт ли меня повышение на работе?' },  
   ]);  
   const [inputMessage, setInputMessage] = useState('');  
-  const [remainingQuestions, setRemainingQuestions] = useState(10); // Начальное значение  
 
   // Вытаскиваем API ключ  
   useEffect(() => {  
