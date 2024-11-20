@@ -6,6 +6,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
+const testResultRoutes = require('./routes/testResultRoutes');  
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
@@ -20,6 +21,8 @@ console.log('API_KEY:', API_KEY);
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
+app.use('/api/test-results', testResultRoutes);  
+
 
 // Подключение к MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -32,6 +35,7 @@ const serverUrl = 'https://strology.vercel.app';
 bot.setWebHook(`${serverUrl}/bot${token}`)
     .then(() => console.log('Webhook установлен.'))
     .catch(err => console.error('Ошибка при установке вебхука:', err));
+
 
 
 
