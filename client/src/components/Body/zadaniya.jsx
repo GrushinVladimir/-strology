@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';  
 
 const Zadaniya = ({ telegramId }) => {  
+  const { telegramId } = useTelegram();
   const navigate = useNavigate();  
   const { user } = useTelegram();  
   const [userData, setUserData] = useState(null);  
