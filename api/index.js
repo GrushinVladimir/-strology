@@ -28,6 +28,11 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
     .then(() => console.log('Webhook установлен.'))
     .catch(err => console.error('Ошибка при установке вебхука:', err));
 
+// Эндпоинт для получения API_KEY
+app.get('/api/config', (req, res) => {
+    res.json({ apiKey: process.env.REACT_APP_CHATGPT_API_KEY });
+});
+
 // Маршрут для обработки сообщений Telegram
 app.post(`/bot${token}`, async (req, res) => {
     const msg = req.body;
