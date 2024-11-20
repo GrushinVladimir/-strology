@@ -74,7 +74,11 @@ const Zadaniya = ({ telegramId, remainingQuestions }) => {
         </div>  
         <div className="zadaniya-block">  
           <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
-          <span className='right'>{remainingQuestions} (осталось)</span>  
+          {remainingQuestions > 0 ? (  
+        <span className='right'>X {remainingQuestions} </span>  
+      ) : (  
+        <span className='right'>Получить</span> 
+      )}  
         </div>  
         
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
