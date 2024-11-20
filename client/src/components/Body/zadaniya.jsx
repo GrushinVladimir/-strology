@@ -11,7 +11,6 @@ const Zadaniya = ({ telegramId,remainingQuestions, onQuestionAsked }) => {
   const [isTestCompleted, setTestCompleted] = useState(false);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
-  const [remainingQuestions, setRemainingQuestions] = useState(10); // Начальное значение X 10  
 
   const fetchUserData = async () => {  
     try {  
@@ -51,11 +50,7 @@ const Zadaniya = ({ telegramId,remainingQuestions, onQuestionAsked }) => {
     const intervalId = setInterval(fetchUserData, 10000);  
     return () => clearInterval(intervalId);  
   }, [telegramId]);   
-  const handleQuestionAsked = () => {  
-    if (remainingQuestions > 0) {  
-      setRemainingQuestions(remainingQuestions - 1);  
-    }  
-  };  
+
   return (  
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
