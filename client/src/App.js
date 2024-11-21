@@ -21,65 +21,65 @@ function App() {
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
-  const loadRemainingQuestions = () => {  
-    const storedData = localStorage.getItem('remainingQuestions');  
-    const storedTime = localStorage.getItem('questionsTimestamp');  
-    const userQuestions = storedData ? JSON.parse(storedData) : {};  
-    const currentQuestionsCount = userQuestions[telegramId] || initialQuestionsCount;  
-  
-    if (storedTime) {  
-      const timestamp = new Date(storedTime);  
-      const now = new Date();  
-      const daysDifference = Math.floor((now - timestamp) / (1000 * 60 * 60 * 24));  
-  
-      if (daysDifference < 7) {  
-        setRemainingQuestions(currentQuestionsCount);  
+  // Функция для загрузки оставшихся вопросов из БД  
+  const loadRemainingQuestions = async () => {  
+    try {  
+      const response = await fetch(`/api/questions/${telegramId}`); // Запрос к вашему API  
+      const data = await response.json();  
+      if (data && data.remainingQuestions !== undefined) {  
+        setRemainingQuestions(data.remainingQuestions);  
       } else {  
-        delete userQuestions[telegramId];  
-        localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
-        setRemainingQuestions(initialQuestionsCount);  
-        console.log('Счетчик сброшен для telegramId:', telegramId);  
+        setRemainingQuestions(initialQuestionsCount); // Если данных нет, устанавливаем начальное значение  
       }  
-    } else {  
-      setRemainingQuestions(currentQuestionsCount);  
+    } catch (error) {  
+      console.error('Ошибка при загрузке оставшихся вопросов:', error);  
+      setRemainingQuestions(initialQuestionsCount); // Устанавливаем начальное значение при ошибке  
+    }  
+  };  
+
+  // Функция для сохранения оставшихся вопросов в БД  
+  const saveRemainingQuestions = async (count) => {  
+    try {  
+      await fetch(`/api/questions/${telegramId}`, {  
+        method: 'POST',  
+        headers: { 'Content-Type': 'application/json' },  
+        body: JSON.stringify({ remainingQuestions: count }),  
+      });  
+    } catch (error) {  
+      console.error('Ошибка при сохранении оставшихся вопросов:', error);  
     }  
   };  
 
   useEffect(() => {  
     if (telegramId) {  
-      console.log('Загружаем оставшиеся вопросы для telegramId:', telegramId);  
-      loadRemainingQuestions();  
+      loadRemainingQuestions(); // Загружаем оставшиеся вопросы при наличии telegramId  
     }  
-  }, [telegramId]);   
-  
-  const saveRemainingQuestions = (count) => {  
-    const storedData = localStorage.getItem('remainingQuestions');  
-    const userQuestions = storedData ? JSON.parse(storedData) : {};  
-    userQuestions[telegramId] = count;  
-    localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
-    localStorage.setItem('questionsTimestamp', new Date().toISOString());  
-    console.log('Сохраненные данные:', userQuestions);  
-  };  
-  
+  }, [telegramId]);  
+
   const decrementQuestions = () => {  
     if (remainingQuestions > 0) {  
       const newCount = remainingQuestions - 1;  
       setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount);  
+      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
     }  
   };  
 
   const handleGetMoreQuestions = () => {  
     setRemainingQuestions(initialQuestionsCount);  
-    saveRemainingQuestions(initialQuestionsCount);  
+    saveRemainingQuestions(initialQuestionsCount); // Сохраняем начальное количество вопросов в БД  
     alert('Получение новых вопросов...');  
   };  
+
+  useEffect(() => {  
+    tg.ready();  
+  }, [tg]);  
 
   useEffect(() => {  
     async function checkUser() {  
       try {  
         const id = tg?.initDataUnsafe?.user?.id;  
-        setTelegramId(id);  
+        setTelegramId(id); // Сохраняем telegramId в состоянии  
+
         const response = await fetch(`/api/users/${id}`);  
         const data = await response.json();  
 
@@ -92,18 +92,18 @@ function App() {
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
       }  
-    }    if (!isUserExist) {  
+    }  
+
+    if (!isUserExist) {  
       checkUser();  
     }  
-  }, [isUserExist, tg]);  
+  }, [tg, navigate, isUserExist]);  
 
-  // Функция для обработки начала  
-  const handleStart = (name) => {  
-    setUserName(name);  
+  const handleStart = () => {  
+    setUserName(userName);  
     setStep(1);  
   };  
 
-  // Функция для обработки перехода на следующий шаг  
   const handleNext = (data) => {  
     setFormData((prev) => ({ ...prev, ...data }));  
     setStep((prev) => prev + 1);  
@@ -127,12 +127,8 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
         <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
         <Route path="/test" element={<Test />} />  
-        <Route path="/zadaniya" element={  
-          <Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />  
-        } />  
-        <Route path="/chat" element={  
-          <ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />  
-        } />  
+        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
+        <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
       </Routes>  
     </div>  
   );  

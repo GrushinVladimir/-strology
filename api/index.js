@@ -13,12 +13,10 @@ const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
 const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
 const GOOGLE = process.env.GOOGLE_KEY;
+const Question = require('./models/Question');  
 
 
 const app = express();
-
-console.log('API_KEY:', API_KEY);
-console.log('GOOGLE_KEY:', GOOGLE);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -30,6 +28,37 @@ app.get('/api/horoscope', horoscopeHandler);
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
+
+
+    app.post('/api/questions/:id', async (req, res) => {  
+        const { id } = req.params;  
+        const { remainingQuestions } = req.body;  
+      
+        try {  
+          const questionData = await Question.findOneAndUpdate(  
+            { telegramId: id },  
+            { remainingQuestions },  
+            { new: true, upsert: true }  
+          );  
+          res.json(questionData);  
+        } catch (error) {  
+          res.status(500).json({ error: 'Не удалось сохранить количество вопросов' });  
+        }  
+      });  
+      app.get('/api/questions/:id', async (req, res) => {  
+        const { id } = req.params;  
+        try {  
+          const questionData = await Question.findOne({ telegramId: id });  
+          if (questionData) {  
+            res.json({ remainingQuestions: questionData.remainingQuestions });  
+          } else {  
+            res.json({ remainingQuestions: 10 }); // Начальное значение, если ничего нет  
+          }  
+        } catch (error) {  
+          res.status(500).json({ error: 'Не удалось получить количество вопросов' });  
+        }  
+      });  
+
 
 // Инициализация бота
 const bot = new TelegramBot(token, { polling: false });
@@ -131,6 +160,7 @@ app.get('/api/users/:telegramId', async (req, res) => {
         res.status(500).json({ message: 'Ошибка сервера' });
     }
 });
+
 
 // Запуск сервера
 const PORT = process.env.PORT || 5000;
