@@ -345,7 +345,7 @@ h2{
 
 .case-img{
   opacity: 0; /* Начальная непрозрачность 0 */
-  transition: opacity 1s ease-in-out; /* Плавный переход по свойству opacity */
+  transition: opacity .4s ease-in-out; /* Плавный переход по свойству opacity */
     object-fit: cover;
     height: 100%; }
     .case-img-ru{
