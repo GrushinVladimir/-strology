@@ -480,20 +480,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       </div>  
     );  
 
-    case 5:
-      return (
-    <div className='body'>
-      <h2>Ваши данные</h2>
-      <p>Время рождения: {hours[hourIndex]}:{minutes[minuteIndex]}</p>
-      <p>Дата рождения: {day}.{month}.{year}</p>
-      <p>Место рождения: {placeOfBirth}</p>
-      <p>Имя пользователя: {username}</p>
-      <div className="bottom-container ">
-      <button onClick={() => handleFinish()} className='button'><span>Завершить</span></button>  
-      </div>
-    </div>
-        
-      );
+
   default:  
     return null;  
 }  
