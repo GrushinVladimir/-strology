@@ -1,3 +1,4 @@
+// api/horoscope.js  
 const axios = require('axios');  
 const { load } = require('cheerio');  
 
@@ -15,15 +16,6 @@ const zodiacSigns = {
   Стрелец: 9,  
   Козерог: 10,  
 };  
-
-async function fetchHoroscope(url) {  
-  const browser = await puppeteer.launch();  
-  const page = await browser.newPage();  
-  await page.goto(url, { waitUntil: 'networkidle2' });  
-  const horoscopeText = await page.$eval('div.horoscope__content p', el => el.innerText);  
-  await browser.close();  
-  return horoscopeText;  
-}  
 
 async function handler(req, res) {  
   const { zodiacSign, period } = req.query;  
@@ -52,10 +44,19 @@ async function handler(req, res) {
   }  
 
   try {  
-    const horoscopeText = await fetchHoroscope(url);  
+    const { data } = await axios.get(url, {  
+      headers: {  
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'  
+      }  
+    });  
+        console.log(data); // Логируем полученные данные  
+    const $ = load(data);  
+    const horoscopeText = $('div.horoscope__content p').text().trim();  
+
     if (!horoscopeText) {  
       return res.status(404).json({ error: 'Horoscope not found' });  
     }  
+
     return res.status(200).json({ horoscope: horoscopeText });  
   } catch (error) {  
     console.error('Error fetching horoscope:', error);  
