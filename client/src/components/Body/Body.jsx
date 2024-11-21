@@ -7,6 +7,7 @@ import './react-datepicker.css';
 import { registerLocale, setDefaultLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru'; 
 import axios from 'axios';
+import LazyLoad from 'react-lazyload';
 
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
@@ -355,7 +356,12 @@ const handleNextWithValidation = (currentData) => {
                     <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
                   </div>
                   <div className="image-container" style={{marginBottom: '3vh'}}>
+                  <LazyLoad height={200} offset={100}>
+
                     <img className="case-img-ru" src="img/forms/Group 1.png" alt="" />
+
+                  </LazyLoad>
+
                   </div>
                   <div className="center-container">
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding:'0'
@@ -451,8 +457,11 @@ const handleNextWithValidation = (currentData) => {
               <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
           </div>
           <div className="image-container">
+          <LazyLoad height={200} offset={100}>
             <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }} className={`cases-img ${isVisible ? 'visible' : ''}`}
+      
             />
+               </LazyLoad>
           </div>
           <div className="center-container  flex">
             <input className="input-field " value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
@@ -472,8 +481,11 @@ const handleNextWithValidation = (currentData) => {
         <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
       </div>
       <div className="image-container">
+      <LazyLoad height={200} offset={100}>
+
           <img src="img/forms/imya.png" alt=""  className={`case-img ${isVisible ? 'visible' : ''}`}
               />
+               </LazyLoad>
       </div>
       <div className="center-container flex">
       <input 
