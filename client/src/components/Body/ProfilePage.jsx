@@ -51,15 +51,24 @@ const ProfilePage = ({ telegramId }) => {
     if (loading) return <p>Загрузка...</p>; // Display loading indicator  
     if (error) return <p>{error}</p>; // Display error message  
 
-    const handleInviteClick = () => {  
-        if (remainingInvites > 0) {  
-            const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';  
-            window.open(inviteLink, '_blank');  
-            setRemainingInvites(remainingInvites - 1);  
-        } else {  
-            alert('Вы исчерпали лимит приглашений!');  
-        }  
-    };  
+    const handleInviteClick = () => {
+        const inviteLink = `https://t.me/mygoroskopbot_lite_new_bot?start=${telegramId}`;
+        if (navigator.share) {
+            // Используем Web Share API, если поддерживается
+            navigator.share({
+                title: 'Приглашение в астрологическое приложение',
+                text: 'Присоединяйся к нашему астрологическому приложению!',
+                url: inviteLink,
+            }).catch((error) => console.error('Ошибка при отправке приглашения:', error));
+        } else {
+            // Альтернативный вариант: копируем ссылку в буфер обмена
+            navigator.clipboard.writeText(inviteLink).then(() => {
+                alert('Ссылка для приглашения скопирована в буфер обмена!');
+            }).catch((err) => {
+                console.error('Ошибка при копировании ссылки:', err);
+            });
+        }
+    };
 
     return (  
         <div className='Prof'>  
