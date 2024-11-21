@@ -9,7 +9,7 @@ import ProfilePage from './components/Body/ProfilePage';
 import Test from './components/Body/test';  
 import Zadaniya from './components/Body/zadaniya';  
 import ChatPage from './components/Body/ChatPage'; 
-import FAQPage from './FAQPage'; 
+import FAQPage from './components/Body/FAQPage'; 
 
 function App() {  
   const { tg } = useTelegram();  
