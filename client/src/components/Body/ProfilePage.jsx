@@ -113,13 +113,13 @@ const ProfilePage = ({ telegramId }) => {
                     </div>  
                     <div className="bottom-profile">  
                             <Link   Link to="/faq">  {/* Переход на страницу FAQ */}  
-                                <p style={{ cursor: 'pointer', textDecoration: 'underline' }}>Часто задаваемые вопросы</p>  
+                                <p style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Часто задаваемые вопросы</p>  
                             </Link>  
                         <div>  
                             <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
                             </div>  
                         <div>  
-                            <p>Поддержка</p>  
+                        <p onClick={() => window.location = 'mailto:support@example.com'} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Поддержка</p> 
                         </div>  
                     </div>  
                 </div>  
