@@ -225,7 +225,7 @@ const handleNextWithValidation = (currentData) => {
     // Устанавливаем таймер для плавного появления изображения
     const timer = setTimeout(() => {
         setIsVisible(true);
-    }, 100); // Задержка перед появлением (в миллисекундах)
+    }, 400); // Задержка перед появлением (в миллисекундах)
 
     return () => clearTimeout(timer); // Очищаем таймер при размонтировании
 }, []);
