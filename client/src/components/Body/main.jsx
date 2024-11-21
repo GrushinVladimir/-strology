@@ -239,9 +239,9 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
                 <p>Загрузка...</p> // Сообщение о загрузке
               ) : (
                 <>
-                <h2>{activeTab} гороскоп для {zodiacSign}</h2>
+                <h2>{currentDate}</h2>
                 <p>{horoscope || 'Гороскоп пока недоступен'}</p>
-                <p><strong>Дата:</strong> {currentDate}</p>
+                
               </>
             )}
           </>
