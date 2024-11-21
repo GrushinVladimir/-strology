@@ -12,11 +12,13 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
 const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
+const GOOGLE_KEY = process.env.GOOGLE_KEY;
+
 
 const app = express();
 
-
 console.log('API_KEY:', API_KEY);
+console.log('GOOGLE_KEY:', GOOGLE_KEY);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,13 +40,14 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
 
 
 
-
-
 // Эндпоинт для получения API_KEY
 app.get('/api/config', (req, res) => {
     res.json({ apiKey: process.env.REACT_APP_CHAT_API_KEY });
 });
-
+// Эндпоинт для получения API_KEY
+app.get('/api/config-google', (req, res) => {
+    res.json({ apiKey: process.env.GOOGLE_KEY });
+});
 // Маршрут для обработки сообщений Telegram
 app.post(`/bot${token}`, async (req, res) => {
     const msg = req.body;
