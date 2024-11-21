@@ -22,48 +22,59 @@ function App() {
   const initialQuestionsCount = 10; // Начальное количество вопросов  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
-    const loadRemainingQuestions = () => {  
+  const loadRemainingQuestions = () => {  
     const storedData = localStorage.getItem('remainingQuestions');  
     const storedTime = localStorage.getItem('questionsTimestamp');  
-
-    if (storedData) {  
+  
+    // Проверяем, есть ли сохраненные данные для текущего telegramId  
+    const userQuestions = storedData ? JSON.parse(storedData) : {};  
+    const currentQuestionsCount = userQuestions[telegramId] || initialQuestionsCount;  
+  
+    if (storedTime) {  
       const timestamp = new Date(storedTime);  
       const now = new Date();  
       const daysDifference = Math.floor((now - timestamp) / (1000 * 60 * 60 * 24));  
-
+  
       if (daysDifference < 7) {  
-        setRemainingQuestions(parseInt(storedData, 10));  
+        setRemainingQuestions(currentQuestionsCount);  
       } else {  
-        localStorage.removeItem('remainingQuestions');  
-        localStorage.removeItem('questionsTimestamp');  
+        // Если прошло больше 7 дней, сбрасываем счетчик  
+        delete userQuestions[telegramId]; // Удаляем данные для текущего пользователя  
+        localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions)); // Сохраняем обновленный объект  
         setRemainingQuestions(initialQuestionsCount);  
       }  
+    } else {  
+      setRemainingQuestions(currentQuestionsCount);  
     }  
-  };  
-
-  const saveRemainingQuestions = (count) => {  
-    localStorage.setItem('remainingQuestions', count);  
-    localStorage.setItem('questionsTimestamp', new Date().toISOString());  
   };  
 
   useEffect(() => {  
-    loadRemainingQuestions();  
-  }, []);  
-
-  const decrementQuestions = () => {  
-    if (remainingQuestions > 0) {  
-      const newCount = remainingQuestions - 1;  
-      setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount);  
+    if (telegramId) { // Проверяем, установлен ли telegramId  
+      loadRemainingQuestions();  
     }  
+  }, [telegramId]); 
+  
+  const saveRemainingQuestions = (count) => {  
+    const storedData = localStorage.getItem('remainingQuestions');  
+    const userQuestions = storedData ? JSON.parse(storedData) : {};  
+  
+    userQuestions[telegramId] = count; // Обновляем счетчик для текущего telegramId  
+    localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
+    localStorage.setItem('questionsTimestamp', new Date().toISOString());  
   };  
+const decrementQuestions = () => {  
+  if (remainingQuestions > 0) {  
+    const newCount = remainingQuestions - 1;  
+    setRemainingQuestions(newCount);  
+    saveRemainingQuestions(newCount);  
+  }  
+};  
 
-  const handleGetMoreQuestions = () => {  
-    setRemainingQuestions(initialQuestionsCount);  
-    saveRemainingQuestions(initialQuestionsCount);  
-    alert('Получение новых вопросов...');  
-  };  
-
+const handleGetMoreQuestions = () => {  
+  setRemainingQuestions(initialQuestionsCount);  
+  saveRemainingQuestions(initialQuestionsCount);  
+  alert('Получение новых вопросов...');  
+};  
 
 
   useEffect(() => {
