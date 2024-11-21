@@ -458,7 +458,7 @@ const handleNextWithValidation = (currentData) => {
           </div>
           <div className="image-container">
           <LazyLoad height={200} offset={100}>
-            <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }} className={`cases-img ${isVisible ? 'visible' : ''}`}
+            <img src="img/forms/planet.png" alt=""  className={`case-img ${isVisible ? 'visible' : ''}`}
       
             />
                </LazyLoad>
