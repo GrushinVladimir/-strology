@@ -54,30 +54,29 @@ const ProfilePage = ({ telegramId }) => {
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
     
-        tg.showPopup(
-            {
+        if (Telegram.WebApp) {
+            Telegram.WebApp.showPopup({
                 title: "Пригласить друга",
-                message: "Выберите друга, которому хотите отправить ссылку на приложение",
+                message: "Выберите друга для отправки ссылки на приложение",
                 buttons: [
-                    { id: "send", text: "Отправить" },
-                    { id: "cancel", text: "Отмена" },
+                    {
+                        id: "send",
+                        text: "Отправить",
+                        type: "default",
+                        link: inviteLink, // Открывает Telegram с выбором друга
+                    },
+                    {
+                        id: "cancel",
+                        text: "Отмена",
+                        type: "destructive",
+                    },
                 ],
-            },
-            (buttonId) => {
-                if (buttonId === "send") {
-                    tg.sendData(inviteLink); // Отправка ссылки
-                    tg.showPopup({
-                        title: "Ссылка отправлена!",
-                        message: "Ваш друг получил приглашение через бота.",
-                        buttons: [{ id: "ok", text: "Ок" }],
-                    });
-                } else if (buttonId === "cancel") {
-                    console.log("Приглашение отменено");
-                }
-            }
-        );
+            });
+        } else {
+            console.log("Telegram WebApp не поддерживает ваш браузер");
+        }
     };
-    
+     
 
     return (  
         <div className='Prof'>  
