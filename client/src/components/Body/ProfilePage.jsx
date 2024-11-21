@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useTelegram } from '../hooks/useTelegram';  
 
 const ProfilePage = ({ telegramId }) => {  
-    const { user } = useTelegram();  
+    const { user, tg } = useTelegram();  
     const [userData, setUserData] = useState(null);  
     const [zodiacSign, setZodiacSign] = useState(null);  
     const [loading, setLoading] = useState(true);  
@@ -53,18 +53,22 @@ const ProfilePage = ({ telegramId }) => {
 
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
+        tg.sendData(inviteLink); // Отправка данных (можно использовать для перенаправления)
         
-        if (navigator.share) {
-            navigator.share({
-                title: 'Приглашение в Telegram-бот',
-                text: 'Присоединяйтесь к нашему Telegram-боту!',
-                url: inviteLink,
-            }).catch((err) => console.error('Ошибка при отправке приглашения:', err));
-        } else {
-            navigator.clipboard.writeText(inviteLink).then(() => {
-                alert('Ссылка скопирована! Вы можете вставить её в мессенджер или email.');
-            }).catch((err) => console.error('Ошибка при копировании ссылки:', err));
-        }
+        tg.showPopup({
+            title: "Пригласить друга",
+            message: "Выберите друга, которому хотите отправить ссылку на приложение",
+            buttons: [
+                { id: "send", text: "Отправить" },
+                { id: "cancel", text: "Отмена" },
+            ],
+        }, (buttonId) => {
+            if (buttonId === "send") {
+                tg.shareInvoice({
+                    url: inviteLink,
+                });
+            }
+        });
     };
 
     return (  
