@@ -18,12 +18,14 @@ const zodiacSigns = {
 };  
 
 async function handler(req, res) {  
-
   const { zodiacSign, period } = req.query;  
-
   const signNumber = zodiacSigns[zodiacSign];  
-  let url = '';  
 
+  if (!signNumber) {  
+    return res.status(400).json({ error: 'Invalid zodiac sign' });  
+  }  
+
+  let url = '';  
   switch (period) {  
     case 'today':  
       url = `https://www.horoscope.com/us/horoscopes/general/horoscope-general-daily-today.aspx?sign=${signNumber}`;  
@@ -43,6 +45,7 @@ async function handler(req, res) {
 
   try {  
     const { data } = await axios.get(url);  
+    console.log(data); // Логируем полученные данные  
     const $ = load(data);  
     const horoscopeText = $('div.horoscope__content p').text().trim();  
 
