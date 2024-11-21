@@ -52,25 +52,24 @@ const ProfilePage = ({ telegramId }) => {
     if (error) return <p>{error}</p>; // Display error message  
 
     const handleInviteClick = () => {
-        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на вашего бота
         const inviteText = 'Присоединяйтесь к нашему Telegram-боту, чтобы узнать свой гороскоп!';
-        
+    
         if (navigator.share) {
-            // Проверяем поддержку Web Share API
             navigator.share({
                 title: 'Приглашение в Telegram-бот',
                 text: inviteText,
-                url: inviteLink,
+                url: inviteLink, // Ссылка, которая будет включена в сообщение
             })
             .then(() => {
                 console.log('Приглашение успешно отправлено');
             })
             .catch((error) => {
-                console.error('Ошибка при отправке приглашения:', error);
+                console.error('Ошибка при использовании Web Share API:', error);
             });
         } else {
-            // Альтернатива для десктопных устройств
-            alert(`Скопируйте ссылку и отправьте другу: ${inviteLink}`);
+            // Если Web Share API не поддерживается
+            alert(`Ваше устройство не поддерживает функцию общего доступа. Скопируйте ссылку: ${inviteLink}`);
         }
     };
 
