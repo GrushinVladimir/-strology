@@ -53,23 +53,31 @@ const ProfilePage = ({ telegramId }) => {
 
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
-        tg.sendData(inviteLink); // Отправка данных (можно использовать для перенаправления)
-        
-        tg.showPopup({
-            title: "Пригласить друга",
-            message: "Выберите друга, которому хотите отправить ссылку на приложение",
-            buttons: [
-                { id: "send", text: "Отправить" },
-                { id: "cancel", text: "Отмена" },
-            ],
-        }, (buttonId) => {
-            if (buttonId === "send") {
-                tg.shareInvoice({
-                    url: inviteLink,
-                });
+    
+        tg.showPopup(
+            {
+                title: "Пригласить друга",
+                message: "Выберите друга, которому хотите отправить ссылку на приложение",
+                buttons: [
+                    { id: "send", text: "Отправить" },
+                    { id: "cancel", text: "Отмена" },
+                ],
+            },
+            (buttonId) => {
+                if (buttonId === "send") {
+                    tg.sendData(inviteLink); // Отправка ссылки
+                    tg.showPopup({
+                        title: "Ссылка отправлена!",
+                        message: "Ваш друг получил приглашение через бота.",
+                        buttons: [{ id: "ok", text: "Ок" }],
+                    });
+                } else if (buttonId === "cancel") {
+                    console.log("Приглашение отменено");
+                }
             }
-        });
+        );
     };
+    
 
     return (  
         <div className='Prof'>  
