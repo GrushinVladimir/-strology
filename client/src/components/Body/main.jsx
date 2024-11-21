@@ -3,12 +3,20 @@ import axios from 'axios';
 import { load } from 'cheerio';
 import { useLocation, Link, useParams } from 'react-router-dom';
 
-
-const translateText = async (text) => {
-  const apiKey = 'AIzaSyBjA1Vb3DcbyZGvy9I2drZlEUbOd6ApbVY';
-  const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
-
+const getApiKey = async () => {
   try {
+    const response = await axios.get('/api/config-google');
+    return response.data.apiKey;
+  } catch (error) {
+    console.error('Ошибка при получении ключа API:', error);
+    throw new Error('Не удалось получить ключ API');
+  }
+};
+const translateText = async (text) => {
+  try {
+    const apiKey = await getApiKey(); // Получаем ключ API
+    const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+
     const response = await axios.post(url, {
       q: text,
       target: 'ru',
@@ -17,7 +25,7 @@ const translateText = async (text) => {
     return response.data.data.translations[0].translatedText;
   } catch (error) {
     console.error('Ошибка перевода текста:', error);
-    return text;
+    return text; // Возвращаем оригинальный текст в случае ошибки
   }
 };
 
