@@ -125,7 +125,14 @@ const ProfilePage = ({ telegramId }) => {
                             <p>Часто задаваемые вопросы</p>  
                         </div>  
                         <div>  
-                            <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
+                            <p onClick={handleInviteClick} style={{ backgroundColor: '#28a745',
+            color: 'white',
+            padding: '10px 20px',
+            fontSize: '16px',
+            borderRadius: '5px',
+            border: 'none',
+            cursor: 'pointer',
+            width: '100%', }}>Пригласить друга</p>  
                             </div>  
                         <div>  
                             <p>Поддержка</p>  
