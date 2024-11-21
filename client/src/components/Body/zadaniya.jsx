@@ -63,7 +63,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
   }  
 
   // Calculate completed tasks  
-  const completedTasks = (remainingQuestions > 0 ? 3 : 0) + (isTestCompleted ? 2 : 0);  
+  const completedTasks = (remainingQuestions <= 0 ? 3 : 0) + (isTestCompleted ? 2 : 0);  
   
   return (  
     <div className='Zadaniys'>  
