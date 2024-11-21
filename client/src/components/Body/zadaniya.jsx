@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';  
 import { useTelegram } from '../hooks/useTelegram';  
-import { Link } from 'react-router-dom';  
-import { useNavigate } from 'react-router-dom';  
-import axios from 'axios';   
+import { Link, useNavigate } from 'react-router-dom';  
+import axios from 'axios';  
 
 const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handleGetMoreQuestions }) => {  
   const navigate = useNavigate();  
@@ -24,8 +23,6 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
     } catch (error) {  
       console.error('Ошибка при получении данных пользователя:', error);  
       setError('Ошибка при получении данных пользователя');  
-    } finally {  
-      setLoading(false);  
     }  
   };  
 
@@ -45,11 +42,26 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
 
   useEffect(() => {  
     if (!telegramId) return;  
-    fetchUserData();  
-    fetchTestResults();  
+    const fetchData = async () => {  
+      setLoading(true); // Start loading  
+      await fetchUserData();  
+      await fetchTestResults();  
+      setLoading(false); // Stop loading  
+    };  
+  
+    fetchData();  
     const intervalId = setInterval(fetchUserData, 10000);  
     return () => clearInterval(intervalId);  
-  }, [telegramId]);   
+  }, [telegramId]);  
+
+  if (loading) {  
+    return <div>Загрузка...</div>; // Show loading indicator  
+  }  
+
+  if (error) {  
+    return <div>{error}</div>; // Show error message if there's an error  
+  }  
+
 
 
   return (  
@@ -71,21 +83,21 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
         </div>  
         <div className="zadaniya-block">  
           <span style={{ width: '60%', textAlign: 'left'}}>Заполнить профиль </span>  
-          <span className='right'>Получить</span>  
+          <span className='right'><a href="">Получить</a></span>  
         </div>  
         <div className="zadaniya-block">  
           <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
           {remainingQuestions > 0 ? (  
         <span className='right'>X {remainingQuestions}  </span>  
       ) : (  
-        <span className='right'>Получить</span> 
+        <span className='right'><a href="">Получить</a></span> 
       )}  
         </div>  
         
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: 2</span>  
-          <span className='right'>{isTestCompleted ? 'Получить' : 'Не выполнено'}</span>  
+          <span className='right'>{isTestCompleted ?(<a href="">Получить</a> ) : ('Не выполнено')}</span>  
         </div>  
       </div>   
 
