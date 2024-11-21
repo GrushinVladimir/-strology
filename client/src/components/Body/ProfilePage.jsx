@@ -52,21 +52,19 @@ const ProfilePage = ({ telegramId }) => {
     if (error) return <p>{error}</p>; // Display error message  
 
     const handleInviteClick = () => {
-        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на вашего бота
-        const inviteText = 'Присоединяйтесь к нашему Telegram-боту, чтобы узнать свой гороскоп!';
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
     
         if (navigator.share) {
-            // Проверяем поддержку Web Share API
             navigator.share({
                 title: 'Приглашение в Telegram-бот',
-                text: inviteText,
+                text: 'Присоединяйтесь к нашему Telegram-боту!',
                 url: inviteLink,
-            })
-            .then(() => console.log('Приглашение отправлено!'))
-            .catch((error) => console.error('Ошибка при отправке приглашения:', error));
+            });
         } else {
-            // Если API не поддерживается, показываем уведомление
-            alert(`Копируйте ссылку и делитесь вручную: ${inviteLink}`);
+            // Альтернативный метод для устройств без Web Share API
+            navigator.clipboard.writeText(inviteLink).then(() => {
+                alert('Ссылка скопирована! Вы можете вставить её в мессенджер или email.');
+            });
         }
     };
 
@@ -125,14 +123,7 @@ const ProfilePage = ({ telegramId }) => {
                             <p>Часто задаваемые вопросы</p>  
                         </div>  
                         <div>  
-                            <p onClick={handleInviteClick} style={{ backgroundColor: '#28a745',
-            color: 'white',
-            padding: '10px 20px',
-            fontSize: '16px',
-            borderRadius: '5px',
-            border: 'none',
-            cursor: 'pointer',
-            width: '100%', }}>Пригласить друга</p>  
+                            <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
                             </div>  
                         <div>  
                             <p>Поддержка</p>  
