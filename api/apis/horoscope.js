@@ -18,9 +18,7 @@ const zodiacSigns = {
 };  
 
 async function handler(req, res) {  
-  console.log(data); // Выводим HTML страницы в консоль
-console.log(response.status); // Проверить статус ответа
-console.log(data); // Проверить данные ответа
+
   const { zodiacSign, period } = req.query;  
 
   const signNumber = zodiacSigns[zodiacSign];  
