@@ -53,18 +53,17 @@ const ProfilePage = ({ telegramId }) => {
 
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
-    
+        
         if (navigator.share) {
             navigator.share({
                 title: 'Приглашение в Telegram-бот',
                 text: 'Присоединяйтесь к нашему Telegram-боту!',
                 url: inviteLink,
-            });
+            }).catch((err) => console.error('Ошибка при отправке приглашения:', err));
         } else {
-            // Альтернативный метод для устройств без Web Share API
             navigator.clipboard.writeText(inviteLink).then(() => {
                 alert('Ссылка скопирована! Вы можете вставить её в мессенджер или email.');
-            });
+            }).catch((err) => console.error('Ошибка при копировании ссылки:', err));
         }
     };
 
