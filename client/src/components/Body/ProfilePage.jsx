@@ -56,20 +56,17 @@ const ProfilePage = ({ telegramId }) => {
         const inviteText = 'Присоединяйтесь к нашему Telegram-боту, чтобы узнать свой гороскоп!';
     
         if (navigator.share) {
+            // Проверяем поддержку Web Share API
             navigator.share({
                 title: 'Приглашение в Telegram-бот',
                 text: inviteText,
-                url: inviteLink, // Ссылка, которая будет включена в сообщение
+                url: inviteLink,
             })
-            .then(() => {
-                console.log('Приглашение успешно отправлено');
-            })
-            .catch((error) => {
-                console.error('Ошибка при использовании Web Share API:', error);
-            });
+            .then(() => console.log('Приглашение отправлено!'))
+            .catch((error) => console.error('Ошибка при отправке приглашения:', error));
         } else {
-            // Если Web Share API не поддерживается
-            alert(`Ваше устройство не поддерживает функцию общего доступа. Скопируйте ссылку: ${inviteLink}`);
+            // Если API не поддерживается, показываем уведомление
+            alert(`Копируйте ссылку и делитесь вручную: ${inviteLink}`);
         }
     };
 
