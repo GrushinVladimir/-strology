@@ -1,15 +1,14 @@
-import './App.css';
-import { useTelegram } from './components/hooks/useTelegram';
-import Header from './components/Header/Header';
-import Body from './components/Body/Body';
-import MainPage from './components/Body/main';
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import ProfilePage from './components/Body/ProfilePage';
-import Test from './components/Body/test';
-import Zadaniya from './components/Body/zadaniya';
-import ChatPage from './components/Body/ChatPage';
-
+import './App.css';  
+import { useTelegram } from './components/hooks/useTelegram';  
+import Header from './components/Header/Header';  
+import Body from './components/Body/Body';  
+import MainPage from './components/Body/main';  
+import React, { useEffect, useState } from 'react';  
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
+import ProfilePage from './components/Body/ProfilePage';  
+import Test from './components/Body/test';  
+import Zadaniya from './components/Body/zadaniya';  
+import ChatPage from './components/Body/ChatPage';  
 
 function App() {  
   const { tg } = useTelegram();  
@@ -17,16 +16,14 @@ function App() {
   const [userName, setUserName] = useState('');  
   const [formData, setFormData] = useState({});  
   const [isUserExist, setIsUserExist] = useState(false);  
-  const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId  
+  const [telegramId, setTelegramId] = useState(null);  
   const navigate = useNavigate();  
-  const initialQuestionsCount = 10; // Начальное количество вопросов  
+  const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
   const loadRemainingQuestions = () => {  
     const storedData = localStorage.getItem('remainingQuestions');  
     const storedTime = localStorage.getItem('questionsTimestamp');  
-  
-    // Проверяем, есть ли сохраненные данные для текущего telegramId  
     const userQuestions = storedData ? JSON.parse(storedData) : {};  
     const currentQuestionsCount = userQuestions[telegramId] || initialQuestionsCount;  
   
@@ -38,10 +35,10 @@ function App() {
       if (daysDifference < 7) {  
         setRemainingQuestions(currentQuestionsCount);  
       } else {  
-        // Если прошло больше 7 дней, сбрасываем счетчик  
-        delete userQuestions[telegramId]; // Удаляем данные для текущего пользователя  
-        localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions)); // Сохраняем обновленный объект  
+        delete userQuestions[telegramId];  
+        localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
         setRemainingQuestions(initialQuestionsCount);  
+        console.log('Счетчик сброшен для telegramId:', telegramId);  
       }  
     } else {  
       setRemainingQuestions(currentQuestionsCount);  
@@ -49,7 +46,8 @@ function App() {
   };  
 
   useEffect(() => {  
-    if (telegramId) { // Проверяем, установлен ли telegramId  
+    if (telegramId) {  
+      console.log('Загружаем оставшиеся вопросы для telegramId:', telegramId);  
       loadRemainingQuestions();  
     }  
   }, [telegramId]);   
@@ -57,10 +55,10 @@ function App() {
   const saveRemainingQuestions = (count) => {  
     const storedData = localStorage.getItem('remainingQuestions');  
     const userQuestions = storedData ? JSON.parse(storedData) : {};  
-  
-    userQuestions[telegramId] = count; // Обновляем счетчик для текущего telegramId  
+    userQuestions[telegramId] = count;  
     localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
     localStorage.setItem('questionsTimestamp', new Date().toISOString());  
+    console.log('Сохраненные данные:', userQuestions);  
   };  
   
   const decrementQuestions = () => {  
@@ -77,13 +75,11 @@ function App() {
     alert('Получение новых вопросов...');  
   };  
 
-  // Проверка на наличие telegramId  
   useEffect(() => {  
     async function checkUser() {  
       try {  
-        const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram  
-        setTelegramId(id);  // Сохраняем telegramId в состоянии  
-
+        const id = tg?.initDataUnsafe?.user?.id;  
+        setTelegramId(id);  
         const response = await fetch(`/api/users/${id}`);  
         const data = await response.json();  
 
@@ -96,82 +92,56 @@ function App() {
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
       }  
-    }  
-
-    if (!isUserExist) {  
+    }    if (!isUserExist) {  
       checkUser();  
     }  
-  }, [tg, navigate, isUserExist]);  
+  }, [isUserExist, tg]);  
 
+  // Функция для обработки начала  
+  const handleStart = (name) => {  
+    setUserName(name);  
+    setStep(1);  
+  };  
 
-  useEffect(() => {
-    tg.ready();
-  }, [tg]);
+  // Функция для обработки перехода на следующий шаг  
+  const handleNext = (data) => {  
+    setFormData((prev) => ({ ...prev, ...data }));  
+    setStep((prev) => prev + 1);  
+  };  
 
-  useEffect(() => {
-    async function checkUser() {
-      try {
-        const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram
-        setTelegramId(id);  // Сохраняем telegramId в состоянии
+  return (  
+    <div className="App">  
+      <Routes>  
+        <Route  
+          path="/"  
+          element={  
+            <Body  
+              step={step}  
+              userName={userName}  
+              handleStart={handleStart}  
+              handleNext={handleNext}  
+              formData={formData}  
+            />  
+          }  
+        />  
+        <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
+        <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
+        <Route path="/test" element={<Test />} />  
+        <Route path="/zadaniya" element={  
+          <Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />  
+        } />  
+        <Route path="/chat" element={  
+          <ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />  
+        } />  
+      </Routes>  
+    </div>  
+  );  
+}  
 
-        const response = await fetch(`/api/users/${id}`);
-        const data = await response.json();
-
-        if (data.exists) {
-          setIsUserExist(true);
-          if (window.location.pathname === '/') {
-            navigate('/main');
-          }
-        }
-      } catch (error) {
-        console.error('Ошибка при проверке пользователя:', error);
-      }
-    }
-
-    if (!isUserExist) {
-      checkUser();
-    }
-  }, [tg, navigate, isUserExist]);
-
-  const handleStart = () => {
-    setUserName(userName);
-    setStep(1);
-  };
-
-  const handleNext = (data) => {
-    setFormData((prev) => ({ ...prev, ...data }));
-    setStep((prev) => prev + 1);
-  };
-
-  return (
-    <div className="App">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Body
-              step={step}
-              userName={userName}
-              handleStart={handleStart}
-              handleNext={handleNext}
-              formData={formData}
-            />
-          }
-        />
-        <Route path="/main" element={<MainPage telegramId={telegramId} />} /> {/* Передаём telegramId как пропс */}
-        <Route path="/profile" element={<ProfilePage telegramId={telegramId}/>} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
-        <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
-      </Routes>
-    </div>
-  );
-}
-
-export default function AppWithRouter() {
-  return (
-    <Router>
-      <App />
-    </Router>
-  );
-}
+export default function AppWithRouter() {  
+  return (  
+    <Router>  
+      <App />  
+    </Router>  
+  );  
+}  
