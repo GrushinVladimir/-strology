@@ -1,9 +1,7 @@
 // api/horoscope.js  
 const axios = require('axios');  
 const { load } = require('cheerio');  
-console.log(data); // Выводим HTML страницы в консоль
-console.log(response.status); // Проверить статус ответа
-console.log(data); // Проверить данные ответа
+
 const zodiacSigns = {  
   Водолей: 11,  
   Рыбы: 12,  
@@ -20,6 +18,9 @@ const zodiacSigns = {
 };  
 
 async function handler(req, res) {  
+  console.log(data); // Выводим HTML страницы в консоль
+console.log(response.status); // Проверить статус ответа
+console.log(data); // Проверить данные ответа
   const { zodiacSign, period } = req.query;  
 
   const signNumber = zodiacSigns[zodiacSign];  
