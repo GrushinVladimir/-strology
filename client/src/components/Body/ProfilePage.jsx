@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTelegram } from '../hooks/useTelegram';
+import './Body.css';  
 
 const ProfilePage = ({ telegramId }) => {
     const { user, tg } = useTelegram();
