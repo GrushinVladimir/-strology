@@ -618,7 +618,7 @@ margin-bottom: 25px;
 }  
 .cases-img {
   opacity: 0; /* Начальная непрозрачность 0 */
-  transition: opacity 1s ease-in-out; /* Плавный переход по свойству opacity */
+  transition: opacity .4s ease-in-out; /* Плавный переход по свойству opacity */
 }
 
 .cases-img.visible {
