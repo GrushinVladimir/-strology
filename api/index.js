@@ -12,13 +12,13 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
 const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
-const GOOGLE_KEY = process.env.GOOGLE_KEY;
+const GOOGLE = process.env.GOOGLE_KEY;
 
 
 const app = express();
 
 console.log('API_KEY:', API_KEY);
-console.log('GOOGLE_KEY:', GOOGLE_KEY);
+console.log('GOOGLE_KEY:', GOOGLE);
 
 app.use(cors());
 app.use(bodyParser.json());
