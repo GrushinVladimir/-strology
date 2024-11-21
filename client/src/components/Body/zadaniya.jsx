@@ -63,8 +63,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
   }  
 
   // Calculate completed tasks  
-  const completedTasks = 2 + (remainingQuestions <= 0 ? 1 : 0) + (isTestCompleted ? 1 : 0);  
-  return (  
+  const completedTasks = Math.max(2, (remainingQuestions <= 0 ? 3 : 0) + (isTestCompleted ? 2 : 0));  return (  
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
         <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}} className='body-test'>  
