@@ -135,7 +135,7 @@ const handleNextWithValidation = (currentData) => {
   setTimeout(() => {  
       handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });  
       setVisible(true); // Показать следующий шаг  
-  }, 200); // 500 мс соответствует времени анимации  
+  }, 400); // 500 мс соответствует времени анимации  
 };  
 
 
