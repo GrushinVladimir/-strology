@@ -112,9 +112,9 @@ const ProfilePage = ({ telegramId }) => {
                         </div>  
                     </div>  
                     <div className="bottom-profile">  
-                        <div>  
-                            <p>Часто задаваемые вопросы</p>  
-                        </div>  
+                            <Link   Link to="/faq">  {/* Переход на страницу FAQ */}  
+                                <p style={{ cursor: 'pointer', textDecoration: 'underline' }}>Часто задаваемые вопросы</p>  
+                            </Link>  
                         <div>  
                             <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
                             </div>  
