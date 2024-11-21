@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
 const testResultRoutes = require('./routes/testResultRoutes');  
-
+const horoscopeHandler = require('./api/horoscope'); // Импорт обработчика гороскопов
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
 const mongoURI = process.env.MONGO_URI;
@@ -22,7 +22,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use('/api/test-results', testResultRoutes);  
-
+app.get('/api/horoscope', horoscopeHandler);
 
 // Подключение к MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
