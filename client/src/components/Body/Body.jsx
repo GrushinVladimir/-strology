@@ -23,6 +23,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   const [errorMessage, setErrorMessage] = useState(''); // для отображения ошибки
   const [zodiacSign, setZodiacSign] = useState(''); // для хранения знака зодиака
   const navigate = useNavigate(); // для редиректа
+  const [isVisible, setIsVisible] = useState(false);
 
 
   // Функция для вычисления знака зодиака
@@ -133,7 +134,7 @@ const handleNextWithValidation = (currentData) => {
   setTimeout(() => {  
       handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });  
       setVisible(true); // Показать следующий шаг  
-  }, 400); // 500 мс соответствует времени анимации  
+  }, 500); // 500 мс соответствует времени анимации  
 };  
 
 
@@ -220,7 +221,14 @@ const handleNextWithValidation = (currentData) => {
     setMonth(month);
     setYear(year);
   };
+  useEffect(() => {
+    // Устанавливаем таймер для плавного появления изображения
+    const timer = setTimeout(() => {
+        setIsVisible(true);
+    }, 100); // Задержка перед появлением (в миллисекундах)
 
+    return () => clearTimeout(timer); // Очищаем таймер при размонтировании
+}, []);
 
   const formatDate = (date) => {
     if (!date) {
@@ -279,7 +287,7 @@ const handleNextWithValidation = (currentData) => {
                 <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
             </div>
             <div className="image-container" style={{marginBottom: '3vh'}}>
-                <img src="img/forms/time.png" alt="" className="case-img" />
+                <img src="img/forms/time.png" alt="" className={`case-img ${isVisible ? 'visible' : ''}`}/>
             </div>
             <div className="center-container">
                 <div className="time-selector">
@@ -443,7 +451,8 @@ const handleNextWithValidation = (currentData) => {
               <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
           </div>
           <div className="image-container">
-            <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }}/>
+            <img src="img/forms/planet.png" alt="" style={{ maxWidth: '100%', height: 'auto',marginTop: '10%',marginBottom: '2rem',position: 'relative',right: '-27px' }} className={`cases-img ${isVisible ? 'visible' : ''}`}
+            />
           </div>
           <div className="center-container  flex">
             <input className="input-field " value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
@@ -463,7 +472,7 @@ const handleNextWithValidation = (currentData) => {
         <span style={{opacity:'.9'}}>Введите ваше имя, чтобы мы могли к вам обращаться.</span>  
       </div>
       <div className="image-container">
-          <img src="img/forms/imya.png" alt=""  className="case-img"
+          <img src="img/forms/imya.png" alt=""  className={`case-img ${isVisible ? 'visible' : ''}`}
               />
       </div>
       <div className="center-container flex">

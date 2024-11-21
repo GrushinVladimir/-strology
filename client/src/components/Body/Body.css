@@ -344,7 +344,8 @@ h2{
 }
 
 .case-img{
-
+  opacity: 0; /* Начальная непрозрачность 0 */
+  transition: opacity 1s ease-in-out; /* Плавный переход по свойству opacity */
     object-fit: cover;
     height: 100%; }
     .case-img-ru{
@@ -615,3 +616,14 @@ margin-bottom: 25px;
 .fade-out {  
   opacity: 0; /* Полностью невидимо */  
 }  
+.cases-img {
+  opacity: 0; /* Начальная непрозрачность 0 */
+  transition: opacity 1s ease-in-out; /* Плавный переход по свойству opacity */
+}
+
+.cases-img.visible {
+  opacity: 1; /* Когда класс 'visible' добавлен, непрозрачность становится 1 */
+}
+.case-img.visible {
+  opacity: 1; /* Когда класс 'visible' добавлен, непрозрачность становится 1 */
+}
