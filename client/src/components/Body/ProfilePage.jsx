@@ -52,11 +52,33 @@ const ProfilePage = ({ telegramId }) => {
     if (error) return <p>{error}</p>; // Display error message  
 
     const handleInviteClick = () => {
-        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на вашего бота
-
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
+        
         if (Telegram.WebApp) {
-            // Открываем окно для отправки ссылки
-            Telegram.WebApp.openTelegramLink(inviteLink);
+            Telegram.WebApp.showPopup({
+                title: "Пригласить друга",
+                message: "Выберите друга для отправки ссылки на приложение",
+                buttons: [
+                    {
+                        id: "send",
+                        text: "Отправить",
+                        type: "default",
+                    },
+                    {
+                        id: "cancel",
+                        text: "Отмена",
+                        type: "destructive",
+                    },
+                ],
+            });
+    
+            // Обработчик события popup_closed
+            Telegram.WebApp.onEvent('popup_closed', (event) => {
+                if (event.button_id === 'send') {
+                    // Вместо openTelegramLink используем window.location для открытия ссылки
+                    window.location.href = inviteLink;
+                }
+            });
         } else {
             alert("Ваше устройство не поддерживает Telegram WebApp.");
         }
