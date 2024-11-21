@@ -114,6 +114,8 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (!telegramId) return; // Если нет telegramId, выходим из useEffect
 
@@ -162,8 +164,8 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         default:
           return;
       }
-
       setCurrentDate(formattedDate);
+      setLoading(true); // Устанавливаем состояние загрузки в true
 
       try {
         const horoscopeText = await getHoroscope(zodiacSign, periodKey);
@@ -176,6 +178,9 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
       } catch (error) {
         console.error('Ошибка при получении гороскопа:', error);
         setHoroscope('Не удалось получить гороскоп');
+      }
+      finally {
+        setLoading(false); // Устанавливаем состояние загрузки в false после завершения
       }
     };
 
@@ -228,16 +233,19 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         </div>
 
         <div className="tab-content-container">
-          {showTabContent && (
+        {showTabContent && (
             <>
-              <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>
-                {currentDate}
-              </p>
-              <p style={{ textAlign: 'left', lineHeight: '1rem', fontSize: '14px', paddingBottom: '2rem' }}>
-                {horoscope || 'Загрузка гороскопа...'}
-              </p>
-            </>
-          )}
+              {loading ? (
+                <p>Загрузка...</p> // Сообщение о загрузке
+              ) : (
+                <>
+                <h2>{activeTab} гороскоп для {zodiacSign}</h2>
+                <p>{horoscope || 'Гороскоп пока недоступен'}</p>
+                <p><strong>Дата:</strong> {currentDate}</p>
+              </>
+            )}
+          </>
+        )}
         </div>
 
         <div className="menu">
