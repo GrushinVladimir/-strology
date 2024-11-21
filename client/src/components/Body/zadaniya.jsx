@@ -48,7 +48,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
       await fetchTestResults();  
       setLoading(false); // Stop loading  
     };  
-  
+
     fetchData();  
     const intervalId = setInterval(fetchUserData, 10000);  
     return () => clearInterval(intervalId);  
@@ -62,8 +62,9 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
     return <div>{error}</div>; // Show error message if there's an error  
   }  
 
-
-
+  // Calculate completed tasks  
+  const completedTasks = (remainingQuestions > 0 ? 3 : 0) + (isTestCompleted ? 2 : 0);  
+  
   return (  
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
@@ -75,7 +76,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
         </button>  
         <div className="zadaniya-block" style={{width:'100%',margin:'0', padding: '0px'}}>  
           <span style={{paddingLeft: '2vh'}}>Выполнено заданий:</span>  
-          <span style={{paddingRight: '2vh'}}>0 / 10</span>  
+          <span style={{paddingRight: '2vh'}}>{completedTasks} / 10</span>  
         </div>  
         <div className="zadaniya-block">  
           <span className='left'>Пригласить друга по реферальной ссылке: <span>1</span></span>  
@@ -88,16 +89,16 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
         <div className="zadaniya-block">  
           <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
           {remainingQuestions > 0 ? (  
-        <span className='right'>X {remainingQuestions}  </span>  
-      ) : (  
-        <span className='right'><a href="">Получить</a></span> 
-      )}  
+            <span className='right'>X {remainingQuestions}</span>  
+          ) : (  
+            <span className='right'><a href="">Получить</a></span>   
+          )}  
         </div>  
-        
+
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: 2</span>  
-          <span className='right'>{isTestCompleted ?(<a href="">Получить</a> ) : ('Не выполнено')}</span>  
+          <span className='right'>{isTestCompleted ? (<a href="">Получить</a>) : ('Не выполнено')}</span>  
         </div>  
       </div>   
 
