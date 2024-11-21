@@ -85,44 +85,56 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     }  
 };  
 
+const [visible, setVisible] = useState(true);  
+const handleStartWithAnimation = () => {  
+  setVisible(false); // Убираем элемент для анимации  
+  setTimeout(() => {  
+      handleStart(); // Ждем, чтобы анимация завершилась  
+      setVisible(true); // Возвращаем элемент в видимое состояние  
+  },300); // Время анимации  
+}; 
 
+const handleNextWithValidation = (currentData) => {  
+  setErrorMessage(''); // Сброс сообщения об ошибке  
 
-  const handleNextWithValidation = (currentData) => {
-    setErrorMessage(''); // сброс сообщения об ошибке
+  // Валидация для каждого шага  
+  if (step === 1) {  
+      if (unknownTime) {  
+          handleNext({ ...currentData, hour: null, minute: null });  
+          return;  
+      } else if (!hours[hourIndex] || !minutes[minuteIndex]) {  
+          setErrorMessage('Укажите время рождения или выберите "Я не знаю времени".');  
+          return;  
+      }  
+  }  
 
-    // Валидация для каждого шага
-    if (step === 1) {
-        if (unknownTime) {
-            // Если выбрано "Я не знаю времени", передаем null
-            handleNext({ ...currentData, hour: null, minute: null });
-            return;
-        } else if (!hours[hourIndex] || !minutes[minuteIndex]) {
-            setErrorMessage('Укажите время рождения или выберите "Я не знаю времени".');
-            return;
-        }
-    }
+  if (step === 2 && (!day || !month || !year)) {  
+      setErrorMessage('Заполните все поля даты рождения.');  
+      return;  
+  }  
 
-    if (step === 2 && (!day || !month || !year)) {
-        setErrorMessage('Заполните все поля даты рождения.');
-        return;
-    }
+  if (step === 3 && !placeOfBirth) {  
+      setErrorMessage('Заполните поле места рождения.');  
+      return;  
+  }  
 
-    if (step === 3 && !placeOfBirth) {
-        setErrorMessage('Заполните поле места рождения.');
-        return;
-    }
+  if (step === 4 && !username) {  
+      setErrorMessage('Введите ваше имя.');  
+      return;  
+  }  
 
-    if (step === 4 && !username) {
-        setErrorMessage('Введите ваше имя.');
-        return;
-    }
+  const selectedHour = unknownTime ? null : hours[hourIndex];  
+  const selectedMinute = unknownTime ? null : minutes[minuteIndex];  
 
+  // Начинаем анимацию исчезновения  
+  setVisible(false);  
 
-    const selectedHour = unknownTime ? null : hours[hourIndex];
-    const selectedMinute = unknownTime ? null : minutes[minuteIndex];
-
-    handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });
-};
+  // Ждем завершения анимации, затем переходим к следующему шагу  
+  setTimeout(() => {  
+      handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });  
+      setVisible(true); // Показать следующий шаг  
+  }, 300); // 500 мс соответствует времени анимации  
+};  
 
 
   const date = new Date();
@@ -244,7 +256,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     switch (step) {  
       case 0 :  
         return (  
-          <div className='body'>  
+          <div className={`body step ${visible ? 'fade-in' : 'fade-out'}`}>
             <h2 style={{marginTop:'20vh'}}>  
               Давай знакомится!<br />  
             </h2>  
@@ -252,7 +264,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
               Ответь на 5 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
             </span>  
-            <button onClick={handleStart} className='button posi'><span>Начать</span></button>  
+            <button onClick={handleStartWithAnimation} className='button posi'><span>Начать</span></button>  
             <img src="img/forms/oblaco.png" alt="" className="oblaco"  />
           </div> 
            
@@ -261,7 +273,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   
         case 1:
           return (
-            <div className='body'>
+            <div className={`body step ${visible ? 'fade-in' : 'fade-out'}`}>
               <div className="top-container">
                 <h2 style={{marginTop:'10vh'}}>Время рождения</h2>
                 <span style={{opacity:'.9'}}>Время рождения нужно для определения вашего солнечного знака.</span>
@@ -329,7 +341,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
       
               case 2:  
               return (  
-                <div className='body'>
+                <div className={`body step ${visible ? 'fade-in' : 'fade-out'}`}>
                   <div className="top-container">
                     <h2 style={{marginTop:'10vh'}}>Дата рождения</h2>
                     <span style={{opacity:'.9'}}>Дата рождения нужна для определения вашего зодиакального знака.</span>
@@ -425,7 +437,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
   
       case 3:  
         return (  
-          <div className='body'>  
+          <div className={`body step ${visible ? 'fade-in' : 'fade-out'}`}>
           <div className="top-container">
               <h2 style={{marginTop:'10vh'}}>Место рождения</h2>  
               <span style={{padding:'0 1rem',    margin: '0.6rem 0rem',opacity:'.9'}}>Указание места рождения (страна и город) поможет определить положение планет, Луны и звёзд.</span>  
@@ -466,7 +478,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
      
                   </div>   
       <div className="bottom-container ">
-        <button   
+      <button   
         onClick={() => {  
           // Предполагается, что variable username доступен внутри этой функции или получен из состояния  
           handleNextWithValidation({ username });  
@@ -474,12 +486,11 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         }}   
         className='button'>  
         <span>Завершить</span>  
-      </button>       
-       </div> 
+      </button>      
+      </div> 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  
-
 
   default:  
     return null;  

@@ -103,12 +103,13 @@ flex-shrink: 0;
     color: #fff;
     font-size: 2rem; 
 }
-.scroll-container {
+scroll-container::-webkit-scrollbar {  
+  display: none;}
 
+.scroll-container {
+max-height: 74px;
     overflow-y: overlay;
     position: relative;
-    height: 74px;
-    width: 24px;
   }
   
   .item {
@@ -602,3 +603,15 @@ margin-bottom: 25px;
 .question-button:hover {
   background-color: #005bb5; /* Цвет фона при наведении */
 }
+.step {  
+  transition: opacity 0.3s ease-in-out; /* Плавный переход */  
+  opacity: 0; /* Начальное состояние - невидимо */  
+}  
+
+.fade-in {  
+  opacity: 1; /* Полностью видно */  
+}  
+
+.fade-out {  
+  opacity: 0; /* Полностью невидимо */  
+}  
