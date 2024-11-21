@@ -11,14 +11,14 @@ import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage';
 
 
-function App() {
-  const { tg } = useTelegram();
-  const [step, setStep] = useState(0);
-  const [userName, setUserName] = useState('');
-  const [formData, setFormData] = useState({});
-  const [isUserExist, setIsUserExist] = useState(false);
-  const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId
-  const navigate = useNavigate();
+function App() {  
+  const { tg } = useTelegram();  
+  const [step, setStep] = useState(0);  
+  const [userName, setUserName] = useState('');  
+  const [formData, setFormData] = useState({});  
+  const [isUserExist, setIsUserExist] = useState(false);  
+  const [telegramId, setTelegramId] = useState(null);  // Состояние для хранения telegramId  
+  const navigate = useNavigate();  
   const initialQuestionsCount = 10; // Начальное количество вопросов  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
@@ -52,7 +52,7 @@ function App() {
     if (telegramId) { // Проверяем, установлен ли telegramId  
       loadRemainingQuestions();  
     }  
-  }, [telegramId]); 
+  }, [telegramId]);   
   
   const saveRemainingQuestions = (count) => {  
     const storedData = localStorage.getItem('remainingQuestions');  
@@ -62,19 +62,46 @@ function App() {
     localStorage.setItem('remainingQuestions', JSON.stringify(userQuestions));  
     localStorage.setItem('questionsTimestamp', new Date().toISOString());  
   };  
-const decrementQuestions = () => {  
-  if (remainingQuestions > 0) {  
-    const newCount = remainingQuestions - 1;  
-    setRemainingQuestions(newCount);  
-    saveRemainingQuestions(newCount);  
-  }  
-};  
+  
+  const decrementQuestions = () => {  
+    if (remainingQuestions > 0) {  
+      const newCount = remainingQuestions - 1;  
+      setRemainingQuestions(newCount);  
+      saveRemainingQuestions(newCount);  
+    }  
+  };  
 
-const handleGetMoreQuestions = () => {  
-  setRemainingQuestions(initialQuestionsCount);  
-  saveRemainingQuestions(initialQuestionsCount);  
-  alert('Получение новых вопросов...');  
-};  
+  const handleGetMoreQuestions = () => {  
+    setRemainingQuestions(initialQuestionsCount);  
+    saveRemainingQuestions(initialQuestionsCount);  
+    alert('Получение новых вопросов...');  
+  };  
+
+  // Проверка на наличие telegramId  
+  useEffect(() => {  
+    async function checkUser() {  
+      try {  
+        const id = tg?.initDataUnsafe?.user?.id;  // Получаем ID пользователя из Telegram  
+        setTelegramId(id);  // Сохраняем telegramId в состоянии  
+
+        const response = await fetch(`/api/users/${id}`);  
+        const data = await response.json();  
+
+        if (data.exists) {  
+          setIsUserExist(true);  
+          if (window.location.pathname === '/') {  
+            navigate('/main');  
+          }  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при проверке пользователя:', error);  
+      }  
+    }  
+
+    if (!isUserExist) {  
+      checkUser();  
+    }  
+  }, [tg, navigate, isUserExist]);  
 
 
   useEffect(() => {
