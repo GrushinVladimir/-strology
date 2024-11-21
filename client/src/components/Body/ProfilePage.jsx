@@ -63,7 +63,6 @@ const ProfilePage = ({ telegramId }) => {
                         id: "send",
                         text: "Отправить",
                         type: "default",
-                        link: inviteLink, // Открывает Telegram с выбором друга
                     },
                     {
                         id: "cancel",
@@ -72,10 +71,18 @@ const ProfilePage = ({ telegramId }) => {
                     },
                 ],
             });
+    
+            // Обработчик события popup_closed
+            Telegram.WebApp.onEvent('popup_closed', (event) => {
+                if (event.button_id === 'send') {
+                    Telegram.WebApp.openTelegramLink(inviteLink);
+                }
+            });
         } else {
-            console.log("Telegram WebApp не поддерживает ваш браузер");
+            alert("Ваше устройство не поддерживает Telegram WebApp.");
         }
     };
+    
      
 
     return (  
