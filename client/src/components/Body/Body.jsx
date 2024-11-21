@@ -91,7 +91,7 @@ const handleStartWithAnimation = () => {
   setTimeout(() => {  
       handleStart(); // Ждем, чтобы анимация завершилась  
       setVisible(true); // Возвращаем элемент в видимое состояние  
-  },300); // Время анимации  
+  },400); // Время анимации  
 }; 
 
 const handleNextWithValidation = (currentData) => {  
@@ -133,7 +133,7 @@ const handleNextWithValidation = (currentData) => {
   setTimeout(() => {  
       handleNext({ ...currentData, hour: selectedHour, minute: selectedMinute });  
       setVisible(true); // Показать следующий шаг  
-  }, 300); // 500 мс соответствует времени анимации  
+  }, 400); // 500 мс соответствует времени анимации  
 };  
 
 

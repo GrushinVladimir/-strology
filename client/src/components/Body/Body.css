@@ -604,7 +604,7 @@ margin-bottom: 25px;
   background-color: #005bb5; /* Цвет фона при наведении */
 }
 .step {  
-  transition: opacity 0.3s ease-in-out; /* Плавный переход */  
+  transition: opacity 0.4s ease-in-out; /* Плавный переход */  
   opacity: 0; /* Начальное состояние - невидимо */  
 }  
 
