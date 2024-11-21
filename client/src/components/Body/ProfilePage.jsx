@@ -52,32 +52,13 @@ const ProfilePage = ({ telegramId }) => {
     if (error) return <p>{error}</p>; // Display error message  
 
     const handleInviteClick = () => {
-        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';
-        
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ваши ссылку на Telegram
+
+        // Используем Telegram WebApp для вызова виджета share
         if (Telegram.WebApp) {
-            Telegram.WebApp.showPopup({
-                title: "Пригласить друга",
-                message: "Выберите друга для отправки ссылки на приложение",
-                buttons: [
-                    {
-                        id: "send",
-                        text: "Отправить",
-                        type: "default",
-                    },
-                    {
-                        id: "cancel",
-                        text: "Отмена",
-                        type: "destructive",
-                    },
-                ],
-            });
-    
-            // Обработчик события popup_closed
-            Telegram.WebApp.onEvent('popup_closed', (event) => {
-                if (event.button_id === 'send') {
-                    // Вместо openTelegramLink используем window.location для открытия ссылки
-                    window.location.href = inviteLink;
-                }
+            Telegram.WebApp.openShareDialog({
+                url: inviteLink, // Ссылка, которую вы хотите, чтобы пользователь поделился
+                text: 'Пригласите своего друга в наше астрологическое приложение!', // Текст, который будет в сообщении
             });
         } else {
             alert("Ваше устройство не поддерживает Telegram WebApp.");
