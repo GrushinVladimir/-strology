@@ -6,7 +6,7 @@ import { useLocation, Link, useParams } from 'react-router-dom';
 const getApiKey = async () => {
   try {
     const response = await axios.get('https://strology.vercel.app/api/config-google');
-    return response.data.apiKey;
+    return response.data.apiKeys;
   } catch (error) {
     console.error('Ошибка при получении ключа API:', error);
     throw new Error('Не удалось получить ключ API');

@@ -46,7 +46,7 @@ app.get('/api/config', (req, res) => {
 });
 // Эндпоинт для получения API_KEY
 app.get('/api/config-google', (req, res) => {
-    res.json({ apiKey: process.env.GOOGLE_KEY });
+    res.json({ apiKeys: process.env.GOOGLE_KEY });
 });
 // Маршрут для обработки сообщений Telegram
 app.post(`/bot${token}`, async (req, res) => {
