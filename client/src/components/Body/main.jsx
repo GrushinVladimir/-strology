@@ -236,7 +236,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         {showTabContent && (
             <>
               {loading ? (
-                <p>Загрузка...</p> // Сообщение о загрузке
+                <p style={{paddingBottom: '2rem'}}>Загрузка...</p> // Сообщение о загрузке
               ) : (
                 <>
                 <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>{currentDate}</p>
