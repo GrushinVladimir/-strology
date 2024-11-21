@@ -1,4 +1,3 @@
-// api/horoscope.js  
 const axios = require('axios');  
 const { load } = require('cheerio');  
 
@@ -46,12 +45,18 @@ async function handler(req, res) {
   try {  
     const { data } = await axios.get(url, {  
       headers: {  
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'  
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'  
       }  
     });  
-        console.log(data); // Логируем полученные данные  
+
+    // Логируем полученные данные, чтобы можно было увидеть полный ответ
+    console.log('Received HTML:', data);  
+    
     const $ = load(data);  
     const horoscopeText = $('div.horoscope__content p').text().trim();  
+
+    // Для проверки, что действительно извлекаем текст 
+    console.log('Extracted Horoscope Text:', horoscopeText);
 
     if (!horoscopeText) {  
       return res.status(404).json({ error: 'Horoscope not found' });  
@@ -59,7 +64,7 @@ async function handler(req, res) {
 
     return res.status(200).json({ horoscope: horoscopeText });  
   } catch (error) {  
-    console.error('Error fetching horoscope:', error);  
+    console.error('Error fetching horoscope:', error.message);  
     return res.status(500).json({ error: 'Failed to fetch horoscope' });  
   }  
 }  
