@@ -246,8 +246,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
         return (  
           <div className='body'>  
             <h2 style={{marginTop:'20vh'}}>  
-              Давай знакомится3,<br />  
-              {user?.username || user?.first_name || userName || 'Неизвестный пользователь'}!  
+              Давай знакомится!<br />  
             </h2>  
             <span style={{opacity:'.9'}}>  
               Ответь на 5 простых вопросов. <br />  
@@ -467,8 +466,16 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
      
                   </div>   
       <div className="bottom-container ">
-        <button onClick={() => handleNextWithValidation({ username })} className='button'><span>Далее</span></button>
-      </div> 
+        <button   
+        onClick={() => {  
+          // Предполагается, что variable username доступен внутри этой функции или получен из состояния  
+          handleNextWithValidation({ username });  
+          handleFinish();  
+        }}   
+        className='button'>  
+        <span>Завершить</span>  
+      </button>       
+       </div> 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  

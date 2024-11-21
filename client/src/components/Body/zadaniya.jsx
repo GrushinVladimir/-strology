@@ -80,7 +80,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
           <span style={{paddingRight: '2vh'}}>{completedTasks} / 10</span>  
         </div>  
         <div className="zadaniya-block">  
-          <span className='left'>Пригласить друга по реферальной ссылке: <span>1</span></span>  
+          <span className='left'>Пригласить друга по реферальной ссылке: <span>+3</span></span>  
           <span className='right'>Х 6</span>  
         </div>  
         <div className="zadaniya-block">  
@@ -88,7 +88,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
           <span className='right'><a href="">Получить</a></span>  
         </div>  
         <div className="zadaniya-block">  
-          <span className='left'>Задачать чат-боту вопросов о своём знаке: 3</span>  
+          <span className='left'>Задачать чат-боту вопросов о своём знаке: </span>  
           {remainingQuestions > 0 ? (  
             <span className='right'>X {remainingQuestions}</span>  
           ) : (  
@@ -98,17 +98,17 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
 
         {/* Здесь изменяем текст в зависимости от состояния теста */}  
         <div className="zadaniya-block">  
-          <span className='left'>Заполнить характеристики вашего знака: 2</span>  
+          <span className='left'>Заполнить характеристики вашего знака: </span>  
           <span className='right'>{isTestCompleted ? (<a href="">Получить</a>) : ('Не выполнено')}</span>  
         </div>  
       </div>   
 
       <div className="menu">  
-        <Link to="/">  
+        <Link to="/main">  
           <img src="img/menu/Union.png" alt="Главная" />  
           <span>Главная</span>  
         </Link>  
-        <a href="">  
+        <a href="/chat">  
           <img src="img/menu/chat.png" alt="Чат" />  
           <span>Чат</span>  
         </a>  
