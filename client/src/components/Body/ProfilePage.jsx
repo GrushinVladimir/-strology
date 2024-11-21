@@ -52,17 +52,11 @@ const ProfilePage = ({ telegramId }) => {
     if (error) return <p>{error}</p>; // Display error message  
 
     const handleInviteClick = () => {
-        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ваши ссылку на Telegram
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на ваш бот в Telegram
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=Пригласите своего друга в наше астрологическое приложение!`;
 
-        // Используем Telegram WebApp для вызова виджета share
-        if (Telegram.WebApp) {
-            Telegram.WebApp.openShareDialog({
-                url: inviteLink, // Ссылка, которую вы хотите, чтобы пользователь поделился
-                text: 'Пригласите своего друга в наше астрологическое приложение!', // Текст, который будет в сообщении
-            });
-        } else {
-            alert("Ваше устройство не поддерживает Telegram WebApp.");
-        }
+        // Открываем ссылку для обмена
+        window.open(shareUrl, '_blank');
     };
     
      
