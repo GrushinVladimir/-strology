@@ -13,6 +13,7 @@ const ProfilePage = ({ telegramId }) => {
     const [testCompleted, setTestCompleted] = useState(false);
     const [showSupportModal, setShowSupportModal] = useState(false);  // Добавим состояние для модалки
     const navigate = useNavigate();  
+    console.log(`Ошибка: telegramId: ${telegramId}`); // Логируем для отладки  
 
     const fetchUserData = async () => {  
         try {  
