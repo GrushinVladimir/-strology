@@ -10,7 +10,7 @@ import Test from './components/Body/test';
 import Zadaniya from './components/Body/zadaniya';  
 import ChatPage from './components/Body/ChatPage'; 
 import FAQPage from './components/Body/FAQPage'; 
-
+import LoadingSpinner from './LoadingSpinner';
 function App() {  
   const { tg } = useTelegram();  
   const [step, setStep] = useState(0);  
@@ -24,32 +24,36 @@ function App() {
 
 
   useEffect(() => {  
-    tg.ready();  
-  }, [tg]);  
+    tg.ready(); // Подготовка Telegram  
 
-  useEffect(() => {  
-    async function checkUser() {  
+    const checkUser = async () => {  
       try {  
-        const id = tg?.initDataUnsafe?.user?.id;  
+        const id = tg?.initDataUnsafe?.user?.id; // Получаем telegramId  
         if (id) {  
-          setTelegramId(id);  
-
-          const response = await fetch(`/api/users/${id}`);  
+          setTelegramId(id); // Сохраняем telegramId  
+          const response = await fetch(`/api/users/${id}`); // Проверка существования пользователя  
           const data = await response.json();  
 
           if (data.exists) {  
-            navigate('/main');  
+            navigate('/main'); // Переход на главную страницу  
+          } else {  
+            console.warn('Пользователь не найден'); // Если пользователь не найден  
           }  
         }  
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
+      } finally {  
+        setLoading(false); // Устанавливаем состояние загрузки в false, когда проверка завершена  
       }  
-    }  
+    };  
 
-    tg.ready();  
-    checkUser();  
+    checkUser(); // Запускаем проверку пользователя  
   }, [tg, navigate]);  
 
+  if (loading) {  
+    return <LoadingSpinner />; // Компонент индикатора загрузки  
+  }  
+  
   // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
     try {  
