@@ -11,9 +11,6 @@ import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage';  
 import FAQPage from './components/Body/FAQPage';  
 
-
-
-
 function App() {  
   const { tg } = useTelegram();  
   const [step, setStep] = useState(0);  
@@ -89,7 +86,9 @@ function App() {
           const data = await response.json();  
 
           if (data.exists) {  
-            setIsUserExist(true);  
+            setIsUserExist(true);
+            setUserName(data.user.name); // Обновляем имя пользователя
+            setZodiacSign(data.user.zodiacSign); // Обновляем знак зодиака 
             if (!hasCheckedUser) {  
               setHasCheckedUser(true); // Устанавливаем флаг, что проверка пользователя завершена  
               navigate('/main');  
@@ -141,7 +140,8 @@ function App() {
         <Route path="/test" element={<Test />} />  
         <Route path="/faq" element={<FAQPage />} />  
         <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
-        <Route path="/chat" element={<ChatPage userName={userName} zodiacSign={zodiacSign} remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
+        <Route path="/chat" element={<ChatPage userName={userName}zodiacSign={zodiacSign}
+        remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
       </Routes>  
     </div>  
   );  

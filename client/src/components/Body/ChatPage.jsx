@@ -7,7 +7,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  
-  const [messages, setMessages] = useState([  
+  const [messages, setMessages] = useState([ 
     { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },  
     { sender: 'bot', text: 'Какие особенности моего знака зодиака?' },  
     { sender: 'bot', text: 'Ждёт ли меня болезнь в этом году?' },  
@@ -15,6 +15,12 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     { sender: 'bot', text: 'Ждёт ли меня повышение на работе?' },  
   ]);  
   const [inputMessage, setInputMessage] = useState('');  
+
+  useEffect(() => {
+    if (!userName || !zodiacSign) {
+      console.warn("Данные пользователя отсутствуют. Проверьте userName и zodiacSign.");
+    }
+  }, [userName, zodiacSign]);
 
   // Вытаскиваем API ключ  
   useEffect(() => {  
@@ -40,7 +46,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     const finalMessage = message || inputMessage;  
 
     // Формируем сообщение с данными о пользователе  
-    const fullMessage = `Имя: ${userName}, Знак зодиака: ${zodiacSign}. Вопрос: ${finalMessage}`;  
+    const fullMessage = `Имя: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
 
     if (!apiKey) {  
       console.error('API Key отсутствует. Проверьте настройки.');  
