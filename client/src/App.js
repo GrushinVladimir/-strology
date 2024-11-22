@@ -22,9 +22,11 @@ function App() {
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
+
   useEffect(() => {  
     tg.ready();  
   }, [tg]);  
+
   useEffect(() => {  
     async function checkUser() {  
       try {  
@@ -46,9 +48,7 @@ function App() {
 
     tg.ready();  
     checkUser();  
-
-
-
+  }, [tg, navigate]);  
 
   // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
@@ -99,9 +99,6 @@ function App() {
     alert('Получение новых вопросов...');  
   };  
 
- 
-
- 
 
   const handleStart = () => {  
     setUserName(userName);  
