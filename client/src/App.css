@@ -1,5 +1,5 @@
 *{
-  margin:0;
+  margin:auto;
   padding:0;
   font-family: 'Involve', sans-serif;
   max-width: 420px;
@@ -10,7 +10,6 @@ body{
   background: var(--tg-theme-bg-color);
   color: var(--tg-theme-text-color);
 }
-@media (max-width: 935px) {
 #root{
 
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
@@ -31,31 +30,7 @@ body{
     height: 100vh;
     position: relative;
 }
-}
-@media (min-width: 935px) {
-  #root{
 
-    font-family: Arial, sans-serif; /* Шрифт по умолчанию */
-    height: 100vh; /* Высота экрана */
-    display: flex; /* Используем флексбокс для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    color: #fff;
-    flex-wrap: wrap;
-  }
-  
-  .App{
-      text-align: center;
-      background: #280b3f;
-      background-repeat: round;
-      box-sizing: border-box;
-      max-width: 2520px;
-      width: 100%;
- 
-      height: 100%;
-      position: relative;
-  }
-}
 
 
 .button{
