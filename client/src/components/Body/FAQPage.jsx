@@ -24,6 +24,7 @@ const FAQPage = () => {
     };
 
     return (
+        <div className='faq-body'>
         <div className="faq-page">
             <h2>Часто задаваемые вопросы</h2>
             {questions.map((item, index) => (
@@ -34,21 +35,23 @@ const FAQPage = () => {
                     {openQuestion === index && <p>{item.answer}</p>}
                 </div>
             ))}
-            <div className="menu">  
-                <Link to="/main">  
-                    <img src="img/menu/Union.png" alt="Главная" />  
-                    <span>Главная</span>  
-                </Link>  
-                <Link to="/chat">  
-                    <img src="img/menu/chat.png" alt="Чат" />  
-                    <span>Чат</span>  
-                </Link>  
-                <Link to="/profile">  
-                    <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
-                    <span>Профиль</span>  
-                </Link>  
-            </div>  
+
         </div>
+                    <div className="menu">  
+                    <Link to="/main">  
+                        <img src="img/menu/Union.png" alt="Главная" />  
+                        <span>Главная</span>  
+                    </Link>  
+                    <Link to="/chat">  
+                        <img src="img/menu/chat.png" alt="Чат" />  
+                        <span>Чат</span>  
+                    </Link>  
+                    <Link to="/profile">  
+                        <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
+                        <span>Профиль</span>  
+                    </Link>  
+                </div> 
+                 </div>   
     );
 };
 
