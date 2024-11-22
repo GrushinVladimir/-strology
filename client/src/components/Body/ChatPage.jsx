@@ -3,7 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
 
-const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName })  => {  
+const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  
@@ -140,13 +140,13 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
           onChange={(e) => setInputMessage(e.target.value)}  
           placeholder="Задай вопрос звездам..."  
         />  
-        <button onClick={() => handleQuestionClick()}>Отправить</button>  
+        <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>  {/* Передаем inputMessage непосредственно */}  
       </div>  
 
       <div className="tabs-and-content">  
         <div className="menu">  
           <Link to="/main" style={{ textAlign: 'center' }}>  
-            <img src="img/menu/Union.png" alt="Главная" />  
+          <img src="img/menu/Union.png" alt="Главная" />  
             <span>Главная</span>  
           </Link>  
           <Link to="/chat" style={{ textAlign: 'center' }}>  
@@ -158,9 +158,9 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
             <span>Профиль</span>  
           </Link>  
         </div>  
-        </div>  
+      </div>  
     </div>  
   );  
-}  
+};  
 
 export default ChatPage;  
