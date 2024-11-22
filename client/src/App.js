@@ -1,5 +1,6 @@
 import './App.css';  
 import { useTelegram } from './components/hooks/useTelegram';  
+import Header from './components/Header/Header';  
 import Body from './components/Body/Body';  
 import MainPage from './components/Body/main';  
 import React, { useEffect, useState } from 'react';  
@@ -7,8 +8,8 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import ProfilePage from './components/Body/ProfilePage';  
 import Test from './components/Body/test';  
 import Zadaniya from './components/Body/zadaniya';  
-import ChatPage from './components/Body/ChatPage';  
-import FAQPage from './components/Body/FAQPage';  
+import ChatPage from './components/Body/ChatPage'; 
+import FAQPage from './components/Body/FAQPage'; 
 
 function App() {  
   const { tg } = useTelegram();  
