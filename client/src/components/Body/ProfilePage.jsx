@@ -181,8 +181,8 @@ const ProfilePage = ({ telegramId }) => {
                     <div className="modal-content">
                         <span className="close" onClick={closeModal}>&times;</span>
                         <h2>Контакты поддержки</h2>
-                        <p>Email: support@example.com</p>
-                        <p>Телефон: +123456789</p>
+                        <p style={{fontSize: '1rem',opacity: .7}}>Email: support@example.com</p>
+                        <p style={{fontSize: '1rem',opacity: .7}}>Телефон: +123456789</p>
                     </div>
                 </div>
             )}
