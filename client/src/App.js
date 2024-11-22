@@ -21,7 +21,7 @@ function App() {
   const navigate = useNavigate();  
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
-
+  const [loading, setLoading] = useState(true); // Состояние загрузки  
 
   useEffect(() => {  
     tg.ready(); // Подготовка Telegram  
@@ -53,7 +53,7 @@ function App() {
   if (loading) {  
     return <LoadingSpinner />; // Компонент индикатора загрузки  
   }  
-  
+
   // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
     try {  
