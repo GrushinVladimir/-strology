@@ -45,18 +45,18 @@ const zodiacSigns = {
 };
 
 const zodiacImages = {
-  Водолей: 'img/zhak/vodoley.png',
+  Водолей: 'img/zhak/vodoley2.png',
   Рыбы: 'img/zhak/riby2.png',
-  Овен: 'img/zhak/oven.png',
-  Телец: 'img/zhak/telec.png',
-  Близнецы: 'img/zhak/bliznecy.png',
-  Рак: 'img/zhak/rak.png',
-  Лев: 'img/zhak/lev.png',
-  Дева: 'img/zhak/deva.png',
-  Весы: 'img/zhak/vesy.png',
-  Скорпион: 'img/zhak/scorpion.png',
-  Стрелец: 'img/zhak/strelec.png',
-  Козерог: 'img/zhak/kozerog.png',
+  Овен: 'img/zhak/oven2.png',
+  Телец: 'img/zhak/telec2.png',
+  Близнецы: 'img/zhak/bliznecy2.png',
+  Рак: 'img/zhak/rak2.png',
+  Лев: 'img/zhak/lev2.png',
+  Дева: 'img/zhak/deva2.png',
+  Весы: 'img/zhak/vesy2.png',
+  Скорпион: 'img/zhak/scorpion2.png',
+  Стрелец: 'img/zhak/strelec2.png',
+  Козерог: 'img/zhak/kozerog2.png',
 };
 
 const getHoroscope = async (zodiacSign, period) => {  
