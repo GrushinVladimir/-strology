@@ -111,22 +111,24 @@ function App() {
     setFormData((prev) => ({ ...prev, ...data }));  
     setStep((prev) => prev + 1);  
   };  
-
+  const renderBody = () => {  
+    if (!userName) return null;
+    return (  
+      <Body  
+        step={step}  
+        userName={userName}  
+        handleStart={handleStart}  
+        handleNext={handleNext}  
+        formData={formData}  
+      />  
+    );  
+  };  
+  
   return (  
     <div className="App">  
       <Routes>  
-        <Route  
-          path="/"  
-          element={  
-            <Body  
-              step={step}  
-              userName={userName}  
-              handleStart={handleStart}  
-              handleNext={handleNext}  
-              formData={formData}  
-            />  
-          }  
-        />  
+      <Route path="/" element={renderBody()} />  
+
         <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
         <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
         <Route path="/test" element={<Test />} />  
