@@ -8,7 +8,8 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import ProfilePage from './components/Body/ProfilePage';  
 import Test from './components/Body/test';  
 import Zadaniya from './components/Body/zadaniya';  
-import ChatPage from './components/Body/ChatPage';  
+import ChatPage from './components/Body/ChatPage'; 
+import FAQPage from './components/Body/FAQPage'; 
 
 function App() {  
   const { tg } = useTelegram();  
@@ -95,7 +96,7 @@ function App() {
 
     tg.ready();  
     checkUser();  
-  }, [tg, navigate]);
+  }, [tg, navigate]);  
 
   const handleStart = () => {  
     setUserName(userName);  
@@ -125,6 +126,7 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
         <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
         <Route path="/test" element={<Test />} />  
+        <Route path="/faq" element={<FAQPage />} />
         <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
         <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
       </Routes>  

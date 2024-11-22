@@ -1,15 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';  
 import React, { useEffect, useState } from 'react';  
 import axios from 'axios';  
-import { useTelegram } from '../hooks/useTelegram';  
+import { useTelegram } from '../hooks/useTelegram'; 
+import './Body.css';  
 
 const ProfilePage = ({ telegramId }) => {  
-    const { user } = useTelegram();  
+    const { user, tg } = useTelegram();  
     const [userData, setUserData] = useState(null);  
     const [zodiacSign, setZodiacSign] = useState(null);  
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);  
-    const [testCompleted, setTestCompleted] = useState(false);  
+    const [testCompleted, setTestCompleted] = useState(false);
+    const [showSupportModal, setShowSupportModal] = useState(false);  // Добавим состояние для модалки
     const navigate = useNavigate();  
 
     const fetchUserData = async () => {  
@@ -51,15 +53,23 @@ const ProfilePage = ({ telegramId }) => {
     if (loading) return <p>Загрузка...</p>; // Display loading indicator  
     if (error) return <p>{error}</p>; // Display error message  
 
-    const handleInviteClick = () => {  
-        if (remainingInvites > 0) {  
-            const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot';  
-            window.open(inviteLink, '_blank');  
-            setRemainingInvites(remainingInvites - 1);  
-        } else {  
-            alert('Вы исчерпали лимит приглашений!');  
-        }  
-    };  
+    const handleInviteClick = () => {
+        const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на ваш бот в Telegram
+        const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=Пригласите своего друга в наше астрологическое приложение!`;
+
+        // Открываем ссылку для обмена
+        window.open(shareUrl, '_blank');
+    };
+
+    const handleSupportClick = () => {
+        setShowSupportModal(true); // Показываем модальное окно
+    };
+
+    const closeModal = () => {
+        setShowSupportModal(false); // Закрываем модальное окно
+    };
+    
+     
 
     return (  
         <div className='Prof'>  
@@ -112,18 +122,31 @@ const ProfilePage = ({ telegramId }) => {
                         </div>  
                     </div>  
                     <div className="bottom-profile">  
-                        <div>  
-                            <p>Часто задаваемые вопросы</p>  
-                        </div>  
+                            <Link to="/faq">  
+                                <p style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Часто задаваемые вопросы</p>  
+                            </Link>  
                         <div>  
                             <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
                             </div>  
                         <div>  
-                            <p>Поддержка</p>  
+                             <p onClick={handleSupportClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Поддержка</p> {/* Кнопка открытия модалки */} 
                         </div>  
                     </div>  
                 </div>  
             </div>  
+
+            {/* Модальное окно для поддержки */}
+            {showSupportModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <h2>Контакты поддержки</h2>
+                        <p>Email: support@example.com</p>
+                        <p>Телефон: +123456789</p>
+                    </div>
+                </div>
+            )}
+
             <div className="menu">  
                 <Link to="/main">  
                     <img src="img/menu/Union.png" alt="Главная" />  
