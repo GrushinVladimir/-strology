@@ -66,7 +66,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
   const completedTasks = (remainingQuestions <= 0 ? 3 : 0) + (isTestCompleted ? 2 : 0) + 2;
   
   
-  return (  
+  return (   {/* 
     <div className='Zadaniys'>  
       <div className='body-zadaniya'>  
         <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}} className='body-test'>  
@@ -96,7 +96,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
           )}  
         </div>  
 
-        {/* Здесь изменяем текст в зависимости от состояния теста */}  
+        {/* Здесь изменяем текст в зависимости от состояния теста
         <div className="zadaniya-block">  
           <span className='left'>Заполнить характеристики вашего знака: </span>  
           <span className='right'>{isTestCompleted ? (<a href="">Получить</a>) : ('Не выполнено')}</span>  
@@ -117,7 +117,7 @@ const Zadaniya = ({ telegramId, remainingQuestions, setRemainingQuestions, handl
           <span>Профиль</span>  
         </Link>  
       </div>  
-    </div>   
+    </div>    */}  
   );  
 };  
 

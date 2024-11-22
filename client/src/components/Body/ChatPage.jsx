@@ -38,7 +38,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
 
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
-    console.error('(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}');  
+
     // Передаем знак зодиака и имя пользователя в тексте сообщения  
     const fullMessage = `(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}`;  
 
