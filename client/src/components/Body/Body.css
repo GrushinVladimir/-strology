@@ -103,7 +103,7 @@ flex-shrink: 0;
     color: #fff;
     font-size: 2rem; 
 }
-scroll-container::-webkit-scrollbar {  
+.scroll-container::-webkit-scrollbar {  
   display: none;}
 
 .scroll-container {
