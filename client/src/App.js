@@ -22,6 +22,34 @@ function App() {
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
+  useEffect(() => {  
+    tg.ready();  
+  }, [tg]);  
+  useEffect(() => {  
+    async function checkUser() {  
+      try {  
+        const id = tg?.initDataUnsafe?.user?.id;  
+        if (id) {  
+          setTelegramId(id);  
+
+          const response = await fetch(`/api/users/${id}`);  
+          const data = await response.json();  
+
+          if (data.exists) {  
+            navigate('/main');  
+          }  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при проверке пользователя:', error);  
+      }  
+    }  
+
+    tg.ready();  
+    checkUser();  
+
+
+
+
   // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
     try {  
@@ -71,32 +99,9 @@ function App() {
     alert('Получение новых вопросов...');  
   };  
 
-  useEffect(() => {  
-    tg.ready();  
-  }, [tg]);  
+ 
 
-  useEffect(() => {  
-    async function checkUser() {  
-      try {  
-        const id = tg?.initDataUnsafe?.user?.id;  
-        if (id) {  
-          setTelegramId(id);  
-
-          const response = await fetch(`/api/users/${id}`);  
-          const data = await response.json();  
-
-          if (data.exists) {  
-            navigate('/main');  
-          }  
-        }  
-      } catch (error) {  
-        console.error('Ошибка при проверке пользователя:', error);  
-      }  
-    }  
-
-    tg.ready();  
-    checkUser();  
-  }, [tg, navigate]);  
+ 
 
   const handleStart = () => {  
     setUserName(userName);  
