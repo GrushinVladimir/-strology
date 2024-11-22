@@ -11,67 +11,62 @@ import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage'; 
 import FAQPage from './components/Body/FAQPage'; 
 
-
 function App() {  
   const { tg } = useTelegram();  
-  const navigate = useNavigate();  
   const [step, setStep] = useState(0);  
   const [userName, setUserName] = useState('');  
   const [formData, setFormData] = useState({});  
+  const [isUserExist, setIsUserExist] = useState(false);  
+  const [telegramId, setTelegramId] = useState(null);  
+  const navigate = useNavigate();  
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
-  const [telegramId, setTelegramId] = useState(null);  
+
 
   useEffect(() => {  
-    tg.ready(); // Подготовка Telegram  
-    const id = tg?.initDataUnsafe?.user?.id; // Получаем telegramId  
-    if (id) {  
-      checkUser(id); // Сразу проверяем пользователя  
-    }  
+    tg.ready();  
   }, [tg]);  
 
-  const checkUser = async (id) => {  
-    try {  
-      const response = await fetch(`/api/users/${id}`); // Проверка существования пользователя  
-      const data = await response.json();  
+  useEffect(() => {  
+    async function checkUser() {  
+      try {  
+        const id = tg?.initDataUnsafe?.user?.id;  
+        if (id) {  
+          setTelegramId(id);  
 
-      if (data.exists) {  
-        setTelegramId(id); // Сохраняем telegramId в состоянии  
-        navigate('/main'); // Переход на главную страницу  
-      } else {  
-        console.warn('Пользователь не найден');  
+          const response = await fetch(`/api/users/${id}`);  
+          const data = await response.json();  
+
+          if (data.exists) {  
+            navigate('/main');  
+          }  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при проверке пользователя:', error);  
       }  
-    } catch (error) {  
-      console.error('Ошибка при проверке пользователя:', error);  
     }  
-  };  
+
+    tg.ready();  
+    checkUser();  
+  }, [tg, navigate]);  
 
   // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
-    if (!telegramId) return; // Проверяем, существует ли telegramId  
-
     try {  
-      const response = await fetch(`/api/questions/${telegramId}`);  
+      const response = await fetch(`/api/questions/${telegramId}`); // Запрос к вашему API  
       const data = await response.json();  
-      setRemainingQuestions(data.remainingQuestions ?? initialQuestionsCount); // Загружаем оставшиеся вопросы  
+      if (data && data.remainingQuestions !== undefined) {  
+        setRemainingQuestions(data.remainingQuestions);  
+      } else {  
+        setRemainingQuestions(initialQuestionsCount); // Если данных нет, устанавливаем начальное значение  
+      }  
     } catch (error) {  
       console.error('Ошибка при загрузке оставшихся вопросов:', error);  
-      setRemainingQuestions(initialQuestionsCount); // Устанавливаем значение по умолчанию при ошибке  
+      setRemainingQuestions(initialQuestionsCount); // Устанавливаем начальное значение при ошибке  
     }  
   };  
 
-  useEffect(() => {  
-    loadRemainingQuestions(); // Загружаем оставшиеся вопросы, как только telegramId будет установлен  
-  }, [telegramId]);  
-
-  const decrementQuestions = () => {  
-    if (remainingQuestions > 0) {  
-      const newCount = remainingQuestions - 1;  
-      setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
-    }  
-  };  
-
+  // Функция для сохранения оставшихся вопросов в БД  
   const saveRemainingQuestions = async (count) => {  
     try {  
       await fetch(`/api/questions/${telegramId}`, {  
@@ -83,6 +78,27 @@ function App() {
       console.error('Ошибка при сохранении оставшихся вопросов:', error);  
     }  
   };  
+
+  useEffect(() => {  
+    if (telegramId) {  
+      loadRemainingQuestions(); // Загружаем оставшиеся вопросы при наличии telegramId  
+    }  
+  }, [telegramId]);  
+
+  const decrementQuestions = () => {  
+    if (remainingQuestions > 0) {  
+      const newCount = remainingQuestions - 1;  
+      setRemainingQuestions(newCount);  
+      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
+    }  
+  };  
+
+  const handleGetMoreQuestions = () => {  
+    setRemainingQuestions(initialQuestionsCount);  
+    saveRemainingQuestions(initialQuestionsCount); // Сохраняем начальное количество вопросов в БД  
+    alert('Получение новых вопросов...');  
+  };  
+
 
   const handleStart = () => {  
     setUserName(userName);  
