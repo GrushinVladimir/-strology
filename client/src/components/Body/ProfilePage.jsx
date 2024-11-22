@@ -74,7 +74,7 @@ const ProfilePage = ({ telegramId }) => {
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
-                const response = await fetch(`https://strology.vercel.app/api/users/${user.id}`, {  
+                const response = await fetch(`https://strology.vercel.app/api/users/:id`, {  
                     method: 'DELETE', // Метод DELETE для удаления пользователя  
                     headers: {  
                         'Content-Type': 'application/json',  
