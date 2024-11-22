@@ -3,29 +3,18 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
 
-const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {  
-  const { tg } = useTelegram();  
-  const [apiKey, setApiKey] = useState(null);  
+const ChatPage = ({ apiKey, userName, zodiacSign, remainingQuestions, decrementQuestions }) => {  
   const [loading, setLoading] = useState(true);  
-  const [messages, setMessages] = useState([  
-    { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },  
-    { sender: 'bot', text: 'Какие особенности моего знака зодиака?' },  
-    { sender: 'bot', text: 'Ждёт ли меня болезнь в этом году?' },  
-    { sender: 'bot', text: 'Чего стоит избегать завтра?' },  
-    { sender: 'bot', text: 'Ждёт ли меня повышение на работе?' },  
-  ]);  
+  const [messages, setMessages] = useState([]);  
   const [inputMessage, setInputMessage] = useState('');  
 
-  // Вытаскиваем API ключ  
   useEffect(() => {  
     const fetchApiKey = async () => {  
       try {  
-        const response = await fetch(`https://strology.vercel.app/api/config`);  
-        if (!response.ok) {  
-          throw new Error('Сеть не отвечает');  
+        // здесь можно добавить логику для получения API ключа, если он не передан через пропсы  
+        if (!apiKey) {  
+          console.error('API Key отсутствует.');  
         }  
-        const data = await response.json();  
-        setApiKey(data.apiKey);  
       } catch (error) {  
         console.error('Ошибка при получении API Key:', error);  
       } finally {  
@@ -34,12 +23,10 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     };  
 
     fetchApiKey();  
-  }, []);  
+  }, [apiKey]);  
 
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
-
-    // Передаем знак зодиака и имя пользователя в тексте сообщения  
     const fullMessage = `(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}`;  
 
     if (!apiKey) {  
@@ -63,12 +50,12 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
         'https://api.openai.com/v1/chat/completions',  
         {  
           model: 'gpt-4',  
-          messages: [{ role: 'user', content: fullMessage }],  // Используем полное сообщение с данными о пользователе  
+          messages: [{ role: 'user', content: fullMessage }],  
         },  
         {  
           headers: {  
             'Content-Type': 'application/json',  
-            Authorization: `${apiKey}`,  
+            Authorization: `Bearer ${apiKey}`,  
           },  
         }  
       );  
@@ -91,17 +78,19 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
 
   const handleQuestionClick = (question) => {  
     if (remainingQuestions > 0) {  
-      console.log("Вопрос задан, оставшиеся вопросы:", remainingQuestions); // Для отладки  
-      decrementQuestions();   
-      handleSendMessage(question);   
+      decrementQuestions();  
+      handleSendMessage(question);  
     } else {  
-      handleSendMessage(question);   
+      handleSendMessage(question);  
     }  
   };  
 
   useEffect(() => {  
-    tg.ready();  
-  }, [tg]);  
+    // Инициализация Telegram (если необходимо)  
+    if (window.tg) {  
+      window.tg.ready();  
+    }  
+  }, []);  
 
   if (loading) {  
     return <div>Загрузка...</div>;  
@@ -115,17 +104,11 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
 
       <div className="chat-messages">  
         {messages.map((message, index) => (  
-          <div  
-            key={index}  
-            className={message.sender === 'user' ? 'user-message' : 'bot-message'}  
-          >  
+          <div key={index} className={message.sender === 'user' ? 'user-message' : 'bot-message'}>  
             {message.isQuestionHeader ? (  
               <div className="question-header">{message.text}</div>  
             ) : (  
-              <button  
-                className="question-button"  
-                onClick={() => handleQuestionClick(message.text)}  
-              >  
+              <button className="question-button" onClick={() => handleQuestionClick(message.text)}>  
                 {message.text}  
               </button>  
             )}  
@@ -140,13 +123,13 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
           onChange={(e) => setInputMessage(e.target.value)}  
           placeholder="Задай вопрос звездам..."  
         />  
-        <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>  {/* Передаем inputMessage непосредственно */}  
+        <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>  
       </div>  
 
       <div className="tabs-and-content">  
         <div className="menu">  
           <Link to="/main" style={{ textAlign: 'center' }}>  
-          <img src="img/menu/Union.png" alt="Главная" />  
+            <img src="img/menu/Union.png" alt="Главная" />  
             <span>Главная</span>  
           </Link>  
           <Link to="/chat" style={{ textAlign: 'center' }}>  
