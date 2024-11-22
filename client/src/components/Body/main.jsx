@@ -180,7 +180,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         setHoroscope('Не удалось получить гороскоп');
       }
       finally {
-        setLoading(false); // Устанавливаем состояние загрузки в false после завершения
+        setLoading(false); // Усстанавливаем состояние загрузки в false после завершения
       }
     };
 
