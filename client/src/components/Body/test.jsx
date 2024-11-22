@@ -102,8 +102,10 @@ const Test = () => {
     if (step >= questions.length) {  
       return (  
         <div className='body'>  
-          <h2>Тест завершён!</h2>  
-          <button onClick={handleFinish}>Сохранить результаты</button>  
+         
+          <button className='button' onClick={handleFinish} style={{position: absolute;
+    bottom:' 10vh',
+    transform: 'translateX(-50%)'}}>Завершить</button>  
         </div>  
       );  
     }  
