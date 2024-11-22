@@ -15,20 +15,21 @@ const ProfilePage = ({ telegramId }) => {
     const navigate = useNavigate();  
     console.log(`Ошибка: telegramId: ${telegramId}`); // Логируем для отладки  
 
-    useEffect(() => {  
-        // Пример получения данных пользователя  
-        const fetchUserData = async () => {  
-            try {  
-                const response = await fetch("/api/current_user"); // пример API зaпpоса  
-                if (!response.ok) throw new Error('Ошибка загрузки данных пользователя');  
-                const data = await response.json();  
-                setUser(data);  
-            } catch (error) {  
-                console.error("Ошибка:", error);  
+    const fetchUserData = async () => {  
+        try {  
+            const response = await axios.get(`/api/users/${telegramId}`);  
+            if (response.data && response.data.user) {  
+                setUserData(response.data.user);  
+                setZodiacSign(response.data.user.zodiacSign);  
+            } else {  
+                setError('Данные пользователя не найдены');  
             }  
-        };  
-        fetchUserData();  
-    }, []);  
+        } catch (err) {  
+            setError('Ошибка при получении данных пользователя');  
+        } finally {  
+            fetchTestResults();  
+        }  
+    };  
 
     const fetchTestResults = async () => {  
         try {  
