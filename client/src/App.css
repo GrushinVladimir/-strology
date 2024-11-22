@@ -41,6 +41,9 @@ body{
 }
 .faq-page p{
   width: 80%;
-    margin: auto;
     padding: 20px;
+    font-size: 15px;
+    line-height: 1rem;
+    margin: 10px auto;
+    padding: 20px 10px;
 }
