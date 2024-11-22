@@ -13,7 +13,6 @@ const ProfilePage = ({ telegramId }) => {
     const [testCompleted, setTestCompleted] = useState(false);
     const [showSupportModal, setShowSupportModal] = useState(false);  // Добавим состояние для модалки
     const navigate = useNavigate();  
-    console.log(`Ошибка: telegramId: ${telegramId}`); // Логируем для отладки  
 
     const fetchUserData = async () => {  
         try {  
@@ -72,24 +71,25 @@ const ProfilePage = ({ telegramId }) => {
     
     // Функция для удаления профиля  
     const handleDeleteProfile = async () => {  
-        if (!user || !user.telegramId) {  
+        const telegramId = telegramId; // Убедитесь, что значение не undefined  
+        console.log(`Удаление профиля с telegramId: ${telegramId}`);  
+    
+        if (!telegramId) {  
             alert('telegramId недоступен. Проверьте состояние пользователя.');  
             return;  
         }  
-        
-        const telegramId = user.telegramId;  
-        console.log(`Удаление профиля с telegramId: ${telegramId}`);  
-
+    
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
+                // Здесь добавьте дополнительную проверку перед удалением  
                 const response = await fetch(`/api/users/${telegramId}`, {  
                     method: 'DELETE',  
                     headers: {  
                         'Content-Type': 'application/json',  
                     },  
                 });  
-
+    
                 if (response.ok) {  
                     console.log('Профиль успешно удален!');  
                     alert("Профиль успешно удален!");  
@@ -105,9 +105,6 @@ const ProfilePage = ({ telegramId }) => {
         }  
     };  
 
-    if (!user) {  
-        return <p>Загрузка данных пользователя...</p>; // или любой другой индикатор загрузки  
-    }  
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
