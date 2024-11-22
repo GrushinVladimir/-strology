@@ -16,8 +16,8 @@ const Question = require('./models/Question');
 const app = express();  
 
 // Подключение к MongoDB
-mongoose.connect(mongoURI, { socketTimeoutMS: 30000,  
-    serverSelectionTimeoutMS: 30000,   })
+mongoose.connect(mongoURI, { socketTimeoutMS: 60000,  
+    serverSelectionTimeoutMS: 60000,   })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
