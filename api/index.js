@@ -16,6 +16,11 @@ const GOOGLE = process.env.GOOGLE_KEY;
 const Question = require('./models/Question');  
 
 
+// Подключение к MongoDB
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Успешно подключено к MongoDB'))
+    .catch(err => console.error('Ошибка подключения к MongoDB:', err));
+
 const app = express();
 
 app.use(cors());
@@ -23,11 +28,6 @@ app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use('/api/test-results', testResultRoutes);  
 app.get('/api/horoscope', horoscopeHandler);
-
-// Подключение к MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Успешно подключено к MongoDB'))
-    .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
 
     app.post('/api/questions/:id', async (req, res) => {  
