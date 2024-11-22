@@ -111,14 +111,10 @@ flex-shrink: 0;
 
 
 .scroll-container {
-  max-height: 74px;
-  overflow-y: overlay;
-  position: relative;
-  width: 50px;
-  display: flex;               /* Включаем Flexbox */
-  align-items: center;         /* Вертикальное выравнивание по центру */
-  justify-content: center;     /* Горизонтальное выравнивание по центру */
-  text-align: center;   
+max-height: 74px;
+scrollbar-width: none;
+    overflow-y: overlay;
+    position: relative;
   }
   
   .item {
