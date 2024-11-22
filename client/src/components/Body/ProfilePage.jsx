@@ -74,18 +74,17 @@ const ProfilePage = ({ telegramId }) => {
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
-                const response = await fetch(`https://strology.vercel.app/api/users/:id`, {  
-                    method: 'DELETE', // Метод DELETE для удаления пользователя  
+                const response = await fetch(`https://strology.vercel.app/api/users/${user.telegramId}`, {  // Используйте telegramId  
+                    method: 'DELETE',  
                     headers: {  
                         'Content-Type': 'application/json',  
                         // Добавьте здесь токен авторизации, если требуется  
                     },  
                 });  
-
+    
                 if (response.ok) {  
                     alert("Профиль успешно удален!");  
-                    // Перенаправьте пользователя на главную или страницу входа  
-                    navigate('/'); // или измените на нужный маршрут  
+                    navigate('/'); // Перенаправьте пользователя на главную или страницу входа  
                 } else {  
                     const errorData = await response.json();  
                     alert("Ошибка при удалении профиля: " + errorData.message);  
@@ -95,7 +94,7 @@ const ProfilePage = ({ telegramId }) => {
                 alert("Произошла ошибка. Попробуйте еще раз.");  
             }  
         }  
-    };   
+    };  
 
     return (  
         <div className='Prof'>  
