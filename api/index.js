@@ -1,23 +1,23 @@
 require('dotenv').config();
+const cors = require('cors');
+const mongoURI = process.env.MONGO_URI;
+const mongoose = require('mongoose');
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope'); // Импорт обработчика гороскопов
 const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';
-const mongoURI = process.env.MONGO_URI;
 const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
 const GOOGLE = process.env.GOOGLE_KEY;
 const Question = require('./models/Question');  
 
 
 // Подключение к MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true,serverSelectionTimeoutMS: 20000, })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
