@@ -105,7 +105,7 @@ const Test = () => {
          
           <button className='button' onClick={handleFinish} style={{position: 'absolute',
     bottom:' 10vh',
-    transform: 'translateX(-50%)'}}>Завершить</button>  
+    transform: 'translateX(-50%)',right:'50%'}}>Завершить</button>  
         </div>  
       );  
     }  
