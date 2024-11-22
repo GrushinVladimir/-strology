@@ -2,15 +2,16 @@
   margin:0;
   padding:0;
   font-family: 'Involve', sans-serif;
-  max-width: 430px;
-  max-height: 932px;
-  min-width: 320px;
-  min-height: 568px;
+
 }
 body{
   margin: auto;
   background: var(--tg-theme-bg-color);
   color: var(--tg-theme-text-color);
+  max-width: 430px;
+  max-height: 932px;
+  min-width: 320px;
+  min-height: 568px;
 }
 #root{
 
