@@ -71,7 +71,6 @@ const ProfilePage = ({ telegramId }) => {
     
     // Функция для удаления профиля  
     const handleDeleteProfile = async () => {  
-        const telegramId = telegramId; // Убедитесь, что значение не undefined  
         console.log(`Удаление профиля с telegramId: ${telegramId}`);  
     
         if (!telegramId) {  
