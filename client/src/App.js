@@ -16,7 +16,6 @@ function App() {
   const [step, setStep] = useState(0);  
   const [userName, setUserName] = useState('');  
   const [formData, setFormData] = useState({});  
-  const [isUserExist, setIsUserExist] = useState(false);  
   const [telegramId, setTelegramId] = useState(null);  
   const navigate = useNavigate();  
   const initialQuestionsCount = 10;  
@@ -29,40 +28,43 @@ function App() {
     const checkUser = async () => {  
       try {  
         const id = tg?.initDataUnsafe?.user?.id; // Получаем telegramId  
-        if (id) {  
-          setTelegramId(id); // Сохраняем telegramId  
-          const response = await fetch(`/api/users/${id}`); // Проверка существования пользователя  
+        if (id && telegramId === null) { // Убедитесь, что id уникален  
+          setTelegramId(id);  
+          const response = await fetch(`/api/users/${id}`);  
           const data = await response.json();  
 
           if (data.exists) {  
             navigate('/main'); // Переход на главную страницу  
           } else {  
             console.warn('Пользователь не найден'); // Если пользователь не найден  
+            // Тут вы можете осуществить дополнительную логику  
           }  
         }  
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
       } finally {  
-        setLoading(false); // Устанавливаем состояние загрузки в false, когда проверка завершена  
+        setLoading(false); // Устанавливаем состояние загрузки в false  
       }  
     };  
 
-    checkUser(); // Запускаем проверку пользователя  
-  }, [tg, navigate]);  
+    checkUser(); // Запуск проверки пользователя  
+  }, [tg, navigate, telegramId]); // telegramId добавлен в зависимости  
 
   if (loading) {  
-    return <LoadingSpinner />; // Компонент индикатора загрузки  
+    return <LoadingSpinner />; // Индикатор загрузки  
   }  
 
-  // Функция для загрузки оставшихся вопросов из БД  
+  // Загрузка и сохранение оставшихся вопросов  
   const loadRemainingQuestions = async () => {  
+    if (!telegramId) return; // Проверка перед выполнением  
+
     try {  
-      const response = await fetch(`/api/questions/${telegramId}`); // Запрос к вашему API  
+      const response = await fetch(`/api/questions/${telegramId}`);  
       const data = await response.json();  
       if (data && data.remainingQuestions !== undefined) {  
         setRemainingQuestions(data.remainingQuestions);  
       } else {  
-        setRemainingQuestions(initialQuestionsCount); // Если данных нет, устанавливаем начальное значение  
+        setRemainingQuestions(initialQuestionsCount); // Если данных нет  
       }  
     } catch (error) {  
       console.error('Ошибка при загрузке оставшихся вопросов:', error);  
@@ -70,7 +72,6 @@ function App() {
     }  
   };  
 
-  // Функция для сохранения оставшихся вопросов в БД  
   const saveRemainingQuestions = async (count) => {  
     try {  
       await fetch(`/api/questions/${telegramId}`, {  
@@ -84,25 +85,22 @@ function App() {
   };  
 
   useEffect(() => {  
-    if (telegramId) {  
-      loadRemainingQuestions(); // Загружаем оставшиеся вопросы при наличии telegramId  
-    }  
+    loadRemainingQuestions(); // Загружаем оставшиеся вопросы  
   }, [telegramId]);  
 
   const decrementQuestions = () => {  
     if (remainingQuestions > 0) {  
       const newCount = remainingQuestions - 1;  
       setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
+      saveRemainingQuestions(newCount);  
     }  
   };  
 
   const handleGetMoreQuestions = () => {  
     setRemainingQuestions(initialQuestionsCount);  
-    saveRemainingQuestions(initialQuestionsCount); // Сохраняем начальное количество вопросов в БД  
+    saveRemainingQuestions(initialQuestionsCount);  
     alert('Получение новых вопросов...');  
   };  
-
 
   const handleStart = () => {  
     setUserName(userName);  
@@ -132,7 +130,7 @@ function App() {
         <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
         <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
         <Route path="/test" element={<Test />} />  
-        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/faq" element={<FAQPage />} />  
         <Route path="/zadaniya" element={<Zadaniya telegramId={telegramId} remainingQuestions={remainingQuestions} handleGetMoreQuestions={handleGetMoreQuestions} />} />  
         <Route path="/chat" element={<ChatPage remainingQuestions={remainingQuestions} decrementQuestions={decrementQuestions} />} />  
       </Routes>  
@@ -146,4 +144,4 @@ export default function AppWithRouter() {
       <App />  
     </Router>  
   );  
-}  
+} 
