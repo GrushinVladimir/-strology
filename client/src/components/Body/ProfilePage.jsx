@@ -154,20 +154,22 @@ const ProfilePage = ({ telegramId }) => {
                             </Link>  
                         </div>  
                     </div>  
-                    <div className="bottom-profile">  
-                            <Link to="/faq">  
-                                <p style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Часто задаваемые вопросы</p>  
-                            </Link>  
+                    <div className="bottom-profile"> 
                         <div>  
-                            <p onClick={handleInviteClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Пригласить друга</p>  
+                            <Link to="/faq">  
+                                <p style={{ cursor: 'pointer' }}>Часто задаваемые вопросы</p>  
+                            </Link>  
+                        </div>
+                        <div>  
+                            <p onClick={handleInviteClick} style={{ cursor: 'pointer' }}>Пригласить друга</p>  
                             </div>  
                         <div>  
-                             <p onClick={handleSupportClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Поддержка</p> {/* Кнопка открытия модалки */} 
+                             <p onClick={handleSupportClick} style={{ cursor: 'pointer' }}>Поддержка</p> {/* Кнопка открытия модалки */} 
                         </div>  
                         <div>  
-                            <button onClick={handleDeleteProfile} style={{ cursor: 'pointer', color: 'red', textDecoration: 'underline' }}>  
+                            <p onClick={handleDeleteProfile} style={{ cursor: 'pointer',color:'red'}}>  
                                 Удалить профиль  
-                            </button>  
+                            </p>  
                         </div>
                     </div>  
                 </div>  

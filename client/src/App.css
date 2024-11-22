@@ -2,8 +2,10 @@
   margin:0;
   padding:0;
   font-family: 'Involve', sans-serif;
-  max-width: 420px;
-  max-height: 730px;
+  max-width: 430px;
+  max-height: 932px;
+  min-width: 320px;
+  min-height: 568px;
 }
 body{
   margin: auto;
