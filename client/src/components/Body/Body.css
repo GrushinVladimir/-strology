@@ -486,6 +486,11 @@ box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
   bottom: 0;
   width: 100%;
 }
+.faq-body .menu{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 .body-profile button{
   margin-top: 2vh;
   margin-bottom: 2vh;
