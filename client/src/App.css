@@ -46,4 +46,12 @@ body{
     line-height: 1rem;
     margin: 10px auto;
     padding: 20px 10px;
+    background: #170d3a;
+    border-radius: 10px
+}
+.faq-page p:hover{
+  background:#35266b;
+}
+.faq-page{
+  padding-top: 25px;
 }
