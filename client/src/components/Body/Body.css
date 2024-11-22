@@ -21,7 +21,7 @@
 }
 .body span{
   font-size: 1rem;
-  margin: 1rem 0rem;
+  margin: 0rem 0;
   padding: 0 1rem;
     display: block;
 }
@@ -107,10 +107,15 @@ scroll-container::-webkit-scrollbar {
   display: none;}
 
 .scroll-container {
-max-height: 74px;
-width: 50px;
-    overflow-y: overlay;
-    position: relative;
+  max-height: 74px;
+  overflow-y: overlay;
+  position: relative;
+  width: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   }
   
   .item {

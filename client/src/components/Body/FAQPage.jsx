@@ -32,7 +32,7 @@ const FAQPage = () => {
                     <p onClick={() => toggleQuestion(index)}>
                         {item.question}
                     </p>
-                    {openQuestion === index && <p>{item.answer}</p>}
+                    {openQuestion === index && <span>{item.answer}</span>}
                 </div>
             ))}
 
