@@ -113,6 +113,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
   const [activeTab, setActiveTab] = useState('Сегодня');
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
+  const [showContent, setShowContent] = useState(false);  
 
   const [loading, setLoading] = useState(false);
 
@@ -136,56 +137,59 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
     fetchUserData(); // Загружаем данные пользователя
   }, [telegramId]); // Используем telegramId в зависимости
   
-  useEffect(() => {
-    if (!zodiacSign) return;
-
-    const fetchAndTranslateHoroscope = async () => {
-      const periodKey = {
-        'Сегодня': 'today',
-        'Завтра': 'tomorrow',
-        'Неделя': 'week',
-        'Месяц': 'month',
-      }[activeTab] || '';
-
-      let formattedDate = '';
-      switch (activeTab) {
-        case 'Сегодня':
-          formattedDate = formatDate(new Date());
-          break;
-        case 'Завтра':
-          formattedDate = formatDate(new Date(Date.now() + 86400000));
-          break;
-        case 'Неделя':
-          formattedDate = getWeekRange();
-          break;
-        case 'Месяц':
-          formattedDate = getMonthRange();
-          break;
-        default:
-          return;
-      }
-      setCurrentDate(formattedDate);
-      setLoading(true); // Устанавливаем состояние загрузки в true
-
-      try {
-        const horoscopeText = await getHoroscope(zodiacSign, periodKey);
-        if (horoscopeText) {
-          const translatedText = await translateText(horoscopeText);
-          setHoroscope(translatedText);
-        } else {
-          setHoroscope('Не удалось получить гороскоп');
-        }
-      } catch (error) {
-        console.error('Ошибка при получении гороскопа:', error);
-        setHoroscope('Не удалось получить гороскоп');
-      }
-      finally {
-        setLoading(false); // Усстанавливаем состояние загрузки в false после завершения
-      }
-    };
-
-    fetchAndTranslateHoroscope();
-  }, [activeTab, zodiacSign]);
+  useEffect(() => {  
+    if (!zodiacSign) return;  
+  
+    const fetchAndTranslateHoroscope = async () => {  
+      const periodKey = {  
+        'Сегодня': 'today',  
+        'Завтра': 'tomorrow',  
+        'Неделя': 'week',  
+        'Месяц': 'month',  
+      }[activeTab] || '';  
+  
+      let formattedDate = '';  
+      switch (activeTab) {  
+        case 'Сегодня':  
+          formattedDate = formatDate(new Date());  
+          break;  
+        case 'Завтра':  
+          formattedDate = formatDate(new Date(Date.now() + 86400000));  
+          break;  
+        case 'Неделя':  
+          formattedDate = getWeekRange();  
+          break;  
+        case 'Месяц':  
+          formattedDate = getMonthRange();  
+          break;  
+        default:  
+          return;  
+      }  
+      setCurrentDate(formattedDate);  
+      setLoading(true); // Устанавливаем состояние загрузки в true  
+      setShowContent(false); // Скрываем контент перед загрузкой  
+  
+      try {  
+        const horoscopeText = await getHoroscope(zodiacSign, periodKey);  
+        if (horoscopeText) {  
+          const translatedText = await translateText(horoscopeText);  
+          setHoroscope(translatedText);  
+        } else {  
+          setHoroscope('Не удалось получить гороскоп');  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при получении гороскопа:', error);  
+        setHoroscope('Не удалось получить гороскоп');  
+      } finally {  
+        setLoading(false); // Устанавливаем состояние загрузки в false после завершения  
+        setTimeout(() => {  
+          setShowContent(true); // Показываем контент с задержкой  
+        }, 500); // Задержка в 500 мс  
+      }  
+    };  
+  
+    fetchAndTranslateHoroscope();  
+  }, [activeTab, zodiacSign]);  
 
   return (
   <div className="main-page">
@@ -232,21 +236,22 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
           ))}
         </div>
 
-        <div className="tab-content-container">
-        {showTabContent && (
-            <>
-              {loading ? (
-                <p style={{paddingBottom: '2rem'}}>Загрузка...</p> // Сообщение о загрузке
-              ) : (
-                <>
-                <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>{currentDate}</p>
-                <p style={{ textAlign: 'left', lineHeight: '1rem', fontSize: '14px', paddingBottom: '2rem' }}>{horoscope || 'Гороскоп пока недоступен'}</p>
-                
-              </>
-            )}
-          </>
-        )}
-        </div>
+        <div className="tab-content-container">  
+  {showTabContent && (  
+    <>  
+      {loading ? (  
+        <p style={{ paddingBottom: '2rem' }}>Загрузка...</p> // Сообщение о загрузке  
+      ) : (  
+        showContent && ( // Проверяем, нужно ли показывать контент  
+          <>  
+            <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>{currentDate}</p>  
+            <p style={{ textAlign: 'left', lineHeight: '1rem', fontSize: '14px', paddingBottom: '2rem' }}>{horoscope || 'Гороскоп пока недоступен'}</p>  
+          </>  
+        )  
+      )}  
+    </>  
+  )}  
+</div>  
 
         <div className="menu">
           <Link to="/main">
