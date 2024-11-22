@@ -78,14 +78,13 @@ function App() {
     async function checkUser() {  
       try {  
         const id = tg?.initDataUnsafe?.user?.id;  
-        setTelegramId(id); // Сохраняем telegramId в состоянии  
+        if (id) {  
+          setTelegramId(id);  
 
-        const response = await fetch(`/api/users/${id}`);  
-        const data = await response.json();  
+          const response = await fetch(`/api/users/${id}`);  
+          const data = await response.json();  
 
-        if (data.exists) {  
-          setIsUserExist(true);  
-          if (window.location.pathname === '/') {  
+          if (data.exists) {  
             navigate('/main');  
           }  
         }  
@@ -94,10 +93,9 @@ function App() {
       }  
     }  
 
-    if (!isUserExist) {  
-      checkUser();  
-    }  
-  }, [tg, navigate, isUserExist]);  
+    tg.ready();  
+    checkUser();  
+  }, [tg, navigate]);
 
   const handleStart = () => {  
     setUserName(userName);  
