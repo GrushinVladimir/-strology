@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
 
 
 // Эндпоинт для удаления пользователя  
-router.delete('/:id', async (req, res) => {  
+router.delete('/:telegramId', async (req, res) => {  
   console.log(`Запрос на удаление пользователя с ID: ${req.params.id}`);  
   try {  
       const { id } = req.params;  
