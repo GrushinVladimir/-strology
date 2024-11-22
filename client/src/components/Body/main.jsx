@@ -199,7 +199,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
           <img 
             src={zodiacImages[zodiacSign]} 
             alt={zodiacSign} 
-            style={{ maxWidth: '260px', height: 'auto' }} 
+            style={{ maxWidth: '356px', height: 'auto' }} 
           />
         ) : (
           <p>Изображение для знака зодиака не найдено</p>
