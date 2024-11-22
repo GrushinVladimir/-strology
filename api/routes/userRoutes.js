@@ -60,11 +60,13 @@ router.post('/', async (req, res) => {
 
 // Эндпоинт для удаления пользователя  
 router.delete('/:telegramId', async (req, res) => {  
-  console.log(`Запрос на удаление пользователя с telegramId: ${req.params.telegramId}`);  
+  const { telegramId } = req.params;  
+  console.log(`Запрос на удаление пользователя с telegramId: ${telegramId}`);  
+  
   try {  
-      const { telegramId } = req.params;  
-      const user = await User.findOneAndDelete({ telegramId });  // Используем telegramId для поиска  
+      const user = await User.findOneAndDelete({ telegramId });  
       if (!user) {  
+          console.error(`Пользователь с telegramId ${telegramId} не найден.`);  // Логирование  
           return res.status(404).json({ message: 'Пользователь не найден' });  
       }  
       res.json({ message: 'Пользователь успешно удален' });  
@@ -72,8 +74,7 @@ router.delete('/:telegramId', async (req, res) => {
       console.error('Ошибка при удалении пользователя:', error);  
       res.status(500).json({ message: 'Ошибка сервера' });  
   }  
-}); 
-
+});  
 module.exports = router;
 
 
