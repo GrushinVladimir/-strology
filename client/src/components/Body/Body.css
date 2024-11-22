@@ -111,13 +111,10 @@ flex-shrink: 0;
   background: transparent; 
 }
 
-/* Скрываем scrollbar в Firefox */
-.scroll-container {
-  scrollbar-width: none; /* Скрыть полосу прокрутки в Firefox */
-}
 
 
 .scroll-container {
+  scrollbar-width: none;
   max-height: 74px;
   overflow-y: overlay;
   position: relative;
