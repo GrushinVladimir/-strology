@@ -46,7 +46,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     const finalMessage = message || inputMessage;  
 
     // Формируем сообщение с данными о пользователе  
-    const fullMessage = `Имя: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
+    const fullMessage = `Ты астролог.Меня зовут: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
 
     if (!apiKey) {  
       console.error('API Key отсутствует. Проверьте настройки.');  
