@@ -3,7 +3,7 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
 
-const ChatPage = ({ remainingQuestions, decrementQuestions })  => {  
+const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName })  => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  
@@ -39,6 +39,9 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
 
+    // Передаем знак зодиака и имя пользователя в тексте сообщения  
+    const fullMessage = `(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}`;  
+
     if (!apiKey) {  
       console.error('API Key отсутствует. Проверьте настройки.');  
       setMessages((prevMessages) => [  
@@ -48,7 +51,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
       return;  
     }  
 
-    if (finalMessage.trim() === '') return;  
+    if (fullMessage.trim() === '') return;  
 
     setMessages((prevMessages) => [  
       ...prevMessages,  
@@ -60,7 +63,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
         'https://api.openai.com/v1/chat/completions',  
         {  
           model: 'gpt-4',  
-          messages: [{ role: 'user', content: finalMessage }],  
+          messages: [{ role: 'user', content: fullMessage }],  // Используем полное сообщение с данными о пользователе  
         },  
         {  
           headers: {  
@@ -121,7 +124,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
             ) : (  
               <button  
                 className="question-button"  
-                onClick={() => handleQuestionClick(message.text)}
+                onClick={() => handleQuestionClick(message.text)}  
               >  
                 {message.text}  
               </button>  
@@ -155,7 +158,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions })  => {
             <span>Профиль</span>  
           </Link>  
         </div>  
-      </div>  
+        </div>  
     </div>  
   );  
 }  

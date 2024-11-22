@@ -108,6 +108,7 @@ scroll-container::-webkit-scrollbar {
 
 .scroll-container {
 max-height: 74px;
+width: 50px;
     overflow-y: overlay;
     position: relative;
   }
