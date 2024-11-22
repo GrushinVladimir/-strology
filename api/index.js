@@ -162,7 +162,20 @@ app.get('/api/users/:telegramId', async (req, res) => {
     }
 });
 
-
+// Эндпоинт для удаления пользователя  
+router.delete('/:id', async (req, res) => {  
+    try {  
+        const { id } = req.params;  
+        const user = await User.findByIdAndDelete(id); // Удаляем пользователя по ID  
+        if (!user) {  
+            return res.status(404).json({ message: 'Пользователь не найден' });  
+        }  
+        res.json({ message: 'Пользователь успешно удален' });  
+    } catch (error) {  
+        console.error('Ошибка при удалении пользователя:', error);  
+        res.status(500).json({ message: 'Ошибка сервера' });  
+    }  
+});  
 // Запуск сервера
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
