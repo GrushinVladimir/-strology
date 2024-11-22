@@ -156,7 +156,7 @@ const ProfilePage = ({ telegramId }) => {
                     </div>  
                     <div className="bottom-profile"> 
                         <div>  
-                            <Link to="/faq">  
+                            <Link to="/faq" style={{textDecoration: 'auto'}}>  
                                 <p style={{ cursor: 'pointer' }}>Часто задаваемые вопросы</p>  
                             </Link>  
                         </div>
