@@ -103,8 +103,19 @@ flex-shrink: 0;
     color: #fff;
     font-size: 2rem; 
 }
-.scroll-container::-webkit-scrollbar {  
-  display: none;}
+
+
+/* Скрываем scrollbar в WebKit браузерах */
+.scroll-container::-webkit-scrollbar {
+  width: 0;             /* Устанавливаем ширину полосы прокрутки в 0 */
+  background: transparent; 
+}
+
+/* Скрываем scrollbar в Firefox */
+.scroll-container {
+  scrollbar-width: none; /* Скрыть полосу прокрутки в Firefox */
+}
+
 
 .scroll-container {
   max-height: 74px;
