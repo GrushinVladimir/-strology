@@ -1,49 +1,110 @@
+import './App.css';  
+import { useTelegram } from './components/hooks/useTelegram';  
+import Header from './components/Header/Header';  
+import Body from './components/Body/Body';  
+import MainPage from './components/Body/main';  
 import React, { useEffect, useState } from 'react';  
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';  
-import Body from './Body'; // Предположим, что у вас есть этот компонент  
-import MainPage from './MainPage';  
-import ProfilePage from './ProfilePage';  
-import Test from './Test';  
-import FAQPage from './FAQPage';  
-import Zadaniya from './Zadaniya';  
-import ChatPage from './ChatPage';  
+import ProfilePage from './components/Body/ProfilePage';  
+import Test from './components/Body/test';  
+import Zadaniya from './components/Body/zadaniya';  
+import ChatPage from './components/Body/ChatPage';  
+import FAQPage from './components/Body/FAQPage';  
 
-const App = () => {  
-  const [userName, setUserName] = useState('');  
+function App() {  
+  const { tg } = useTelegram();  
   const [step, setStep] = useState(0);  
+  const [userName, setUserName] = useState('');  
   const [formData, setFormData] = useState({});  
-  const [remainingQuestions, setRemainingQuestions] = useState(5); // Пример начального количества вопросов  
-  const [telegramId, setTelegramId] = useState(null); // Это состояние должно инициализироваться соответствующим образом  
-  const initialQuestionsCount = 5; // Укажите исходное значение здесь  
+  const [isUserExist, setIsUserExist] = useState(false);  
+  const [telegramId, setTelegramId] = useState(null);  
   const navigate = useNavigate();  
+  const initialQuestionsCount = 10;  
+  const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
+
+  // Функция для загрузки оставшихся вопросов из БД  
+  const loadRemainingQuestions = async () => {  
+    try {  
+      const response = await fetch(`/api/questions/${telegramId}`); // Запрос к вашему API  
+      const data = await response.json();  
+      if (data && data.remainingQuestions !== undefined) {  
+        setRemainingQuestions(data.remainingQuestions);  
+      } else {  
+        setRemainingQuestions(initialQuestionsCount); // Если данных нет, устанавливаем начальное значение  
+      }  
+    } catch (error) {  
+      console.error('Ошибка при загрузке оставшихся вопросов:', error);  
+      setRemainingQuestions(initialQuestionsCount); // Устанавливаем начальное значение при ошибке  
+    }  
+  };  
+
+  // Функция для сохранения оставшихся вопросов в БД  
+  const saveRemainingQuestions = async (count) => {  
+    try {  
+      await fetch(`/api/questions/${telegramId}`, {  
+        method: 'POST',  
+        headers: { 'Content-Type': 'application/json' },  
+        body: JSON.stringify({ remainingQuestions: count }),  
+      });  
+    } catch (error) {  
+      console.error('Ошибка при сохранении оставшихся вопросов:', error);  
+    }  
+  };  
 
   useEffect(() => {  
-    // Пример проверки telegramId и возможного перехода на другую страницу  
     if (telegramId) {  
-      navigate('/main');  
+      loadRemainingQuestions(); // Загружаем оставшиеся вопросы при наличии telegramId  
     }  
-  }, [telegramId, navigate]);  
-
-  const saveRemainingQuestions = (count) => {  
-    // Сохраните оставшиеся вопросы (может быть в localStorage или API)  
-    console.log(`Remaining questions updated: ${count}`);  
-  };  
+  }, [telegramId]);  
 
   const decrementQuestions = () => {  
     if (remainingQuestions > 0) {  
       const newCount = remainingQuestions - 1;  
       setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount);  
+      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
     }  
   };  
 
   const handleGetMoreQuestions = () => {  
     setRemainingQuestions(initialQuestionsCount);  
-    saveRemainingQuestions(initialQuestionsCount);  
+    saveRemainingQuestions(initialQuestionsCount); // Сохраняем начальное количество вопросов в БД  
     alert('Получение новых вопросов...');  
   };  
 
+  useEffect(() => {  
+    tg.ready();  
+  }, [tg]);  
+
+  useEffect(() => {  
+    async function checkUser() {  
+      try {  
+        const id = tg?.initDataUnsafe?.user?.id;  
+        if (id) {  
+          setTelegramId(id);  
+
+          const response = await fetch(`/api/users/${id}`);  
+          const data = await response.json();  
+
+          if (data.exists) {  
+            setIsUserExist(true);  
+            navigate('/main');  
+          } else {  
+            console.warn('Пользователь не найден в БД.');  
+            // Можно добавить логику для обработки случая, когда пользователь не найден  
+          }  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при проверке пользователя:', error);  
+      } finally {  
+        tg.ready(); // Убедитесь, что это вызывается в любом случае, чтобы инициировать Telegram  
+      }  
+    }  
+
+    checkUser();  
+  }, [tg, navigate]);  
+
   const handleStart = () => {  
+    setUserName(userName);  
     setStep(1);  
   };  
 
@@ -52,25 +113,21 @@ const App = () => {
     setStep((prev) => prev + 1);  
   };  
 
-  const renderBody = () => {  
-    if (!userName) {  
-      return <div>Please log in to continue.</div>; // Предоставить альтернативный UI, если имя пользователя отсутствует  
-    }  
-    return (  
-      <Body  
-        step={step}  
-        userName={userName}  
-        handleStart={handleStart}  
-        handleNext={handleNext}  
-        formData={formData}  
-      />  
-    );  
-  };  
-
   return (  
     <div className="App">  
       <Routes>  
-        <Route path="/" element={renderBody()} />  
+        <Route  
+          path="/"  
+          element={  
+            <Body  
+              step={step}  
+              userName={userName}  
+              handleStart={handleStart}  
+              handleNext={handleNext}  
+              formData={formData}  
+            />  
+          }  
+        />  
         <Route path="/main" element={<MainPage telegramId={telegramId} />} />  
         <Route path="/profile" element={<ProfilePage telegramId={telegramId} />} />  
         <Route path="/test" element={<Test />} />  
@@ -80,7 +137,7 @@ const App = () => {
       </Routes>  
     </div>  
   );  
-};  
+}  
 
 export default function AppWithRouter() {  
   return (  
