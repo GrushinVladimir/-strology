@@ -163,7 +163,7 @@ app.get('/api/users/:telegramId', async (req, res) => {
 });
 
 // Эндпоинт для удаления пользователя  
-router.delete('/:id', async (req, res) => {  
+router.delete('/api/users/:telegramId', async (req, res) => {  
     try {  
         const { id } = req.params;  
         const user = await User.findByIdAndDelete(id); // Удаляем пользователя по ID  
