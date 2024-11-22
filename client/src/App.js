@@ -11,15 +11,6 @@ import Zadaniya from './components/Body/zadaniya';
 import ChatPage from './components/Body/ChatPage'; 
 import FAQPage from './components/Body/FAQPage'; 
 
-import React, { useEffect, useState } from 'react';  
-import { Routes, Route, useNavigate } from 'react-router-dom';  
-import { useTelegram } from './useTelegram'; // Предполагается, что вы используете этот хук для работы с Telegram  
-import Body from './Body';  
-import MainPage from './MainPage';  
-import ProfilePage from './ProfilePage';  
-import Test from './Test';  
-import Zadaniya from './Zadaniya';  
-import ChatPage from './ChatPage';  
 
 function App() {  
   const { tg } = useTelegram();  
