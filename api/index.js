@@ -17,7 +17,8 @@ const Question = require('./models/Question');
 
 
 // Подключение к MongoDB
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true,serverSelectionTimeoutMS: 20000, })
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true,      socketTimeoutMS: 30000,  
+    serverSelectionTimeoutMS: 30000,   })
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
