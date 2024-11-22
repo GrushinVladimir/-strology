@@ -46,7 +46,7 @@ const zodiacSigns = {
 
 const zodiacImages = {
   Водолей: 'img/zhak/vodoley.png',
-  Рыбы: 'img/zhak/riby.png',
+  Рыбы: 'img/zhak/riby2.png',
   Овен: 'img/zhak/oven.png',
   Телец: 'img/zhak/telec.png',
   Близнецы: 'img/zhak/bliznecy.png',
