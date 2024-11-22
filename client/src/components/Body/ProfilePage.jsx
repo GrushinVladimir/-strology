@@ -15,21 +15,20 @@ const ProfilePage = ({ telegramId }) => {
     const navigate = useNavigate();  
     console.log(`Ошибка: telegramId: ${telegramId}`); // Логируем для отладки  
 
-    const fetchUserData = async () => {  
-        try {  
-            const response = await axios.get(`/api/users/${telegramId}`);  
-            if (response.data && response.data.user) {  
-                setUserData(response.data.user);  
-                setZodiacSign(response.data.user.zodiacSign);  
-            } else {  
-                setError('Данные пользователя не найдены');  
+    useEffect(() => {  
+        // Пример получения данных пользователя  
+        const fetchUserData = async () => {  
+            try {  
+                const response = await fetch("/api/current_user"); // пример API зaпpоса  
+                if (!response.ok) throw new Error('Ошибка загрузки данных пользователя');  
+                const data = await response.json();  
+                setUser(data);  
+            } catch (error) {  
+                console.error("Ошибка:", error);  
             }  
-        } catch (err) {  
-            setError('Ошибка при получении данных пользователя');  
-        } finally {  
-            fetchTestResults();  
-        }  
-    };  
+        };  
+        fetchUserData();  
+    }, []);  
 
     const fetchTestResults = async () => {  
         try {  
@@ -76,9 +75,10 @@ const ProfilePage = ({ telegramId }) => {
             alert('telegramId недоступен. Проверьте состояние пользователя.');  
             return;  
         }  
-        const telegramId = user.telegramId; // Теперь безопасно использовать  
+        
+        const telegramId = user.telegramId;  
         console.log(`Удаление профиля с telegramId: ${telegramId}`);  
-    
+
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
@@ -88,7 +88,7 @@ const ProfilePage = ({ telegramId }) => {
                         'Content-Type': 'application/json',  
                     },  
                 });  
-    
+
                 if (response.ok) {  
                     console.log('Профиль успешно удален!');  
                     alert("Профиль успешно удален!");  
@@ -104,6 +104,9 @@ const ProfilePage = ({ telegramId }) => {
         }  
     };  
 
+    if (!user) {  
+        return <p>Загрузка данных пользователя...</p>; // или любой другой индикатор загрузки  
+    }  
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
