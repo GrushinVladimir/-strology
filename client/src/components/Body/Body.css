@@ -21,7 +21,7 @@
 }
 .body span{
   font-size: 1rem;
-  margin: 0rem 0;
+  margin: 1rem 0rem;
   padding: 0 1rem;
     display: block;
 }
@@ -103,8 +103,6 @@ flex-shrink: 0;
     color: #fff;
     font-size: 2rem; 
 }
-
-
 /* Скрываем scrollbar в WebKit браузерах */
 .scroll-container::-webkit-scrollbar {
   width: 0;             /* Устанавливаем ширину полосы прокрутки в 0 */
@@ -112,18 +110,11 @@ flex-shrink: 0;
 }
 
 
-
 .scroll-container {
-  scrollbar-width: none;
-  max-height: 74px;
-  overflow-y: overlay;
-  position: relative;
-  width: 50px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+max-height: 74px;
+width: 50px;
+    overflow-y: overlay;
+    position: relative;
   }
   
   .item {
