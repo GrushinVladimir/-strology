@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
-
+import './Body.css'; 
 const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
