@@ -69,7 +69,33 @@ const ProfilePage = ({ telegramId }) => {
         setShowSupportModal(false); // Закрываем модальное окно
     };
     
-     
+    // Функция для удаления профиля  
+    const handleDeleteProfile = async () => {  
+        const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
+        if (confirmDelete) {  
+            try {  
+                const response = await fetch(`/api/users/${user.id}`, {  
+                    method: 'DELETE', // Метод DELETE для удаления пользователя  
+                    headers: {  
+                        'Content-Type': 'application/json',  
+                        // Добавьте здесь токен авторизации, если требуется  
+                    },  
+                });  
+
+                if (response.ok) {  
+                    alert("Профиль успешно удален!");  
+                    // Перенаправьте пользователя на главную или страницу входа  
+                    navigate('/'); // или измените на нужный маршрут  
+                } else {  
+                    const errorData = await response.json();  
+                    alert("Ошибка при удалении профиля: " + errorData.message);  
+                }  
+            } catch (error) {  
+                console.error('Ошибка:', error);  
+                alert("Произошла ошибка. Попробуйте еще раз.");  
+            }  
+        }  
+    };   
 
     return (  
         <div className='Prof'>  
@@ -131,6 +157,11 @@ const ProfilePage = ({ telegramId }) => {
                         <div>  
                              <p onClick={handleSupportClick} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Поддержка</p> {/* Кнопка открытия модалки */} 
                         </div>  
+                        <div>  
+                            <button onClick={handleDeleteProfile} style={{ cursor: 'pointer', color: 'red', textDecoration: 'underline' }}>  
+                                Удалить профиль  
+                            </button>  
+                        </div>
                     </div>  
                 </div>  
             </div>  
