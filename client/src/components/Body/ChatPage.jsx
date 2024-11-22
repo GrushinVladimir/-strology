@@ -39,8 +39,8 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
 
-    // Передаем знак зодиака и имя пользователя в тексте сообщения  
-    const fullMessage = `(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}`;  
+    // Формируем сообщение с данными о пользователе  
+    const fullMessage = `Имя: ${userName}, Знак зодиака: ${zodiacSign}. Вопрос: ${finalMessage}`;  
 
     if (!apiKey) {  
       console.error('API Key отсутствует. Проверьте настройки.');  
@@ -51,8 +51,9 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
       return;  
     }  
 
-    if (fullMessage.trim() === '') return;  
+    if (finalMessage.trim() === '') return;  
 
+    // Добавляем сообщение пользователя в чат  
     setMessages((prevMessages) => [  
       ...prevMessages,  
       { sender: 'user', text: finalMessage },  
