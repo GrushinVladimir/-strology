@@ -39,3 +39,8 @@ body{
 .button{
   background-color: #533FA1;
 }
+.faq-page p{
+  width: 80%;
+    margin: auto;
+    padding: 20px;
+}

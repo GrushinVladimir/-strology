@@ -29,9 +29,9 @@ const FAQPage = () => {
             <h2>Часто задаваемые вопросы</h2>
             {questions.map((item, index) => (
                 <div key={index} className="faq-item">
-                    <h3 onClick={() => toggleQuestion(index)}>
+                    <p onClick={() => toggleQuestion(index)}>
                         {item.question}
-                    </h3>
+                    </p>
                     {openQuestion === index && <p>{item.answer}</p>}
                 </div>
             ))}
