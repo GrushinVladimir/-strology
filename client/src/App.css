@@ -55,3 +55,10 @@ body{
 .faq-page{
   padding-top: 25px;
 }
+.faq-page span{
+  width: 80%;
+  display: block;
+  margin: auto;
+  font-size: .9rem;
+  opacity: .9;
+}
