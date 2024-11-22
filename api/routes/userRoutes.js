@@ -57,6 +57,23 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+// Эндпоинт для удаления пользователя  
+router.delete('/:id', async (req, res) => {  
+  console.log(`Запрос на удаление пользователя с ID: ${req.params.id}`);  
+  try {  
+      const { id } = req.params;  
+      const user = await User.findByIdAndDelete(id);  
+      if (!user) {  
+          return res.status(404).json({ message: 'Пользователь не найден' });  
+      }  
+      res.json({ message: 'Пользователь успешно удален' });  
+  } catch (error) {  
+      console.error('Ошибка при удалении пользователя:', error);  
+      res.status(500).json({ message: 'Ошибка сервера' });  
+  }  
+});  
+
 module.exports = router;
 
 

@@ -1,20 +1,19 @@
-require('dotenv').config();
-const cors = require('cors');
-const mongoURI = process.env.MONGO_URI;
-const mongoose = require('mongoose');
-const TelegramBot = require('node-telegram-bot-api');
-const express = require('express');
-const bodyParser = require('body-parser');
-const User = require('./models/User');
-const userRoutes = require('./routes/userRoutes');
+require('dotenv').config();  
+const cors = require('cors');  
+const mongoURI = process.env.MONGO_URI;  
+const mongoose = require('mongoose');  
+const TelegramBot = require('node-telegram-bot-api');  
+const express = require('express');  
+const bodyParser = require('body-parser');  
+const User = require('./models/User');  
+const userRoutes = require('./routes/userRoutes'); // Убедитесь, что этот файл существует  
 const testResultRoutes = require('./routes/testResultRoutes');  
-const horoscopeHandler = require('./apis/horoscope'); // Имыпорт обработчика гороскопов
-const token = process.env.TELEGRAM_BOT_TOKEN;
-const webAppUrl = 'https://strology.vercel.app';
-const API_KEY = process.env.REACT_APP_CHAT_API_KEY;
-const GOOGLE = process.env.GOOGLE_KEY;
+const horoscopeHandler = require('./apis/horoscope');  
+const token = process.env.TELEGRAM_BOT_TOKEN;  
+const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
-const router = express.Router();
+
+const app = express();  
 
 // Подключение к MongoDB
 mongoose.connect(mongoURI, { socketTimeoutMS: 30000,  
@@ -22,13 +21,13 @@ mongoose.connect(mongoURI, { socketTimeoutMS: 30000,
     .then(() => console.log('Успешно подключено к MongoDB'))
     .catch(err => console.error('Ошибка подключения к MongoDB:', err));
 
-const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use('/api/users', userRoutes);
-app.use('/api/test-results', testResultRoutes);  
-app.get('/api/horoscope', horoscopeHandler);
+
+    app.use(cors());  
+    app.use(bodyParser.json());  
+    app.use('/api/users', userRoutes);
+    app.use('/api/test-results', testResultRoutes);  
+    app.get('/api/horoscope', horoscopeHandler);  
 
 
     app.post('/api/questions/:id', async (req, res) => {  
@@ -162,22 +161,6 @@ app.get('/api/users/:telegramId', async (req, res) => {
     }
 });
 
-// Эндпоинт для удаления пользователя  
-router.delete('/:id', async (req, res) => {  
-    console.log(`Запрос на удаление пользователя с ID: ${req.params.id}`);  
-    try {  
-        const { id } = req.params;  
-        const user = await User.findByIdAndDelete(id);  
-        if (!user) {  
-            return res.status(404).json({ message: 'Пользователь не найден' });  
-        }  
-        res.json({ message: 'Пользователь успешно удален' });  
-    } catch (error) {  
-        console.error('Ошибка при удалении пользователя:', error);  
-        res.status(500).json({ message: 'Ошибка сервера' });  
-    }  
-});  
-module.exports = router; // Не забудьте экспортировать router  
 
 // Запуск сервера
 const PORT = process.env.PORT || 5000;
