@@ -1,6 +1,5 @@
 import './App.css';  
 import { useTelegram } from './components/hooks/useTelegram';  
-import Header from './components/Header/Header';  
 import Body from './components/Body/Body';  
 import MainPage from './components/Body/main';  
 import React, { useEffect, useState } from 'react';  
@@ -18,27 +17,26 @@ function App() {
   const [formData, setFormData] = useState({});  
   const [isUserExist, setIsUserExist] = useState(false);  
   const [telegramId, setTelegramId] = useState(null);  
+  const [hasCheckedUser, setHasCheckedUser] = useState(false); // новое состояние  
   const navigate = useNavigate();  
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
 
-  // Функция для загрузки оставшихся вопросов из БД  
   const loadRemainingQuestions = async () => {  
     try {  
-      const response = await fetch(`/api/questions/${telegramId}`); // Запрос к вашему API  
+      const response = await fetch(`/api/questions/${telegramId}`);  
       const data = await response.json();  
       if (data && data.remainingQuestions !== undefined) {  
         setRemainingQuestions(data.remainingQuestions);  
       } else {  
-        setRemainingQuestions(initialQuestionsCount); // Если данных нет, устанавливаем начальное значение  
+        setRemainingQuestions(initialQuestionsCount);  
       }  
     } catch (error) {  
       console.error('Ошибка при загрузке оставшихся вопросов:', error);  
-      setRemainingQuestions(initialQuestionsCount); // Устанавливаем начальное значение при ошибке  
+      setRemainingQuestions(initialQuestionsCount);  
     }  
   };  
 
-  // Функция для сохранения оставшихся вопросов в БД  
   const saveRemainingQuestions = async (count) => {  
     try {  
       await fetch(`/api/questions/${telegramId}`, {  
@@ -53,7 +51,7 @@ function App() {
 
   useEffect(() => {  
     if (telegramId) {  
-      loadRemainingQuestions(); // Загружаем оставшиеся вопросы при наличии telegramId  
+      loadRemainingQuestions();  
     }  
   }, [telegramId]);  
 
@@ -61,13 +59,13 @@ function App() {
     if (remainingQuestions > 0) {  
       const newCount = remainingQuestions - 1;  
       setRemainingQuestions(newCount);  
-      saveRemainingQuestions(newCount); // Сохраняем новое количество вопросов в БД  
+      saveRemainingQuestions(newCount);  
     }  
   };  
 
   const handleGetMoreQuestions = () => {  
     setRemainingQuestions(initialQuestionsCount);  
-    saveRemainingQuestions(initialQuestionsCount); // Сохраняем начальное количество вопросов в БД  
+    saveRemainingQuestions(initialQuestionsCount);  
     alert('Получение новых вопросов...');  
   };  
 
@@ -87,21 +85,26 @@ function App() {
 
           if (data.exists) {  
             setIsUserExist(true);  
-            navigate('/main');  
+            if (!hasCheckedUser) {  
+              setHasCheckedUser(true); // Устанавливаем флаг, что проверка пользователя завершена  
+              navigate('/main');  
+            }  
           } else {  
             console.warn('Пользователь не найден в БД.');  
-            // Можно добавить логику для обработки случая, когда пользователь не найден  
+            // Логика обработки случая, когда пользователь не найден  
           }  
         }  
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
       } finally {  
-        tg.ready(); // Убедитесь, что это вызывается в любом случае, чтобы инициировать Telegram  
+        tg.ready();  
       }  
     }  
 
-    checkUser();  
-  }, [tg, navigate]);  
+    if (!hasCheckedUser) { // Проверяем, нужно ли делать проверку  
+      checkUser();  
+    }  
+  }, [tg, hasCheckedUser, navigate]);  
 
   const handleStart = () => {  
     setUserName(userName);  
