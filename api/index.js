@@ -14,12 +14,52 @@ const webAppUrl = 'https://strology.vercel.app';
 const Question = require('./models/Question');  
 
 const app = express();  
+let attempts = 0;  
+const maxAttempts = 5;  
 
-// Подключение к MongoDB
-mongoose.connect(mongoURI, { socketTimeoutMS: 60000,  
-    serverSelectionTimeoutMS: 60000,   })
-    .then(() => console.log('Успешно подключено к MongoDB'))
-    .catch(err => console.error('Ошибка подключения к MongoDB:', err));
+const connectToDatabase = async () => {  
+    if (attempts >= maxAttempts) {  
+        console.error('Достигнуто максимальное количество попыток подключения к MongoDB');  
+        return;  
+    }  
+    try {  
+        await mongoose.connect(mongoURI, {  
+            socketTimeoutMS: 10000,  
+            serverSelectionTimeoutMS: 10000,  
+            useNewUrlParser: true,  
+            useUnifiedTopology: true,  
+        });  
+        console.log('Успешно подключено к MongoDB');  
+        attempts = 0; // Сбросить счетчик попыток при успешном подключении  
+    } catch (error) {  
+        attempts++;  
+        console.error('Ошибка подключения к MongoDB:', error);  
+        setTimeout(connectToDatabase, 5000); // Повторная попытка через 5 секунд  
+    }  
+};  
+
+// Вызов функции подключения  
+connectToDatabase();  
+mongoose.connection.on('connected', () => {  
+    console.log('Подключено к MongoDB');  
+});  
+
+mongoose.connection.on('error', (err) => {  
+    console.error('Ошибка подключения к MongoDB:', err);  
+});  
+
+mongoose.connection.on('disconnected', () => {  
+    console.log('Отключено от MongoDB');  
+    // Попробуйте переподключиться  
+    connectToDatabase();  
+});  
+if (!mongoURI) {  
+    console.error('Ошибка: MONGO_URI не задана в переменных окружения');  
+    process.exit(1); // Завершить процесс, если переменная не задана  
+}  
+
+
+
 
 
 
