@@ -71,19 +71,17 @@ const ProfilePage = ({ telegramId }) => {
     
     // Функция для удаления профиля  
     const handleDeleteProfile = async () => {  
-        const telegramId = user.telegramId; // Убедитесь, что значение не undefined  
-        console.log(`Удаление профиля с telegramId: ${telegramId}`);  
-    
-        if (!telegramId) {  
+        if (!user || !user.telegramId) {  
             alert('telegramId недоступен. Проверьте состояние пользователя.');  
             return;  
         }  
+        const telegramId = user.telegramId; // Теперь безопасно использовать  
+        console.log(`Удаление профиля с telegramId: ${telegramId}`);  
     
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
-                // Здесь добавьте дополнительную проверку перед удалением  
-                const response = await fetch(`https://strology.vercel.app/api/users/${telegramId}`, {  
+                const response = await fetch(`/api/users/${telegramId}`, {  
                     method: 'DELETE',  
                     headers: {  
                         'Content-Type': 'application/json',  
