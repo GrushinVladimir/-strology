@@ -160,6 +160,7 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stri
 
 app.post('/api/stripe', async (req, res) => {  
     const { chatId } = req.body;  
+    console.log('Получен chatId:', chatId); // Логирование chatId  
 
     try {  
         await handlePayment(chatId);  
