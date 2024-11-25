@@ -113,7 +113,7 @@ app.get('/api/config-google', (req, res) => {
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
 // Эндпоинт для обработки сообщений Telegram  
-app.post('/api/webhook', (req, res) => {
+app.post('/api/webhook', async (req, res) => {
     try {
         const msg = req.body;
 
@@ -123,11 +123,21 @@ app.post('/api/webhook', (req, res) => {
             const text = msg.message.text;
 
             console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
-            // Здесь можно добавить логику ответа на сообщение
+
+            // Логика ответа на команду /start
+            if (text === '/start') {
+                const responseText = 'Добро пожаловать! Как я могу помочь вам?';
+
+                // Отправляем ответ пользователю
+                await axios.post(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                    chat_id: chatId,
+                    text: responseText
+                });
+            }
         } else {
             console.error('Некорректный формат сообщения:', msg);
         }
-        
+
         res.sendStatus(200); // Отправляем статус 200 OK
     } catch (error) {
         console.error('Ошибка при обработке webhook:', error);
