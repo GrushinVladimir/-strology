@@ -146,7 +146,6 @@ const ProfilePage = ({ telegramId }) => {
                     Оплатить  
                 </div>  
             </div>  
-<<<<<<< HEAD
             <div className="middle-profile">  
                 {/* Ваши другие элементы профиля */}  
             </div>  
@@ -179,21 +178,6 @@ const ProfilePage = ({ telegramId }) => {
                     </div>  
                 </div>  
             )}  
-=======
-
-            {/* Модальное окно для поддержки */}
-            {showSupportModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={closeModal}>&times;</span>
-                        <h2>Контакты поддержки</h2>
-                        <p style={{fontSize: '1rem',opacity: .7}}>Email: support@example.com</p>
-                        <p style={{fontSize: '1rem',opacity: .7}}>Телефон: +123456789</p>
-                    </div>
-                </div>
-            )}
-
->>>>>>> 9fbadbbb91c23671ba6b40bedd14111bd2714698
             <div className="menu">  
                 <Link to="/main">  
                     <img src="img/menu/Union.png" alt="Главная" />  
