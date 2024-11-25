@@ -110,7 +110,7 @@ const ProfilePage = ({ telegramId }) => {
     
         try {  
             console.log('Invoice Data перед отправкой:', JSON.stringify(invoiceData, null, 2)); // Логирование для отладки  
-            const response = await fetch('/api//stripe', { // Вызовите свой серверный API  
+            const response = await fetch('/api/stripe', {   
                 method: 'POST',  
                 headers: {  
                     'Content-Type': 'application/json',  
