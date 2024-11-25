@@ -160,36 +160,45 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stri
 
 app.post('/api/stripe', async (req, res) => {  
     const { chatId } = req.body;  
+
     console.log('Получен chatId:', chatId); // Логирование chatId  
 
     try {  
         await handlePayment(chatId);  
         res.json({ success: true, message: 'Инвойс успешно отправлен' });  
     } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error);  
+        console.error('Ошибка при отправке инвойса:', error); // Логирование ошибки  
         res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
 });  
 
 async function handlePayment(chatId) {  
-    const invoicePayload = 'UniquePayload';  
-    const title = 'Оплата услуги';  
-    const description = 'Оплата за доступ к услугам';  
-    const startParameter = 'payment';  
-    const currency = 'RUB';  
-    const price = 10000;  
+    try {  
+        const invoicePayload = 'UniquePayload';  
+        const title = 'Оплата услуги';  
+        const description = 'Оплата за доступ к услугам';  
+        const startParameter = 'payment';  
+        const currency = 'RUB';  
+        const price = 10000;  
 
-    // Используйте токен бота Telegram для отправки инвойса  
-    await bot.sendInvoice(  
-        chatId,   
-        title,   
-        description,   
-        invoicePayload,   
-        paymentProviderToken, // Токен Telegram  
-        currency,   
-        [{ label: 'Услуга', amount: price }],   
-        { start_parameter: startParameter, invoice_payload: invoicePayload }  
-    );  
+        console.log('Отправка инвойса для chatId:', chatId);  
+
+        await bot.sendInvoice(  
+            chatId,   
+            title,   
+            description,   
+            invoicePayload,   
+            paymentProviderToken, // Токен Telegram  
+            currency,   
+            [{ label: 'Услуга', amount: price }],   
+            { start_parameter: startParameter, invoice_payload: invoicePayload }  
+        );   
+
+        console.log('Инвойс отправлен'); // Логируем успешное отправление инвойса  
+    } catch (error) {  
+        console.error('Ошибка при обработке платежа:', error); // Логирование ошибки  
+        throw error; // Пробрасываем ошибку для обработки в родительском блоке  
+    }  
 }  
 
 async function handleOtherMessages(chatId, msg) {  
