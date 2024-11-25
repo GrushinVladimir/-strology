@@ -103,37 +103,34 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
-    const PaymentButton = ({ telegramId }) => {  
-        const startPayment = async (telegramId) => {  
-            const invoiceData = {  
-                chatId: telegramId // Передаем только идентификатор чата  
-            };  
-    
-            try {  
-                console.log('Invoice Data перед отправкой:', JSON.stringify(invoiceData, null, 2)); // Логирование для отладки  
-                const response = await fetch('/api/stripe', {  
-                    method: 'POST',  
-                    headers: {  
-                        'Content-Type': 'application/json',  
-                    },  
-                    body: JSON.stringify(invoiceData),  
-                });  
-    
-                if (!response.ok) {  
-                    const errorText = await response.text();  
-                    throw new Error(`Ошибка при отправке инвойса: ${response.status} ${errorText}`);  
-                }  
-    
-                const data = await response.json();  
-                console.log('Инвойс отправлен!', data);  
-                alert('Инвойс успешно отправлен в чат Telegram!');  
-            } catch (error) {  
-                console.error('Ошибка:', error);  
-                alert(`Произошла ошибка: ${error.message}`);  
-            }  
+    const startPayment = async (telegramId) => {  
+        const invoiceData = {  
+            chatId: telegramId // Передаем идентификатор чата  
         };  
-    
-  
+
+        try {  
+            console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
+            const response = await fetch('/api/payment', {  
+                method: 'POST',  
+                headers: {  
+                    'Content-Type': 'application/json',  
+                },  
+                body: JSON.stringify(invoiceData),  
+            });  
+
+            if (!response.ok) {  
+                throw new Error(`Ошибка при отправке инвойса: ${response.status}`);  
+            }  
+
+            const data = await response.json();  
+            console.log('Инвойс отправлен!', data);  
+            alert('Инвойс успешно отправлен в чат Telegram!');  
+        } catch (error) {  
+            console.error('Ошибка:', error);  
+            alert(`Произошла ошибка: ${error.message}`);  
+        }  
+    };  
+
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
@@ -155,7 +152,7 @@ const ProfilePage = ({ telegramId }) => {
                             )}  
                         </div>  
                         <div className='top-profile-right'>0,00</div>
-                        <div className="top-profile-right active" onClick={() => startPayment(telegramId)}> Оплатить </div>    
+                        <div className="top-profile-right active"  onClick={() => startPayment(telegramId)}>Оплатить </div>   
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
