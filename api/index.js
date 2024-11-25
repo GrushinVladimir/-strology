@@ -114,29 +114,25 @@ app.get('/api/config-google', (req, res) => {
 });  
 // Эндпоинт для обработки сообщений Telegram  
 app.post('/api/webhook', (req, res) => {
-    const msg = req.body;
-    
-    if (msg.message && msg.message.chat) {
-        const chatId = msg.message.chat.id;
-        const text = msg.message.text;
+    try {
+        const msg = req.body;
 
-        console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
+        // Проверка наличия сообщения и чата
+        if (msg && msg.message && msg.message.chat) {
+            const chatId = msg.message.chat.id;
+            const text = msg.message.text;
 
-        try {
-            if (text === '/start') {
-                await handleStartCommand(chatId);
-            } else {
-                // Обработка других текстов
-                await bot.sendMessage(chatId, "Команда не распознана.");
-            }
-        } catch (error) {
-            console.error('Ошибка при обработке сообщения:', error);
+            console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
+            // Здесь можно добавить логику ответа на сообщение
+        } else {
+            console.error('Некорректный формат сообщения:', msg);
         }
-    } else {
-        console.log('Сообщение не содержит текста или чата.');
+        
+        res.sendStatus(200); // Отправляем статус 200 OK
+    } catch (error) {
+        console.error('Ошибка при обработке webhook:', error);
+        res.status(500).send('Ошибка сервера');
     }
-
-    res.sendStatus(200); // Возвращаем статус 200 OK
 });
 
 // Хранение состояний пользователей  
