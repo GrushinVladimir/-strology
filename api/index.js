@@ -165,17 +165,17 @@ async function handlePayment(chatId) {
     if (!token) {  
         throw new Error('Telegram Bot Token not provided!');  
     }  
+
     try {  
         const invoicePayload = 'UniquePayload';  
         const title = 'Оплата услуги';  
         const description = 'Оплата за доступ к услугам';  
         const startParameter = 'payment';  
         const currency = 'RUB';  
-        const price = 10000;  
+        const price = 10000; // Цена в копейках (10000 == 100 руб.)  
 
         console.log('Отправка инвойса для chatId:', chatId);  
-        console.log('Telegram Bot Token:', token);
-        await bot.sendInvoice(  
+        await bot.telegram.sendInvoice(  
             chatId,  
             title,  
             description,  
@@ -194,7 +194,6 @@ async function handlePayment(chatId) {
 }  
 
 app.post('/api/stripe', async (req, res) => {  
-    console.log('Telegram Bot Token:', token);
     const { chatId } = req.body;  
     console.log('Полученный chatId:', chatId); // Логируем chatId  
 
