@@ -171,23 +171,19 @@ async function handlePayment(chatId) {
         );
         console.log('Инвойс отправлен в чат:', chatId);  
     } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error.response ? error.response.body : error);  
+        if (error.response) {
+            console.error('Ошибка при отправке инвойса:', error.response.body);  
+        } else {
+            console.error('Неизвестная ошибка:', error);
+        }
         throw error; // Перебросить ошибку, чтобы она была видна на уровне API.  
-        console.log('Отправка инвойса с параметрами:', {
-            chatId,
-            title,
-            description,
-            invoicePayload,
-            TOKEN,
-            currency,
-            items: [{ label: 'Услуга', amount: price }],
-        });
     }  
-}  
+}
 
 // Эндпоинт для получения запроса на оплату  
 app.post('/api/payment', async (req, res) => {  
     const { chatId } = req.body;  
+    console.log('Получен запрос на оплату:', chatId); // Логируем полученный chatId
 
     try {  
         await handlePayment(chatId);  
@@ -196,7 +192,7 @@ app.post('/api/payment', async (req, res) => {
         console.error('Ошибка при отправке инвойса:', error);  
         res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
-});  
+});
 
 // Эндпоинт для получения данных пользователя по Telegram ID  
 app.get('/api/users/:telegramId', async (req, res) => {  
