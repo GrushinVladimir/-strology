@@ -105,7 +105,7 @@ const ProfilePage = ({ telegramId }) => {
     };  
     const startPayment = async (telegramId) => {  
         const invoiceData = {  
-            chatId: telegramId 
+            chatId: String(telegramId)
         };  
     
         try {  
