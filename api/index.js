@@ -160,42 +160,39 @@ async function handleStartCommand(chatId) {
 }  
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stripe  
 
+// Вставьте ваш токен платежей от BotFather  
+const TOKEN = '401643678:TEST:d17fcb03-1c2b-4b72-825c-5a4f0ab33e7c';  
+
+const title = 'Платеж за услуги';  
+const description = 'Оплата за доступ к услугам';  
+const invoicePayload = 'payment';  
+const currency = 'RUB'; // Валюта  
+const price = 10000; // Сумма в копейках (100 руб.)  
+
+// Обработка платежа  
 async function handlePayment(chatId) {  
-    // Проверка токена  
-    if (!token) {  
-        throw new Error('Telegram Bot Token not provided!');  
-    }  
-
     try {  
-        const invoicePayload = 'UniquePayload';  
-        const title = 'Оплата услуги';  
-        const description = 'Оплата за доступ к услугам';  
-        const startParameter = 'payment';  
-        const currency = 'RUB';  
-        const price = 10000; // Цена в копейках (10000 == 100 руб.)  
-
-        console.log('Отправка инвойса для chatId:', chatId);  
-        await bot.telegram.sendInvoice(  
+        await bot.sendInvoice(  
             chatId,  
             title,  
             description,  
             invoicePayload,  
-            token,  
+            TOKEN,  
             currency,  
             [{ label: 'Услуга', amount: price }],  
-            { start_parameter: startParameter, invoice_payload: invoicePayload }  
+            { start_parameter: 'payment', invoice_payload: invoicePayload }  
         );  
 
-        console.log('Инвойс отправлен');  
+        console.log('Инвойс отправлен в чат:', chatId);  
     } catch (error) {  
-        console.error('Ошибка при обработке платежа:', error);  
+        console.error('Ошибка при отправке инвойса:', error);  
         throw error;  
     }  
 }  
 
-app.post('/api/stripe', async (req, res) => {  
+// Эндпоинт для получения запроса на оплату  
+app.post('/api/payment', async (req, res) => {  
     const { chatId } = req.body;  
-    console.log('Полученный chatId:', chatId); // Логируем chatId  
 
     try {  
         await handlePayment(chatId);  
@@ -204,44 +201,6 @@ app.post('/api/stripe', async (req, res) => {
         console.error('Ошибка при отправке инвойса:', error);  
         res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
-});  
-
-async function handleOtherMessages(chatId, msg) {  
-    const text = msg.text;  
-    if (!text) return;  
-
-    if (userStates[chatId] && userStates[chatId].stage === 'zodiacSign') {  
-        userStates[chatId].zodiacSign = text;  
-        userStates[chatId].stage = 'completed';  
-
-        console.log(`Знак зодиака ${text} сохранён для chatId: ${chatId}`);  
-        await bot.sendMessage(chatId, `Вы выбрали знак зодиака: ${text}. Регистрация завершена.`);  
-
-        const user = new User({  
-            telegramId: chatId,  
-            name: msg.from.first_name,  
-            zodiacSign: text,  
-        });  
-        await user.save();  
-
-        delete userStates[chatId];  
-    } else {  
-        await bot.sendMessage(chatId, 'Укажите ваш знак зодиака для регистрации.');  
-    }  
-}  
-
-// Обработка успешного платежа  
-app.post(`/payment/${token}`, async (req, res) => {  
-    const { successful_payment, chat } = req.body.message;  
-
-    if (successful_payment) {  
-        console.log(`Платеж успешно выполнен: ${successful_payment}`);  
-        await bot.sendMessage(chat.id, 'Спасибо за ваш платеж!'); // Уведомление пользователю  
-    } else {  
-        console.error('Проблема с платежом');  
-    }  
-
-    res.sendStatus(200);  
 });  
 
 // Эндпоинт для получения данных пользователя по Telegram ID  
