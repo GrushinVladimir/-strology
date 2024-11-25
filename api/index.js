@@ -158,10 +158,10 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stripe  
+
 
 // Вставьте ваш токен платежей от BotFather  
-const TOKEN = '401643678:TEST:d17fcb03-1c2b-4b72-825c-5a4f0ab33e7c';  
+const TOKEN = process.env.SB_KEY;  
 
 const title = 'Платеж за услуги';  
 const description = 'Оплата за доступ к услугам';  
