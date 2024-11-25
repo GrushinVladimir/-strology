@@ -155,30 +155,34 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
-const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
-app.get('/api/stripe', (req, res) => {  
-    res.json({ token: process.env.PAYMENT_PROVIDER_TOKEN });  
+app.post('/api/payment', async (req, res) => {  
+    const { chatId } = req.body; // Передаете идентификатор чата в запросе  
+
+    try {  
+        const invoicePayload = `payload_${chatId}`;  
+        const title = 'Оплата услуги';  
+        const description = 'Оплата за доступ к услугам';  
+        const startParameter = 'payment';  
+        const currency = 'RUB';  
+        const price = 10000;  
+
+        await bot.sendInvoice(  
+            chatId,  
+            title,  
+            description,  
+            invoicePayload,  
+            paymentProviderToken,  
+            currency,  
+            [{ label: 'Услуга', amount: price }],  
+            { start_parameter: startParameter, invoice_payload: invoicePayload }  
+        );  
+
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
+    } catch (error) {  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
+    }  
 });  
-
-async function handlePayment(chatId) {  
-    const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
-    const title = 'Оплата услуги';  
-    const description = 'Оплата за доступ к услугам';  
-    const startParameter = 'payment'; // Нужен для подготовки платежа  
-    const currency = 'RUB'; // Валюта  
-    const price = 10000; // Цена в копейках (100.00 RUB)  
-
-    await bot.sendInvoice(  
-        chatId,   
-        title,   
-        description,   
-        invoicePayload,   
-        paymentProviderToken, // Используем правильный токен  
-        currency,   
-        [{ label: 'Услуга', amount: price }],   
-        { start_parameter: startParameter, invoice_payload: invoicePayload }  
-    );  
-}  
 
 async function handleOtherMessages(chatId, msg) {  
     const text = msg.text;  

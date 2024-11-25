@@ -104,21 +104,13 @@ const ProfilePage = ({ telegramId }) => {
         }  
     };  
     const startPayment = async (telegramId) => {  
-        const providerToken = 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa'; // Замените на ваш токен  
         const invoiceData = {  
-            chat_id: telegramId, // Идентификатор чата  
-            title: 'Оплата за услуги', // Название инвойса (обязательно)  
-            description: 'Оплата за услуги', // Описание инвойса (обязательно)  
-            payload: `payload_${telegramId}`, // Уникальный идентификатор для вашего платежа  
-            provider_token: providerToken, // Токен платежного провайдера (обязательно)  
-            start_parameter: 'test_payment', // Параметр для начала платежа  
-            currency: 'RUB', // Валюта  
-            prices: [{ label: 'Услуга', amount: 10000 }] // Сумма в копейках (100 руб.)  
+            chatId: telegramId // Передаем только идентификатор чата  
         };  
     
         try {  
             console.log('Invoice Data перед отправкой:', JSON.stringify(invoiceData, null, 2)); // Логирование для отладки  
-            const response = await fetch(`https://api.telegram.org/bot7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs/sendInvoice`, {  
+            const response = await fetch('/api/payment', { // Вызовите свой серверный API  
                 method: 'POST',  
                 headers: {  
                     'Content-Type': 'application/json',  
@@ -139,7 +131,6 @@ const ProfilePage = ({ telegramId }) => {
             alert(`Произошла ошибка: ${error.message}`);  
         }  
     };  
-
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
