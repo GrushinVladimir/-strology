@@ -122,9 +122,10 @@ app.post('/api/webhook', async (req, res) => {
         // Проверка наличия сообщения и чата
         if (msg && msg.message && msg.message.chat) {
             const chatId = msg.message.chat.id;
+            const userId = msg.message.from.id; // Получаем ID пользователя
             const text = msg.message.text;
 
-            console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
+            console.log(`Получено сообщение: "${text}" от User ID: ${userId}, Chat ID: ${chatId}`);
 
             // Логика ответа на команду /start
             if (text === '/start') {
@@ -205,40 +206,7 @@ app.get('/api/users/:telegramId', async (req, res) => {
 
 
 
-// Обработка команды /start  
-bot.onText(/\/start/, async (msg) => {
-    const chatId = msg.chat.id;  
-    const userId = msg.from.id; // Получаем идентификатор пользователя
 
-    try {  
-        // Проверяем, существует ли пользователь в базе данных  
-        const user = await User.findOne({ telegramId: userId });  
-
-        // Логируем информацию о пользователе и чате
-        console.log(`Пользователь ID: ${userId}, Chat ID: ${chatId}, Сообщение: ${msg.text}`);
-
-        if (user) {  
-            // Существующий пользователь  
-            console.log(`Существующий пользователь, чат ID: ${chatId}`);  
-            await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {  
-                reply_markup: {  
-                    inline_keyboard: [[  
-                        { text: 'Перейти на главную', web_app: { url: `${webAppUrl}/main` } }  
-                    ]]  
-                }  
-            });  
-        } else {  
-            // Новый пользователь  
-            console.log(`Новый пользователь, отправляем на тест: ${chatId}`);  
-            await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');  
-            // Устанавливаем состояние пользователя для начала теста  
-            userStates[chatId] = { stage: 'zodiacSign' };  
-        }  
-    } catch (error) {  
-        console.error('Ошибка при обработке команды /start:', error);  
-        await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
-    }  
-});  
 
 
 // Запуск сервера  
