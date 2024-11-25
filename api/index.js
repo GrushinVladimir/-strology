@@ -206,12 +206,16 @@ app.get('/api/users/:telegramId', async (req, res) => {
 
 
 // Обработка команды /start  
-bot.onText(/\/start/, async (msg) => {  
+bot.onText(/\/start/, async (msg) => {
     const chatId = msg.chat.id;  
+    const userId = msg.from.id; // Получаем идентификатор пользователя
 
     try {  
         // Проверяем, существует ли пользователь в базе данных  
-        const user = await User.findOne({ telegramId: chatId });  
+        const user = await User.findOne({ telegramId: userId });  
+
+        // Логируем информацию о пользователе и чате
+        console.log(`Пользователь ID: ${userId}, Chat ID: ${chatId}, Сообщение: ${msg.text}`);
 
         if (user) {  
             // Существующий пользователь  
@@ -236,14 +240,7 @@ bot.onText(/\/start/, async (msg) => {
     }  
 });  
 
-// Обрабатываем любое сообщение
-bot.on('message', (msg) => {
-    const chatId = msg.chat.id; // Получаем идентификатор чата
-    const userId = msg.from.id; // Получаем идентификатор пользователя
-    
-    // Отправляем ответ пользователю с его Chat ID
-    bot.sendMessage(chatId, `Ваш Chat ID: ${chatId}`);
-});
+
 // Запуск сервера  
 const PORT = process.env.PORT || 5000;  
 app.listen(PORT, () => {  
