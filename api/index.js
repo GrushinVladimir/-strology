@@ -13,7 +13,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
 
-
+console.log('Telegram Bot Token:', token);
 
 const app = express();  
 let attempts = 0;  
