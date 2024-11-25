@@ -113,24 +113,31 @@ app.get('/api/config-google', (req, res) => {
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
 // Эндпоинт для обработки сообщений Telegram  
-app.post(`/bot${token}`, async (req, res) => {  
-    const msg = req.body;  
-    if (msg.message) {  
-        const chatId = msg.message.chat.id;  
-        const text = msg.message.text;  
+app.post(`/bot${token}`, async (req, res) => {
+    const msg = req.body;
+    
+    if (msg.message && msg.message.chat) {
+        const chatId = msg.message.chat.id;
+        const text = msg.message.text;
 
-        console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);  
+        console.log(`Получено сообщение: ${text} от chatId: ${chatId}`);
 
-        if (text === '/start') {  
-            await handleStartCommand(chatId);  
-        } else if (text === '/pay') {  
-            await handlePayment(chatId);  
-        } else {  
-            await handleOtherMessages(chatId, msg.message);  
-        }  
-    }  
-    res.sendStatus(200);  
-});  
+        try {
+            if (text === '/start') {
+                await handleStartCommand(chatId);
+            } else {
+                // Обработка других текстов
+                await bot.sendMessage(chatId, "Команда не распознана.");
+            }
+        } catch (error) {
+            console.error('Ошибка при обработке сообщения:', error);
+        }
+    } else {
+        console.log('Сообщение не содержит текста или чата.');
+    }
+
+    res.sendStatus(200); // Возвращаем статус 200 OK
+});
 
 // Хранение состояний пользователей  
 const userStates = {};  
