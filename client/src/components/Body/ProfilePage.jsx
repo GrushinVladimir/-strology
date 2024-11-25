@@ -119,23 +119,21 @@ const ProfilePage = ({ telegramId }) => {
                 method: 'POST',  
                 headers: {  
                     'Content-Type': 'application/json',  
-                    // Не используйте токен бота здесь!  
-                    // 'Authorization': `Bearer ${YOUR_API_TOKEN}`,  
                 },  
                 body: JSON.stringify(paymentData),  
             });  
     
             if (!response.ok) {  
-                throw new Error('Ошибка при выполнении платежа');  
+                const errorText = await response.text(); // Get more details if available  
+                throw new Error(`Ошибка при выполнении платежа: ${response.status} ${errorText}`);  
             }  
     
             const data = await response.json();  
             console.log('Платеж успешен!', data);  
             alert('Платеж успешно завершен!');  
-            // Дополнительные действия после успешной оплаты  
         } catch (error) {  
             console.error('Ошибка:', error);  
-            alert('Произошла ошибка при оплате. Пожалуйста, попробуйте еще раз.');  
+            alert(`Произошла ошибка при оплате: ${error.message}`);  
         }  
     };  
 
