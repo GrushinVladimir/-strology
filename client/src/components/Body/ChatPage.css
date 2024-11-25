@@ -45,9 +45,10 @@
   }
   
   .avatar {
-    width: 40px;
+    width: 40px;  /* Размер аватара */
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50%;  /* Закругленные углы */
+    margin-bottom: 10px; /* Отступ от аватара к тексту */
   }
   
   .message-text {

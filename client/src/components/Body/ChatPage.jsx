@@ -123,7 +123,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.sender}`}>
             <img
-              src={message.sender === 'user' ? '/img/user-avatar.png' : '/img/bot-avatar.png'}
+              src={message.sender === 'user' ? '/img/user-avatar.png' : '/img/menu/BotAvatar.png'}
               alt={message.sender}
               className="avatar"
             />
