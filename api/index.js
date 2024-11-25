@@ -160,48 +160,7 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
-const paymentProviderToken = process.env.TELEGRAM_BOT_TOKEN; // Токен для Telegram  
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stripe  
 
-app.post('/api/stripe', async (req, res) => {  
-    const { chatId } = req.body;  
-    try {  
-        await handlePayment(chatId); // Ваша функция обработки платежа  
-        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
-    } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error);  
-        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
-    }  
-});   
-
-async function handlePayment(chatId) {  
-    try {  
-        const invoicePayload = 'UniquePayload';  
-        const title = 'Оплата услуги';  
-        const description = 'Оплата за доступ к услугам';  
-        const startParameter = 'payment';  
-        const currency = 'RUB';  
-        const price = 10000;  
-
-        console.log('Отправка инвойса для chatId:', chatId);  
-
-        await bot.sendInvoice(  
-            chatId,   
-            title,   
-            description,   
-            invoicePayload,   
-            token, // Токен Telegram  
-            currency,   
-            [{ label: 'Услуга', amount: price }],   
-            { start_parameter: startParameter, invoice_payload: invoicePayload }  
-        );   
-
-        console.log('Инвойс отправлен'); // Логируем успешное отправление инвойса  
-    } catch (error) {  
-        console.error('Ошибка при обработке платежа:', error); // Логирование ошибки  
-        throw error; // Пробрасываем ошибку для обработки в родительском блоке  
-    }  
-}  
 
 async function handleOtherMessages(chatId, msg) {  
     const text = msg.text;  
