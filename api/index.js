@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope');  
 const token = process.env.TELEGRAM_BOT_TOKEN;  
-
+const TOKEN = process.env.REACT_APP_SB_KEY;  
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
 
@@ -160,8 +160,7 @@ async function handleStartCommand(chatId) {
 }  
 
 
-// Вставьте ваш токен платежей от BotFather  
-const TOKEN = process.env.SB_KEY;  
+
 
 const title = 'Платеж за услуги';  
 const description = 'Оплата за доступ к услугам';  
@@ -182,11 +181,10 @@ async function handlePayment(chatId) {
             [{ label: 'Услуга', amount: price }],  
             { start_parameter: 'payment', invoice_payload: invoicePayload }  
         );  
-
         console.log('Инвойс отправлен в чат:', chatId);  
     } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error);  
-        throw error;  
+        console.error('Ошибка при отправке инвойса:', error.response ? error.response.body : error);  
+        throw error; // Перебросить ошибку, чтобы она была видна на уровне API.  
     }  
 }  
 
