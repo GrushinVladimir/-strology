@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
-import './Body.css'; 
+import './ChatPage.css'; 
 
 const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {  
   const { tg } = useTelegram();  
@@ -116,40 +116,48 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   }  
 
   return (  
-    <div className="chat-container">  
-      <div className="chat-header">  
-        <h2>Спроси Стешу</h2>  
-      </div>  
+    <div className="chat-container">
+    <div className="chat-header">
+      <h2>Спроси Стешу</h2>
+    </div>
 
-      <div className="chat-messages">  
-        {messages.map((message, index) => (  
-          <div  
-            key={index}  
-            className={message.sender === 'user' ? 'user-message' : 'bot-message'}  
-          >  
-            {message.isQuestionHeader ? (  
-              <div className="question-header">{message.text}</div>  
-            ) : (  
-              <button  
-                className="question-button"  
-                onClick={() => handleQuestionClick(message.text)}  
-              >  
-                {message.text}  
-              </button>  
-            )}  
-          </div>  
-        ))}  
-      </div>  
+    <div className="chat-messages">
+  {messages.map((message, index) => (
+    <div key={index} className={`message ${message.sender}`}>
+      <img
+        src={message.sender === 'user' ? '/img/user-avatar.png' : '/img/bot-avatar.png'}
+        alt={message.sender}
+        className="avatar"
+      />
+      <div className="message-text">
+        {message.isQuestionHeader ? (
+          <div className="question-header">{message.text}</div>
+        ) : (
+          message.sender === 'bot' ? (
+            <button
+              className="question-button"
+              onClick={() => handleQuestionClick(message.text)}
+            >
+              {message.text}
+            </button>
+          ) : (
+            message.text
+          )
+        )}
+      </div>
+    </div>
+  ))}
+</div>
 
-      <div className="chat-input">  
-        <input  
-          type="text"  
-          value={inputMessage}  
-          onChange={(e) => setInputMessage(e.target.value)}  
-          placeholder="Задай вопрос звездам..."  
-        />  
-        <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>  {/* Передаем inputMessage непосредственно */}  
-      </div>  
+    <div className="chat-input">
+      <input
+        type="text"
+        value={inputMessage}
+        onChange={(e) => setInputMessage(e.target.value)}
+        placeholder="Задай вопрос звездам..."
+      />
+      <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>
+    </div>
 
       <div className="tabs-and-content">  
         <div className="menu">  

@@ -2,16 +2,23 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-image: url('/img/question-bg.jpg'); /* Ваш фон для чата */
+    
     background-size: cover;
   }
   
-  .chat-header {
-    text-align: center;
-    margin: 20px 0;
-    color: white;
-    font-size: 24px;
-  }
+/* ChatPage.css */
+.chat-header {
+  background-color: #32025f; /* Фиолетовый цвет */
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px; /* Скруглённые углы */
+}
+
+.chat-header h2 {
+  font-size: 18px; /* Уменьшаем размер текста */
+  color: #ffffff; /* Белый цвет текста */
+  margin: 0;
+}
   
   .chat-messages {
     flex: 1;
@@ -19,13 +26,14 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
   }
   
   .message {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    font-size: 12px;
   }
   
   .message.user {
@@ -44,15 +52,25 @@
   
   .message-text {
     max-width: 60%;
-    padding: 10px;
+    padding: 5px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0);
   }
   
-  .chat-input {
-    display: flex;
-    gap: 10px;
+  .chat-input input {
+    flex-grow: 1;
     padding: 10px;
-    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #42036d83;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
   }
   
