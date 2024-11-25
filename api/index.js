@@ -159,20 +159,29 @@ const price = 10000; // Сумма в копейках (100 руб.)
 // Обработка платежа  
 async function handlePayment(chatId) {  
     try {  
-        await bot.sendInvoice(  
-            chatId,  
-            title,  
-            description,  
-            invoicePayload,  
-            TOKEN,  
-            currency,  
-            [{ label: 'Услуга', amount: price }],  
-            { start_parameter: 'payment', invoice_payload: invoicePayload }  
-        );  
+        await bot.sendInvoice(
+            chatId,
+            title,
+            description,
+            invoicePayload,
+            TOKEN,
+            currency,
+            [{ label: 'Услуга', amount: price }],
+            { start_parameter: 'payment', invoice_payload: invoicePayload }
+        );
         console.log('Инвойс отправлен в чат:', chatId);  
     } catch (error) {  
         console.error('Ошибка при отправке инвойса:', error.response ? error.response.body : error);  
         throw error; // Перебросить ошибку, чтобы она была видна на уровне API.  
+        console.log('Отправка инвойса с параметрами:', {
+            chatId,
+            title,
+            description,
+            invoicePayload,
+            TOKEN,
+            currency,
+            items: [{ label: 'Услуга', amount: price }],
+        });
     }  
 }  
 
