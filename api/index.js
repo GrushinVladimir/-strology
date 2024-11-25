@@ -12,6 +12,11 @@ const horoscopeHandler = require('./apis/horoscope');
 const token = process.env.TELEGRAM_BOT_TOKEN;  
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
+if (!token) {  
+    console.error('Ошибка: Telegram Bot Token не установлен!');  
+    process.exit(1); // Завершаем процесс, если токен не задан  
+}  
+
 
 const app = express();  
 let attempts = 0;  
@@ -160,17 +165,14 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stri
 
 app.post('/api/stripe', async (req, res) => {  
     const { chatId } = req.body;  
-
-    console.log('Получен chatId:', chatId); // Логирование chatId  
-
     try {  
-        await handlePayment(chatId);  
+        await handlePayment(chatId); // Ваша функция обработки платежа  
         res.json({ success: true, message: 'Инвойс успешно отправлен' });  
     } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error); // Логирование ошибки  
+        console.error('Ошибка при отправке инвойса:', error);  
         res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
-});  
+});   
 
 async function handlePayment(chatId) {  
     try {  
