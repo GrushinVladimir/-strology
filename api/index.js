@@ -155,7 +155,9 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
-const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
+const paymentProviderToken = process.env.TELEGRAM_BOT_TOKEN; // Токен для Telegram  
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stripe  
+
 app.post('/api/stripe', async (req, res) => {  
     const { chatId } = req.body;  
 
