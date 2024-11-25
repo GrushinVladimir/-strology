@@ -97,7 +97,7 @@ app.get('/api/questions/:id', async (req, res) => {
 
 const bot = new TelegramBot(token, { polling: false });  
 const serverUrl = 'https://strology.vercel.app';  
-bot.setWebHook(`${serverUrl}/bot${token}`)  
+bot.setWebHook(`${serverUrl}/api/webhook`)
     .then(() => console.log('Webhook установлен.'))  
     .catch(err => console.error('Ошибка при установке вебхука:', err));  
 
@@ -113,7 +113,7 @@ app.get('/api/config-google', (req, res) => {
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
 // Эндпоинт для обработки сообщений Telegram  
-app.post(`/bot${token}`, async (req, res) => {
+app.post('/api/webhook', (req, res) => {
     const msg = req.body;
     
     if (msg.message && msg.message.chat) {
