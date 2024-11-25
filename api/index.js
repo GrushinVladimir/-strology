@@ -156,9 +156,16 @@ async function handleStartCommand(chatId) {
     }  
 }  
 const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
-app.get('/api/stripe', (req, res) => {  
-    res.json({ token: process.env.PAYMENT_PROVIDER_TOKEN });  
-});  
+app.post('/api/stripe', async (req, res) => {  
+    const { chatId } = req.body; // Получаем chatId из тела запроса  
+    try {  
+        await handlePayment(chatId);  
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
+    } catch (error) {  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
+    }  
+}); 
 
 async function handlePayment(chatId) {  
     const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
