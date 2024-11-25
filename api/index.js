@@ -190,7 +190,7 @@ async function handlePayment(chatId) {
             title,   
             description,   
             invoicePayload,   
-            paymentProviderToken, // Токен Telegram  
+            token, // Токен Telegram  
             currency,   
             [{ label: 'Услуга', amount: price }],   
             { start_parameter: startParameter, invoice_payload: invoicePayload }  
