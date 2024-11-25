@@ -104,24 +104,23 @@ const ProfilePage = ({ telegramId }) => {
         }  
     };  
     const startPayment = async (telegramId) => {  
+        const providerToken = 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa'; // Замените на ваш токен  
         const invoiceData = {  
             chat_id: telegramId,  
             title: 'Оплата за услуги',  
             description: 'Оплата за услуги',  
-            payload: `payload_${telegramId}`, // Никаких циклических ссылок  
-            provider_token: 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa',  
+            payload: `payload_${telegramId}`,  
+            provider_token: providerToken,  
             start_parameter: 'test_payment',  
             currency: 'RUB',  
             prices: [{ label: 'Услуга', amount: 10000 }]  
         };  
     
         try {  
-            console.log('Invoice Data:', invoiceData); // Для отладки  
+            console.log('Invoice Data:', invoiceData);  
             const response = await fetch(`https://api.telegram.org/bot7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs/sendInvoice`, {  
                 method: 'POST',  
-                headers: {  
-                    'Content-Type': 'application/json',  
-                },  
+                headers: { 'Content-Type': 'application/json' },  
                 body: JSON.stringify(invoiceData),  
             });  
     
@@ -137,7 +136,7 @@ const ProfilePage = ({ telegramId }) => {
             console.error('Ошибка:', error);  
             alert(`Произошла ошибка: ${error.message}`);  
         }  
-    };  
+    };   
 
 
     return (  
