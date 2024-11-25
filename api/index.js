@@ -1,6 +1,7 @@
 require('dotenv').config();  
 const cors = require('cors');  
 const mongoURI = process.env.MONGO_URI;  
+console.log('BD token:', token);
 const mongoose = require('mongoose');  
 const TelegramBot = require('node-telegram-bot-api');  
 const express = require('express');  
@@ -10,10 +11,11 @@ const userRoutes = require('./routes/userRoutes');
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope');  
 const token = process.env.TELEGRAM_BOT_TOKEN;  
+console.log('Telegram Bot Token:', token);
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
 
-console.log('Telegram Bot Token:', token);
+
 
 const app = express();  
 let attempts = 0;  
