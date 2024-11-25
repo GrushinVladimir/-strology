@@ -129,7 +129,7 @@ app.post('/api/webhook', async (req, res) => {
                 const responseText = 'Добро пожаловать! Как я могу помочь вам?';
 
                 // Отправляем ответ пользователю
-                await axios.post(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
                     chat_id: chatId,
                     text: responseText
                 });
