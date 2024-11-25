@@ -15,7 +15,8 @@ const webAppUrl = 'https://strology.vercel.app';
 const Question = require('./models/Question');  
 const axios = require('axios');  // Используем axios для отправки запросов
 
-
+// Хранение состояний пользователей  
+const userStates = {};  
 
 const app = express();  
 let attempts = 0;  
@@ -146,34 +147,6 @@ app.post('/api/webhook', async (req, res) => {
     }
 });
 
-// Хранение состояний пользователей  
-const userStates = {};  
-
-async function handleStartCommand(chatId) {  
-    try {  
-        const existingUser = await User.findOne({ telegramId: chatId });  
-
-        if (existingUser) {  
-            console.log(`Пользователь найден, перенаправляем на main: ${chatId}`);  
-            await bot.sendMessage(chatId, 'Добро пожаловать обратно! Переход на главную страницу приложения.', {  
-                reply_markup: {  
-                    inline_keyboard: [  
-                        [{ text: 'Перейти на главную', web_app: { url: `${webAppUrl}/main` } }]  
-                    ]  
-                }  
-            });  
-        } else {  
-            console.log(`Новый пользователь, отправляем на тест: ${chatId}`);  
-            await bot.sendMessage(chatId, 'Добро пожаловать! Для регистрации пройдите тест:');  
-            userStates[chatId] = { stage: 'zodiacSign' };  
-        }  
-    } catch (error) {  
-        console.error('Ошибка при обработке команды /start:', error);  
-        await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
-    }  
-}  
-
-
 
 
 const title = 'Платеж за услуги';  
@@ -262,6 +235,15 @@ bot.onText(/\/start/, async (msg) => {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 });  
+
+// Обрабатываем любое сообщение
+bot.on('message', (msg) => {
+    const chatId = msg.chat.id; // Получаем идентификатор чата
+    const userId = msg.from.id; // Получаем идентификатор пользователя
+    
+    // Отправляем ответ пользователю с его Chat ID
+    bot.sendMessage(chatId, `Ваш Chat ID: ${chatId}`);
+});
 // Запуск сервера  
 const PORT = process.env.PORT || 5000;  
 app.listen(PORT, () => {  
