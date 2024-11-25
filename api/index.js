@@ -155,7 +155,8 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
-const paymentProviderToken = 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa';  
+const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
+
 
 async function handlePayment(chatId) {  
     const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
