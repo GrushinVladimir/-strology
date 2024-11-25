@@ -155,6 +155,7 @@ async function handleStartCommand(chatId) {
         await bot.sendMessage(chatId, 'Произошла ошибка, попробуйте позже.');  
     }  
 }  
+const paymentProviderToken = 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa';  
 
 async function handlePayment(chatId) {  
     const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
@@ -162,9 +163,18 @@ async function handlePayment(chatId) {
     const description = 'Оплата за доступ к услугам';  
     const startParameter = 'payment'; // Нужен для подготовки платежа  
     const currency = 'RUB'; // Валюта  
-    const price = 1000; // Цена в копейках (10.00 RUB)  
+    const price = 10000; // Цена в копейках (100.00 RUB)  
 
-    await bot.sendInvoice(chatId, title, description, invoicePayload, process.env.PAYMENT_PROVIDER_TOKEN, currency, [{ label: 'Услуга', amount: price }], { start_parameter: startParameter, invoice_payload: invoicePayload });  
+    await bot.sendInvoice(  
+        chatId,   
+        title,   
+        description,   
+        invoicePayload,   
+        paymentProviderToken, // Используем правильный токен  
+        currency,   
+        [{ label: 'Услуга', amount: price }],   
+        { start_parameter: startParameter, invoice_payload: invoicePayload }  
+    );  
 }  
 
 async function handleOtherMessages(chatId, msg) {  
