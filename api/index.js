@@ -107,7 +107,11 @@ bot.setWebHook(`${serverUrl}/bot${token}`)
     .then(() => console.log('Webhook установлен.'))
     .catch(err => console.error('Ошибка при установке вебхука:', err));
 
-
+// Эндпоинт для получения токена (не рекомендуется возвращать токен бота)  
+app.get('/api/telegram-token', (req, res) => {  
+    // Здесь можно добавить проверку пользователя, чтобы вернуть токен только для авторизованных пользователей  
+    res.json({ token: process.env.TELEGRAM_BOT_TOKEN });  
+});  
 
 // Эндпоинт для получения API_KEY
 app.get('/api/config', (req, res) => {

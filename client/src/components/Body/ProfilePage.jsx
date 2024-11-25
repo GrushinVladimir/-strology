@@ -103,42 +103,40 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
-    const startPayment = () => {  
-        // Здесь вам нужно указать URL и параметры для вашего платежного API  
+    const startPayment = async () => {  
         const paymentData = {  
-            amount: 100, // Сумма платежа в копейках, если валюта в рублях  
-            currency: 'RUB', // Или другая валюта  
+            amount: 100, // Сумма платежа в копейках  
+            currency: 'RUB',  
             description: 'Оплата за услуги',  
             payload: {  
                 userId: telegramId,  
                 // Другие данные, необходимые для вашей системы  
             },  
         };  
-
-        // Используйте нужный метод вызова API для выполнения платежа  
-        fetch('https://api.yourpaymentprovider.com/pay', {  
-            method: 'POST',  
-            headers: {  
-                'Content-Type': 'application/json',  
-                'Authorization': `Bearer ${YOUR_API_TOKEN}`, // Токен API, если требуется  
-            },  
-            body: JSON.stringify(paymentData),  
-        })  
-            .then(response => {  
-                if (!response.ok) {  
-                    throw new Error('Ошибка при выполнении платежа');  
-                }  
-                return response.json();  
-            })  
-            .then(data => {  
-                console.log('Платеж успешен!', data);  
-                alert('Платеж успешно завершен!');  
-                // Дополнительные действия после успешной оплаты  
-            })  
-            .catch(error => {  
-                console.error('Ошибка:', error);  
-                alert('Произошла ошибка при оплате. Пожалуйста, попробуйте еще раз.');  
+    
+        try {  
+            const response = await fetch('https://api.yourpaymentprovider.com/pay', {  
+                method: 'POST',  
+                headers: {  
+                    'Content-Type': 'application/json',  
+                    // Не используйте токен бота здесь!  
+                    // 'Authorization': `Bearer ${YOUR_API_TOKEN}`,  
+                },  
+                body: JSON.stringify(paymentData),  
             });  
+    
+            if (!response.ok) {  
+                throw new Error('Ошибка при выполнении платежа');  
+            }  
+    
+            const data = await response.json();  
+            console.log('Платеж успешен!', data);  
+            alert('Платеж успешно завершен!');  
+            // Дополнительные действия после успешной оплаты  
+        } catch (error) {  
+            console.error('Ошибка:', error);  
+            alert('Произошла ошибка при оплате. Пожалуйста, попробуйте еще раз.');  
+        }  
     };  
 
 
