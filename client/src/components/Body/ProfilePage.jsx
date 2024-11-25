@@ -161,7 +161,7 @@ const ProfilePage = ({ telegramId }) => {
                             )}  
                         </div>  
                         <div className='top-profile-right'>0,00</div>
-                        <div className="top-profile-right active" onClick={startPayment}>Оплатить </div>   
+                        <div className="top-profile-right active"  onClick={() => startPayment(telegramId)}>Оплатить </div>   
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
