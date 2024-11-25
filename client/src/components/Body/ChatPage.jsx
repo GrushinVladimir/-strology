@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useTelegram } from '../hooks/useTelegram';  
 import axios from 'axios';  
 import { Link } from 'react-router-dom';  
-
+import './Body.css'; 
 const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {  
   const { tg } = useTelegram();  
   const [apiKey, setApiKey] = useState(null);  
   const [loading, setLoading] = useState(true);  
-  const [messages, setMessages] = useState([  
+  const [messages, setMessages] = useState([ 
     { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },  
     { sender: 'bot', text: 'Какие особенности моего знака зодиака?' },  
     { sender: 'bot', text: 'Ждёт ли меня болезнь в этом году?' },  
@@ -15,6 +15,12 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     { sender: 'bot', text: 'Ждёт ли меня повышение на работе?' },  
   ]);  
   const [inputMessage, setInputMessage] = useState('');  
+
+  useEffect(() => {
+    if (!userName || !zodiacSign) {
+      console.warn("Данные пользователя отсутствуют. Проверьте userName и zodiacSign.");
+    }
+  }, [userName, zodiacSign]);
 
   // Вытаскиваем API ключ  
   useEffect(() => {  
@@ -39,8 +45,8 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
 
-    // Передаем знак зодиака и имя пользователя в тексте сообщения  
-    const fullMessage = `(${userName}, знак зодиака: ${zodiacSign}) - ${finalMessage}`;  
+    // Формируем сообщение с данными о пользователе  
+    const fullMessage = `Тебя зовут Стеша.Ты астролог.Меня зовут: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
 
     if (!apiKey) {  
       console.error('API Key отсутствует. Проверьте настройки.');  
@@ -51,8 +57,9 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
       return;  
     }  
 
-    if (fullMessage.trim() === '') return;  
+    if (finalMessage.trim() === '') return;  
 
+    // Добавляем сообщение пользователя в чат  
     setMessages((prevMessages) => [  
       ...prevMessages,  
       { sender: 'user', text: finalMessage },  

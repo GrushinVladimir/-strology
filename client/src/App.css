@@ -39,3 +39,26 @@ body{
 .button{
   background-color: #533FA1;
 }
+.faq-page p{
+  width: 80%;
+    padding: 20px;
+    font-size: 15px;
+    line-height: 1rem;
+    margin: 10px auto;
+    padding: 20px 10px;
+    background: #170d3a;
+    border-radius: 10px
+}
+.faq-page p:hover{
+  background:#35266b;
+}
+.faq-page{
+  padding-top: 25px;
+}
+.faq-page span{
+  width: 80%;
+  display: block;
+  margin: auto;
+  font-size: .9rem;
+  opacity: .9;
+}

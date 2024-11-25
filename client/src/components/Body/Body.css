@@ -21,8 +21,7 @@
 }
 .body span{
   font-size: 1rem;
-  margin: 1rem 0rem;
-  padding: 0 1rem;
+
     display: block;
 }
 .body div span{
@@ -103,12 +102,16 @@ flex-shrink: 0;
     color: #fff;
     font-size: 2rem; 
 }
-scroll-container::-webkit-scrollbar {  
-  display: none;}
+/* Скрываем scrollbar в WebKit браузерах */
+.scroll-container::-webkit-scrollbar {
+  width: 0;             /* Устанавливаем ширину полосы прокрутки в 0 */
+  background: transparent; 
+}
+
 
 .scroll-container {
 max-height: 74px;
-width: 50px;
+scrollbar-width: none;
     overflow-y: overlay;
     position: relative;
   }
@@ -486,6 +489,11 @@ box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
   bottom: 0;
   width: 100%;
 }
+.faq-body .menu{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 .body-profile button{
   margin-top: 2vh;
   margin-bottom: 2vh;
@@ -631,22 +639,23 @@ margin-bottom: 25px;
 
 /* Стили для модального окна */
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
   align-items: center;
+  background-color: #00000080;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: -8.9%;
+  width: 100%;
   z-index: 1000;
 }
 
 .modal-content {
-  background-color: #7209e93b;
-  padding: 20px;
+  background-color: #330963f7;
   border-radius: 5px;
+  padding: 49px 20px 49px;
+  position: relative;
   text-align: center;
   width: 300px;
 }
@@ -654,7 +663,7 @@ margin-bottom: 25px;
 .close {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 15px;
   font-size: 24px;
   cursor: pointer;
 }
