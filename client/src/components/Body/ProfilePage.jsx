@@ -110,13 +110,13 @@ const ProfilePage = ({ telegramId }) => {
     
         try {  
             console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
-            const response = await fetch('/api/payment', {  
+            const response = await fetch('https://strology.vercel.app/api/payment', {  
                 method: 'POST',  
                 headers: {  
                     'Content-Type': 'application/json',  
                 },  
                 body: JSON.stringify(invoiceData),  
-            });  
+            });
     
             if (!response.ok) {  
                 const errorData = await response.json();  
