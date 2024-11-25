@@ -159,18 +159,11 @@ async function handleStartCommand(chatId) {
 }  
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY; // Токен для Stripe  
 
-app.post('/api/stripe', async (req, res) => {  
-    const { chatId } = req.body;  
-    try {  
-        await handlePayment(chatId); // Ваша функция обработки платежа  
-        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
-    } catch (error) {  
-        console.error('Ошибка при отправке инвойса:', error);  
-        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
-    }  
-});   
-
 async function handlePayment(chatId) {  
+    // Проверка токена  
+    if (!token) {  
+        throw new Error('Telegram Bot Token not provided!');  
+    }  
     try {  
         const invoicePayload = 'UniquePayload';  
         const title = 'Оплата услуги';  
@@ -182,22 +175,35 @@ async function handlePayment(chatId) {
         console.log('Отправка инвойса для chatId:', chatId);  
 
         await bot.sendInvoice(  
-            chatId,   
-            title,   
-            description,   
-            invoicePayload,   
-            token, // Токен Telegram  
-            currency,   
-            [{ label: 'Услуга', amount: price }],   
+            chatId,  
+            title,  
+            description,  
+            invoicePayload,  
+            token,  
+            currency,  
+            [{ label: 'Услуга', amount: price }],  
             { start_parameter: startParameter, invoice_payload: invoicePayload }  
-        );   
+        );  
 
-        console.log('Инвойс отправлен'); // Логируем успешное отправление инвойса  
+        console.log('Инвойс отправлен');  
     } catch (error) {  
-        console.error('Ошибка при обработке платежа:', error); // Логирование ошибки  
-        throw error; // Пробрасываем ошибку для обработки в родительском блоке  
+        console.error('Ошибка при обработке платежа:', error);  
+        throw error;  
     }  
 }  
+
+app.post('/api/stripe', async (req, res) => {  
+    const { chatId } = req.body;  
+    console.log('Полученный chatId:', chatId); // Логируем chatId  
+
+    try {  
+        await handlePayment(chatId);  
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
+    } catch (error) {  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
+    }  
+});  
 
 async function handleOtherMessages(chatId, msg) {  
     const text = msg.text;  
