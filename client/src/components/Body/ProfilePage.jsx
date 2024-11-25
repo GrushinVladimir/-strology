@@ -103,37 +103,38 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
-    const startPayment = async () => {  
-        const paymentData = {  
-            amount: 100, // Сумма платежа в копейках  
-            currency: 'RUB',  
+    const startPayment = async (telegramId) => {  
+        const invoiceData = {  
+            chat_id: telegramId,  
+            title: 'Оплата за услуги',  
             description: 'Оплата за услуги',  
-            payload: {  
-                userId: telegramId,  
-                // Другие данные, необходимые для вашей системы  
-            },  
+            payload: JSON.stringify({ userId: telegramId }), // Создайте уникальный payload  
+            provider_token: 'ВАШ_PROVIDER_TOKEN', // Получите его от выбранного платежного провайдера, поддерживаемого Telegram  
+            start_parameter: 'test_payment', // Параметр для идентификации платежа  
+            currency: 'RUB',  
+            prices: [{ label: 'Услуга', amount: 10000 }] // Сумма в копейках (100 руб.)  
         };  
     
         try {  
-            const response = await fetch('https://api.yourpaymentprovider.com/pay', {  
+            const response = await fetch(`https://api.telegram.org/botВАШ_ТОКЕН/sendInvoice`, {  
                 method: 'POST',  
                 headers: {  
                     'Content-Type': 'application/json',  
                 },  
-                body: JSON.stringify(paymentData),  
+                body: JSON.stringify(invoiceData),  
             });  
     
             if (!response.ok) {  
-                const errorText = await response.text(); // Get more details if available  
-                throw new Error(`Ошибка при выполнении платежа: ${response.status} ${errorText}`);  
+                const errorText = await response.text();  
+                throw new Error(`Ошибка при отправке инвойса: ${response.status} ${errorText}`);  
             }  
     
             const data = await response.json();  
-            console.log('Платеж успешен!', data);  
-            alert('Платеж успешно завершен!');  
+            console.log('Инвойс отправлен!', data);  
+            alert('Инвойс успешно отправлен в чат Telegram!');  
         } catch (error) {  
             console.error('Ошибка:', error);  
-            alert(`Произошла ошибка при оплате: ${error.message}`);  
+            alert(`Произошла ошибка: ${error.message}`);  
         }  
     };  
 
