@@ -157,7 +157,8 @@ async function handleStartCommand(chatId) {
 }  
 const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
 app.post('/api/stripe', async (req, res) => {  
-    const { chatId } = req.body; // Получаем chatId из тела запроса  
+    const { chatId } = req.body;  
+
     try {  
         await handlePayment(chatId);  
         res.json({ success: true, message: 'Инвойс успешно отправлен' });  
@@ -165,22 +166,23 @@ app.post('/api/stripe', async (req, res) => {
         console.error('Ошибка при отправке инвойса:', error);  
         res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
-}); 
+});  
 
 async function handlePayment(chatId) {  
-    const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
+    const invoicePayload = 'UniquePayload';  
     const title = 'Оплата услуги';  
     const description = 'Оплата за доступ к услугам';  
-    const startParameter = 'payment'; // Нужен для подготовки платежа  
-    const currency = 'RUB'; // Валюта  
-    const price = 10000; // Цена в копейках (100.00 RUB)  
+    const startParameter = 'payment';  
+    const currency = 'RUB';  
+    const price = 10000;  
 
+    // Используйте токен бота Telegram для отправки инвойса  
     await bot.sendInvoice(  
         chatId,   
         title,   
         description,   
         invoicePayload,   
-        paymentProviderToken, // Используем правильный токен  
+        paymentProviderToken, // Токен Telegram  
         currency,   
         [{ label: 'Услуга', amount: price }],   
         { start_parameter: startParameter, invoice_payload: invoicePayload }  
