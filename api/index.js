@@ -13,6 +13,7 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const TOKEN = process.env.REACT_APP_SB_KEY;  
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
+const axios = require('axios');  // Используем axios для отправки запросов
 
 
 
