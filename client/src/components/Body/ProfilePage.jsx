@@ -108,14 +108,15 @@ const ProfilePage = ({ telegramId }) => {
             chat_id: telegramId,  
             title: 'Оплата за услуги',  
             description: 'Оплата за услуги',  
-            payload: JSON.stringify({ userId: telegramId }), // Создайте уникальный payload  
-            provider_token: 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa', // Замените на ваш настоящим Secret Key в качестве токена провайдера  
-            start_parameter: 'test_payment', // Параметр для идентификации платежа  
+            payload: `payload_${telegramId}`, // Никаких циклических ссылок  
+            provider_token: 'sk_test_51QOxxP00guE2oMvt7aEjZrIPn44UB7TGa1c3d5SaLUho7se4fdfgOhPsLagsSee04srl2xdVOOt9vMstZ0QEdNLI003eMfDpVa',  
+            start_parameter: 'test_payment',  
             currency: 'RUB',  
-            prices: [{ label: 'Услуга', amount: 10000 }] // Сумма в копейках (100 руб.)  
+            prices: [{ label: 'Услуга', amount: 10000 }]  
         };  
     
         try {  
+            console.log('Invoice Data:', invoiceData); // Для отладки  
             const response = await fetch(`https://api.telegram.org/bot7431411001:AAHx9_TODfc7VOlRfcXeab9bbiHeYgl-iNs/sendInvoice`, {  
                 method: 'POST',  
                 headers: {  
