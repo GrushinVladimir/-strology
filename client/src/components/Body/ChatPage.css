@@ -57,8 +57,15 @@
     background: rgba(255, 255, 255, 0);
   }
   
+  .chat-input {
+    display: flex; /* Включаем Flexbox */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    margin-top: 20px;
+    margin-bottom: 50px;
+  }
+  
   .chat-input input {
-    flex-grow: 1;
+    flex-grow: 1; /* Поле ввода растягивается на всю доступную ширину */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -66,11 +73,20 @@
   
   .chat-input button {
     margin-left: 10px;
-    padding: 10px 20px;
+    padding: 20px 20px; /* Уменьшены значения, чтобы лучше сочеталось с полем ввода */
     border: none;
     background-color: #42036d83;
     color: white;
     border-radius: 5px;
     cursor: pointer;
+  }
+  
+  .typing-indicator {
+    position: absolute; /* Позволяет точно позиционировать элемент */
+    bottom: 130px; /* Расстояние от нижнего края окна */
+    left: 10px; /* Расстояние от левого края окна */
+    font-style: italic; /* Курсив */
+    font-size: 10px; /* Очень маленький шрифт */
+    color: gray; /* Серый цвет текста */
   }
   
