@@ -1,7 +1,6 @@
 require('dotenv').config();  
 const cors = require('cors');  
 const mongoURI = process.env.MONGO_URI;  
-console.log('BD token:', token);
 const mongoose = require('mongoose');  
 const TelegramBot = require('node-telegram-bot-api');  
 const express = require('express');  
@@ -11,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope');  
 const token = process.env.TELEGRAM_BOT_TOKEN;  
-console.log('Telegram Bot Token:', token);
+
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
 
@@ -175,7 +174,7 @@ async function handlePayment(chatId) {
         const price = 10000;  
 
         console.log('Отправка инвойса для chatId:', chatId);  
-
+        console.log('Telegram Bot Token:', token);
         await bot.sendInvoice(  
             chatId,  
             title,  
@@ -195,6 +194,7 @@ async function handlePayment(chatId) {
 }  
 
 app.post('/api/stripe', async (req, res) => {  
+    console.log('Telegram Bot Token:', token);
     const { chatId } = req.body;  
     console.log('Полученный chatId:', chatId); // Логируем chatId  
 
