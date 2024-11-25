@@ -156,7 +156,9 @@ async function handleStartCommand(chatId) {
     }  
 }  
 const paymentProviderToken = process.env.PAYMENT_PROVIDER_TOKEN;  
-
+app.get('/api/stripe', (req, res) => {  
+    res.json({ token: process.env.PAYMENT_PROVIDER_TOKEN });  
+});  
 
 async function handlePayment(chatId) {  
     const invoicePayload = 'UniquePayload'; // Уникальный идентификатор для платежа  
