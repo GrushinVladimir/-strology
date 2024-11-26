@@ -6,7 +6,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');  
 const bodyParser = require('body-parser');  
 const User = require('./models/User');  
-const Payment = require('./models/paymentModel');  
+const Payment = require('./models/paymentModel');
 const userRoutes = require('./routes/userRoutes');  
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope');  
@@ -14,9 +14,11 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 const TOKEN = process.env.REACT_APP_SB_KEY;  
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
-const axios = require('axios');  
+const axios = require('axios');  // Используем axios для отправки запросов
 
+// Хранение состояний пользователей  
 const userStates = {};  
+
 const app = express();  
 let attempts = 0;  
 const maxAttempts = 5;  
@@ -67,6 +69,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/test-results', testResultRoutes);  
 app.get('/api/horoscope', horoscopeHandler);  
 
+
 app.post('/api/questions/:id', async (req, res) => {  
     const { id } = req.params;  
     const { remainingQuestions } = req.body;  
@@ -81,11 +84,13 @@ app.post('/api/questions/:id', async (req, res) => {
         res.status(500).json({ error: 'Не удалось сохранить количество вопросов' });  
     }  
 });  
-
 async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {  
     try {  
+        // Проверка типа  
         console.log('Тип totalAmount перед сохранением:', typeof totalAmount);  
-        const amount = Number(totalAmount); // Преобразуем totalAmount в число  
+
+        // Преобразуем totalAmount в число  
+        const amount = Number(totalAmount);  
 
         if (isNaN(amount)) {  
             throw new Error("Invalid amount: must be a number");  
@@ -102,35 +107,140 @@ async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {
         await paymentRecord.save();  
         console.log('Платеж успешно сохранен в БД');  
     } catch (error) {  
-        console.error('Ошибка при сохранении платежа в БД:', error);
-        throw new Error('Ошибка при сохранении платежа'); // Передаем ошибку дальше для обработки  
+        console.error('Ошибка при сохранении платежа в БД:', error);  
+        throw error;  
     }  
 }  
-
-// Обработка вебхука от Telegram  
+// Эндпоинт для обработки обновлений от Telegram  
 app.post('/api/telegram-webhook', async (req, res) => {  
-    const { update } = req.body;  
+    const update = req.body;  
+
+    // Проверяем, произошло ли успешное получение платежа  
+    if (update && update.message && update.message.successful_payment) {  
+        const successfulPayment = update.message.successful_payment;  
+        const chatId = update.message.chat.id;  
+        const userId = update.message.from.id;  
+    
+        console.log('Содержимое успешного платежа:', successfulPayment);  
+    
+        const totalAmount = successfulPayment.total_amount; // Ожидается, что это число  
+        const currency = successfulPayment.currency;  
+    
+        console.log('Total Amount:', totalAmount);  
+        console.log('Currency:', currency);  
+    
+        await savePaymentToDatabase(userId, chatId, totalAmount, currency);  
+        return res.sendStatus(200);  
+    }  
+
+    // Обработка предоплаты  
+    if (update && update.pre_checkout_query) {  
+        const preCheckoutQuery = update.pre_checkout_query;  
+
+        // Здесь вы можете добавить логику проверки, если нужно  
+        // Например, проверка суммы или валюты  
+
+        // Подтверждаем предоплату  
+        await bot.answerPreCheckoutQuery(preCheckoutQuery.id, true); // true означает, что мы подтверждаем платеж  
+        return res.sendStatus(200);  
+    }  
+
+    // Если сообщение не соответствует ни одной из ожидаемых форматов  
+    console.error('Некорректный формат сообщения:', update);  
+    res.sendStatus(200);  
+});  
+
+// Эндпоинт для получения запроса на оплату  
+app.post('/api/payment', async (req, res) => {  
+    const { chatId } = req.body;  
+    console.log('Получен запрос на оплату:', chatId); // Логируем полученный chatId  
+
+    if (!chatId) {  
+        return res.status(400).json({ success: false, message: 'chatId не указан' });  
+    }  
 
     try {  
-        // Проверяем, существует ли сообщение  
-        if (update.message && update.message.text) {  
+        await handlePayment(chatId);  
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
+    } catch (error) {  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
+    }  
+});  
+
+app.get('/api/questions/:id', async (req, res) => {  
+    const { id } = req.params;  
+    try {  
+        const questionData = await Question.findOne({ telegramId: id });  
+        if (questionData) {  
+            res.json({ remainingQuestions: questionData.remainingQuestions });  
+        } else {  
+            res.json({ remainingQuestions: 10 });  
+        }  
+    } catch (error) {  
+        res.status(500).json({ error: 'Не удалось получить количество вопросов' });  
+    }  
+});  
+
+const bot = new TelegramBot(token, { polling: false });  
+const serverUrl = 'https://strology.vercel.app';  
+bot.setWebHook(`${serverUrl}/api/webhook`)
+    .then(() => console.log('Webhook установлен.'))  
+    .catch(err => console.error('Ошибка при установке вебхука:', err));  
+
+app.get('/api/telegram-token', (req, res) => {  
+    res.json({ token: process.env.TELEGRAM_BOT_TOKEN });  
+});  
+
+app.get('/api/config', (req, res) => {  
+    res.json({ apiKey: process.env.REACT_APP_CHAT_API_KEY });  
+});  
+
+app.get('/api/config-google', (req, res) => {  
+    res.json({ apiKeys: process.env.GOOGLE_KEY });  
+});  
+// Эндпоинт для обработки сообщений Telegram  
+app.post('/api/webhook', async (req, res) => {  
+    try {  
+        const update = req.body;  
+
+        // Проверка на успешный платеж  
+        if (update && update.message && update.message.successful_payment) {  
+            const successfulPayment = update.message.successful_payment;  
             const chatId = update.message.chat.id;  
+            const userId = update.message.from.id;  // Получаем ID пользователя  
+
+            // Сохраняем информацию о платеже  
+            await savePaymentToDatabase(userId, chatId, successfulPayment.total_amount, successfulPayment.currency);  
+            return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
+        }  
+
+        // Обработка предоплаты  
+        if (update && update.pre_checkout_query) {  
+            const preCheckoutQuery = update.pre_checkout_query;  
+            await bot.answerPreCheckoutQuery(preCheckoutQuery.id, true); // Подтверждаем предоплату  
+            return res.sendStatus(200);  
+        }  
+
+
+        // Проверка наличия сообщения и чата  
+        if (update && update.message && update.message.chat) {  
+            const chatId = update.message.chat.id;  
+            const userId = update.message.from.id; // Получаем ID пользователя  
             const text = update.message.text;  
 
+            console.log(`Получено сообщение: "${text}" от User ID: ${userId}, Chat ID: ${chatId}`);  
+
+            // Логика ответа на команду /start  
             if (text === '/start') {  
                 const responseText = 'Добро пожаловать! Как я могу помочь вам?';  
-                
-                // Отправляем приветственное сообщение пользователю  
+
+                // Отправляем ответ пользователю  
                 await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {  
                     chat_id: chatId,  
-                    text: responseText,  
+                    text: responseText  
                 });  
-            } else if (text === '/pay') {  
-                // ... Здесь обработка команды для платежа.  
-                await handlePayment(chatId);  
             }  
-            // Можно добавить больше команд здесь ...  
-
         } else {  
             console.error('Некорректный формат сообщения:', update);  
         }  
@@ -142,26 +252,51 @@ app.post('/api/telegram-webhook', async (req, res) => {
     }  
 });  
 
-// Обработка успешного платежа  
-app.post('/api/payment-success-webhook', async (req, res) => {  
-    const { telegram_id, total_amount, currency } = req.body; // Важно убедиться, какие данные приходят от Telegram  
+
+
+const title = 'Платеж за услуги';  
+const description = 'Оплата за доступ к услугам';  
+const invoicePayload = 'payment';  
+const currency = 'RUB'; // Валюта  
+const price = 10000; // Сумма в копейках (100 руб.)  
+
+// Обработка платежа  
+async function handlePayment(chatId) {  
+    try {  
+        await bot.sendInvoice(
+            chatId,
+            title,
+            description,
+            invoicePayload,
+            TOKEN,
+            currency,
+            [{ label: 'Услуга', amount: price }],
+            { start_parameter: 'payment', invoice_payload: invoicePayload }
+        );
+        console.log('Инвойс отправлен в чат:', chatId);  
+    } catch (error) {  
+        if (error.response) {
+            console.error('Ошибка при отправке инвойса:', error.response.body);  
+        } else {
+            console.error('Неизвестная ошибка:', error);
+        }
+        throw error; // Перебросить ошибку, чтобы она была видна на уровне API.  
+    }  
+}
+
+// Эндпоинт для получения запроса на оплату  
+app.post('/api/payment', async (req, res) => {  
+    const { chatId } = req.body;  
+    console.log('Получен запрос на оплату:', chatId); // Логируем полученный chatId
 
     try {  
-        // Найдите пользователя в вашей базе данных по telegram_id  
-        const user = await User.findOne({ telegramId: telegram_id });  
-        if (!user) {  
-            return res.status(404).json({ message: 'Пользователь не найден' });  
-        }  
-
-        // Сохраните платеж в базе данных  
-        await savePaymentToDatabase(user.telegramId, user.chatId, total_amount, currency);  
-
-        res.json({ success: true, message: 'Платеж успешно обработан' });  
+        await handlePayment(chatId);  
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
     } catch (error) {  
-        console.error('Ошибка при обработке платежа:', error);  
-        res.status(500).json({ success: false, message: 'Ошибка при обработке платежа' });  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
-});  
+});
 
 // Эндпоинт для получения данных пользователя по Telegram ID  
 app.get('/api/users/:telegramId', async (req, res) => {  

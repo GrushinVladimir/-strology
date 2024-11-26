@@ -127,12 +127,19 @@ const ProfilePage = ({ telegramId }) => {
     
             const data = await response.json();  
             console.log('Инвойс отправлен!', data);  
-            alert('Инвойс успешно отправлен в чат Telegram!');  
+    
+            // Проверка успешности платежа  
+            if (data.success) {  
+                alert('Инвойс успешно отправлен в чат Telegram! Платеж был успешно обработан.');  
+                setIsPaid(true); // Устанавливаем состояние, что платеж был выполнен  
+            } else {  
+                alert('Ошибка при обработке платежа. Пожалуйста, попробуйте еще раз.');  
+            }  
         } catch (error) {  
             console.error('Ошибка:', error);  
             alert(`Произошла ошибка: ${error.message}`);  
         }  
-    };  
+    };    
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
