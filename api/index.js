@@ -86,19 +86,21 @@ app.post('/api/questions/:id', async (req, res) => {
 });  
 async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {  
     try {  
-        // Убедитесь, что totalAmount — это число, а не строка  
+        // Проверка типа  
+        console.log('Тип totalAmount перед сохранением:', typeof totalAmount);  
+
+        // Преобразуем totalAmount в число  
         const amount = Number(totalAmount);  
 
         if (isNaN(amount)) {  
             throw new Error("Invalid amount: must be a number");  
         }  
 
-        // Создаем новый объект Payment  
         const paymentRecord = new Payment({  
             telegramId: userId,  
             chatId: chatId,  
             amount: amount,  
-            currency: currency, // Убедитесь, что это валюта, например, "RUB" (строка)  
+            currency: currency,  
             date: new Date()  
         });  
 
@@ -116,15 +118,19 @@ app.post('/api/telegram-webhook', async (req, res) => {
     // Проверяем, произошло ли успешное получение платежа  
     if (update && update.message && update.message.successful_payment) {  
         const successfulPayment = update.message.successful_payment;  
-        const chatId = update.message.chat.id;  // Извлекаем chatId  
-        const userId = update.message.from.id; // Извлекаем ID пользователя  
+        const chatId = update.message.chat.id;  
+        const userId = update.message.from.id;  
     
-        // Возможно, вам нужно получить total_amount и currency  
-        const totalAmount = successfulPayment.total_amount; // Это должно быть числом (например, 500)  
-        const currency = successfulPayment.currency; // Это строка, например "RUB"  
+        console.log('Содержимое успешного платежа:', successfulPayment);  
+    
+        const totalAmount = successfulPayment.total_amount; // Ожидается, что это число  
+        const currency = successfulPayment.currency;  
+    
+        console.log('Total Amount:', totalAmount);  
+        console.log('Currency:', currency);  
     
         await savePaymentToDatabase(userId, chatId, totalAmount, currency);  
-        return res.sendStatus(200);   
+        return res.sendStatus(200);  
     }  
 
     // Обработка предоплаты  
