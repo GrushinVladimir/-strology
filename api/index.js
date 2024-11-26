@@ -86,12 +86,10 @@ app.post('/api/questions/:id', async (req, res) => {
 });  
 async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {  
     try {  
-        // Проверка типа  
         console.log('Тип totalAmount перед сохранением:', typeof totalAmount);  
 
         // Преобразуем totalAmount в число  
         const amount = Number(totalAmount);  
-
         if (isNaN(amount)) {  
             throw new Error("Invalid amount: must be a number");  
         }  
@@ -99,7 +97,7 @@ async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {
         const paymentRecord = new Payment({  
             telegramId: userId,  
             chatId: chatId,  
-            amount: amount,  
+            amount: amount, // Теперь это число  
             currency: currency,  
             date: new Date()  
         });  
@@ -111,41 +109,32 @@ async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {
         throw error;  
     }  
 }  
+
 // Эндпоинт для обработки обновлений от Telegram  
 app.post('/api/telegram-webhook', async (req, res) => {  
     const update = req.body;  
 
-    // Проверяем, произошло ли успешное получение платежа  
     if (update && update.message && update.message.successful_payment) {  
         const successfulPayment = update.message.successful_payment;  
         const chatId = update.message.chat.id;  
         const userId = update.message.from.id;  
-    
-        // Логируем успешный платеж для отладки  
-        console.log('Содержимое successful_payment:', successfulPayment);  
-    
-        const totalAmountString = successfulPayment.total_amount; // Ожидается, что это строка  
+
+        const totalAmount = successfulPayment.total_amount.toString(); // Приводим к строке для очистки  
         const currency = successfulPayment.currency;  
-    
-        // Логируем тип и значение totalAmount, чтобы понять, что приходит  
-        console.log('Тип totalAmount перед преобразованием:', typeof totalAmountString);  
-        console.log('Значение totalAmount перед преобразованием:', totalAmountString);  
-    
-        // Преобразование строки в число  
-        const totalAmount = parseFloat(totalAmountString);  
-        
-        // Проверка на NaN  
-        if (isNaN(totalAmount)) {  
-            console.error('Ошибка: totalAmount не является числом', totalAmountString);  
-            return res.status(400).send('Invalid amount: must be a number'); // Возвращаем ошибку клиенту  
+
+        console.log('Total Amount (строка):', totalAmount);  
+
+        // Преобразуем и очищаем значение  
+        const amount = parseFloat(totalAmount);  
+        if (isNaN(amount)) {  
+            console.error('Ошибка: totalAmount не является числом', totalAmount);  
+            return res.status(400).send('Invalid amount: must be a number');  
         }  
-    
-        // Логируем преобразованное значение  
-        console.log('Преобразованное значение totalAmount:', totalAmount);  
-    
-        await savePaymentToDatabase(userId, chatId, totalAmount, currency);  
+
+        await savePaymentToDatabase(userId, chatId, amount, currency);  
         return res.sendStatus(200);  
     }  
+});  
 
     // Обработка предоплаты  
     if (update && update.pre_checkout_query) {  
