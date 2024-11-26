@@ -109,7 +109,21 @@ app.post('/api/telegram-webhook', async (req, res) => {
 
         return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
     }  
-    
+
+    // Обработка предоплаты  
+    if (update && update.pre_checkout_query) {  
+        const preCheckoutQuery = update.pre_checkout_query;  
+
+        // Здесь вы можете добавить логику проверки, если нужно  
+        // Например, проверка суммы или валюты  
+
+        // Подтверждаем предоплату  
+        await bot.answerPreCheckoutQuery(preCheckoutQuery.id, true); // true означает, что мы подтверждаем платеж  
+        return res.sendStatus(200);  
+    }  
+
+    // Если сообщение не соответствует ни одной из ожидаемых форматов  
+    console.error('Некорректный формат сообщения:', update);  
     res.sendStatus(200);  
 });  
 
