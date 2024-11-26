@@ -4,18 +4,20 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './ChatPage.css';
 
-const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName,telegramId }) => {
-  const { user, tg } = useTelegram();  
-  const [userData, setUserData] = useState(null);  
+const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName, telegramId }) => {
+  const { user, tg } = useTelegram();
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(true);
   const [botTyping, setBotTyping] = useState(false);
+  const initialQuestions = [
+    'Какие особенности моего знака зодиака?',
+    'Ждёт ли меня болезнь в этом году?',
+    'Чего стоит избегать завтра?',
+    'Ждёт ли меня повышение на работе?',
+  ];
+  const [questions, setQuestions] = useState(initialQuestions);
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Вот вопросы, которые вы можете задать:', isQuestionHeader: true },
-    { sender: 'bot', text: 'Какие особенности моего знака зодиака?', isClickable: true },
-    { sender: 'bot', text: 'Ждёт ли меня болезнь в этом году?', isClickable: true },
-    { sender: 'bot', text: 'Чего стоит избегать завтра?', isClickable: true },
-    { sender: 'bot', text: 'Ждёт ли меня повышение на работе?', isClickable: true },
+    { sender: 'bot', text: 'Вот несколько вопросов, которые вы можете задать:', isQuestionHeader: true },
   ]);
   const [inputMessage, setInputMessage] = useState('');
 
@@ -100,10 +102,8 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const handleQuestionClick = (question) => {
     if (remainingQuestions > 0) {
       decrementQuestions();
-      handleSendMessage(question);
-    } else {
-      handleSendMessage(question);
     }
+    handleSendMessage(question);
   };
 
   useEffect(() => {
@@ -118,7 +118,6 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
 };  
 
-
   return (
     <div className="chat-container">
       <div className="chat-header">
@@ -128,23 +127,34 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
       <div className="chat-messages">
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.sender}`}>
-            <img
+            <div className="avatar-container">
+              <img
                 src={message.sender === 'user' ? getAvatarUrl(user) : '/img/menu/BotAvatar.png'}
                 alt={message.sender}
-              className="avatar"
-            />
+                className="avatar"
+              />
+              <span className="avatar-label">
+                {message.sender === 'user' ? 'Вы' : 'ChatBot Стеша'}
+              </span>
+            </div>
             <div className="message-text">
               {message.isQuestionHeader ? (
-                <div className="question-header">{message.text}</div>
-              ) : message.isClickable ? (
-                <button
-                  className="question-button"
-                  onClick={() => handleQuestionClick(message.text)}
-                >
+                <div className="question-header">
                   {message.text}
-                </button>
+                  <div className="questions-list">
+                    {questions.map((question, index) => (
+                      <button
+                        key={index}
+                        className="question-button"
+                        onClick={() => handleQuestionClick(question)}
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ) : (
-                message.text
+                <div>{message.text}</div>
               )}
             </div>
           </div>
