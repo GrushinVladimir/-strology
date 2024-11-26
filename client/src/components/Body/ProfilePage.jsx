@@ -167,7 +167,7 @@ const ProfilePage = ({ telegramId }) => {
                                 <p style={{ color: 'green' }}>Тест выполнен!</p>  
                             ) : (  
                                 <Link to="/test">  
-                                    <button className='button na' style={{ position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px', bottom: '0', transform: 'translateX(-50%)', left: '50%', width: '115px', fontSize: '15px' }}>  
+                                    <button className='button na' style={{ position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px', bottom: '10px', transform: 'translateX(-50%)', left: '50%', width: '115px', fontSize: '15px' }}>  
                                         Летс гоу  
                                     </button>  
                                 </Link>  
