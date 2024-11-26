@@ -313,6 +313,25 @@ app.get('/api/users/:telegramId', async (req, res) => {
     }  
 });  
 
+app.get('/api/payment/:telegramId', async (req, res) => {  
+    const { telegramId } = req.params;  
+    console.log(`Получен запрос на получение платежа с ID: ${telegramId}`); // Для отладки
+
+    try {  
+        const payment = await Payment.findOne({ telegramId });  
+        if (payment) {  
+            console.log('Платеж найден:', payment); // Для отладки
+            res.json({ paid: true, amount: payment.amount, currency: payment.currency });  
+        } else {  
+            console.log('Платеж не найден'); // Для отладки
+            res.json({ paid: false });  
+        }  
+    } catch (error) {  
+        console.error('Ошибка при получении информации о платеже:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при получении данных' });  
+    }  
+});
+
 // Запуск сервера  
 const PORT = process.env.PORT || 5000;  
 app.listen(PORT, () => {  
