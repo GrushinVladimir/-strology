@@ -173,38 +173,57 @@ app.get('/api/config-google', (req, res) => {
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
 // Эндпоинт для обработки сообщений Telegram  
-app.post('/api/webhook', async (req, res) => {
-    try {
-        const msg = req.body;
+app.post('/api/webhook', async (req, res) => {  
+    try {  
+        const update = req.body;  
 
-        // Проверка наличия сообщения и чата
-        if (msg && msg.message && msg.message.chat) {
-            const chatId = msg.message.chat.id;
-            const userId = msg.message.from.id; // Получаем ID пользователя
-            const text = msg.message.text;
+        // Проверка на успешный платеж  
+        if (update && update.message && update.message.successful_payment) {  
+            const successfulPayment = update.message.successful_payment;  
+            const chatId = update.message.chat.id;  
 
-            console.log(`Получено сообщение: "${text}" от User ID: ${userId}, Chat ID: ${chatId}`);
+            // Сохраняем информацию о платеже  
+            await savePaymentToDatabase(chatId, successfulPayment.total_amount, successfulPayment.currency);  
+            return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
+        }  
 
-            // Логика ответа на команду /start
-            if (text === '/start') {
-                const responseText = 'Добро пожаловать! Как я могу помочь вам?';
+        // Обработка предоплаты  
+        if (update && update.pre_checkout_query) {  
+            const preCheckoutQuery = update.pre_checkout_query;  
 
-                // Отправляем ответ пользователю
-                await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-                    chat_id: chatId,
-                    text: responseText
-                });
-            }
-        } else {
-            console.error('Некорректный формат сообщения:', msg);
-        }
+            // Подтверждаем предоплату  
+            await bot.answerPreCheckoutQuery(preCheckoutQuery.id, true); // true означает, что мы подтверждаем платеж  
+            return res.sendStatus(200);  
+        }  
 
-        res.sendStatus(200); // Отправляем статус 200 OK
-    } catch (error) {
-        console.error('Ошибка при обработке webhook:', error);
-        res.status(500).send('Ошибка сервера');
-    }
-});
+        // Проверка наличия сообщения и чата  
+        if (update && update.message && update.message.chat) {  
+            const chatId = update.message.chat.id;  
+            const userId = update.message.from.id; // Получаем ID пользователя  
+            const text = update.message.text;  
+
+            console.log(`Получено сообщение: "${text}" от User ID: ${userId}, Chat ID: ${chatId}`);  
+
+            // Логика ответа на команду /start  
+            if (text === '/start') {  
+                const responseText = 'Добро пожаловать! Как я могу помочь вам?';  
+
+                // Отправляем ответ пользователю  
+                await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {  
+                    chat_id: chatId,  
+                    text: responseText  
+                });  
+            }  
+        } else {  
+            console.error('Некорректный формат сообщения:', update);  
+        }  
+
+        res.sendStatus(200); // Отправляем статус 200 OK  
+    } catch (error) {  
+        console.error('Ошибка при обработке webhook:', error);  
+        res.status(500).send('Ошибка сервера');  
+    }  
+}); 
 
 
 
