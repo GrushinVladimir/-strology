@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({  
     telegramId: { type: String, required: true },  
-    chatId: { type: String, required: true },  // Убедитесь, что chatId присутствует  
+    chatId: { type: String, required: true },  
     amount: { type: Number, required: true },  
     currency: { type: String, required: true },  
     date: { type: Date, default: Date.now }  
 });  
 
-const Payment = mongoose.model('Payment', paymentSchema); 
+const Payment = mongoose.model('Payment', paymentSchema);  
+
+// Экспортируем модель   
+module.exports = Payment;  
