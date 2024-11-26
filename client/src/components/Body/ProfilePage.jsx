@@ -151,7 +151,7 @@ const ProfilePage = ({ telegramId }) => {
                                 <p>Пользователь не найден</p>  
                             )}  
                         </div>  
-                        <div className='top-profile-right'>0,00</div>
+                          {/**<div className='top-profile-right'>0,00</div>*/}
                         <div className="top-profile-right active"  onClick={() => startPayment(telegramId)}>Оплатить </div>   
                     </div>  
                     {userData && (  
@@ -173,14 +173,14 @@ const ProfilePage = ({ telegramId }) => {
                                 </Link>  
                             )}  
                         </div>  
-                        <div className="profile-block">  
+                       {/**  <div className="profile-block">  
                             <p>Проходи ежедневные задания и получай приятные бонусы</p>  
                             <Link to="/zadaniya">  
                                 <button className='button na' style={{ position: 'absolute', margin: '2vh auto auto', display: 'block', left: 'unset', transform: 'none', padding: '6px 15px', bottom: '0', transform: 'translateX(-50%)', left: '50%', width: '115px', fontSize: '15px' }}>  
                                     Летс гоу  
                                 </button>  
                             </Link>  
-                        </div>  
+                        </div>  */}
                     </div>  
                     <div className="bottom-profile"> 
                         <div>  
