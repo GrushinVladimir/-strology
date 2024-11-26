@@ -284,7 +284,7 @@ const handleNextWithValidation = (currentData) => {
               Давай знакомится!<br />  
             </h2>  
             <span style={{opacity:'.9'}}>  
-              Ответь на 5 простых вопросов. <br />  
+              Ответь на 4 простых вопросов. <br />  
               Это поможет нам узнать тебя получше.  
             </span>  
             <button onClick={handleStartWithAnimation} className='button posi'><span>Начать</span></button>  
@@ -317,7 +317,7 @@ const handleNextWithValidation = (currentData) => {
                             </div>
                         ))}
                     </div>
-                    <span>:</span>
+                    <span style={{marginTop: '1.01rem'}}>:</span>
                     <div className="scroll-container" id="minuteSelector">
                         {minutes.map((minute, index) => (
                             <div 

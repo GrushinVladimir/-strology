@@ -355,6 +355,7 @@ h2{
     .case-img-ru{
       object-fit: cover;
       width:  100%; 
+      max-width: 288px;
     }
 .top-container{
   height: 17vh;
