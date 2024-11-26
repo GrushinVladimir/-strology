@@ -116,12 +116,15 @@ app.post('/api/telegram-webhook', async (req, res) => {
     // Проверяем, произошло ли успешное получение платежа  
     if (update && update.message && update.message.successful_payment) {  
         const successfulPayment = update.message.successful_payment;  
-        const chatId = update.message.chat.id;  
-
-        // Сохраняем информацию о платеже  
-        await savePaymentToDatabase(chatId, successfulPayment.total_amount, successfulPayment.currency);  
-
-        return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
+        const chatId = update.message.chat.id;  // Извлекаем chatId  
+        const userId = update.message.from.id; // Извлекаем ID пользователя  
+    
+        // Возможно, вам нужно получить total_amount и currency  
+        const totalAmount = successfulPayment.total_amount; // Это должно быть числом (например, 500)  
+        const currency = successfulPayment.currency; // Это строка, например "RUB"  
+    
+        await savePaymentToDatabase(userId, chatId, totalAmount, currency);  
+        return res.sendStatus(200);   
     }  
 
     // Обработка предоплаты  
