@@ -183,6 +183,7 @@ const ProfilePage = ({ telegramId }) => {
                             {userData ? (  
                                 <div>  
                                     <p>{userData.name}</p>  
+                                    <p>{userData. birthTime}</p>  
                                 </div>  
                             ) : (  
                                 <p>Пользователь не найден</p>  
