@@ -64,7 +64,11 @@ const ProfilePage = ({ telegramId }) => {
         if (!telegramId) return;  
         fetchUserData(); // Initiate fetching user data  
     }, [telegramId]);  
-
+    useEffect(() => {
+        if (telegramId) {
+            checkPaymentStatus(); // Проверяем статус платежа после загрузки пользователя
+        }
+    }, [telegramId]);
     const getAvatarUrl = (user) => {  
         return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
     };  
