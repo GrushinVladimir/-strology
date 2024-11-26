@@ -68,18 +68,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/test-results', testResultRoutes);  
 app.get('/api/horoscope', horoscopeHandler);  
 
-app.post('/api/users', async (req, res) => {
-    console.log('Полученные данные для нового пользователя:', req.body); // Логируем полученные данные
-    
-    try {
-        const user = new User(req.body);
-        await user.save();
-        res.status(201).send(user);
-    } catch (error) {
-        console.error('Ошибка при сохранении пользователя:', error);
-        res.status(400).send(error);
-    }
-});
+
 app.post('/api/questions/:id', async (req, res) => {  
     const { id } = req.params;  
     const { remainingQuestions } = req.body;  
@@ -221,7 +210,29 @@ app.get('/api/users/:telegramId', async (req, res) => {
     }  
 });  
 
+app.post('/api/users', async (req, res) => {
+    console.log('Полученные данные для нового пользователя:', req.body); // Логируем входящие данные
 
+    const { telegramId, name, birthDate, birthTime, birthPlace, zodiacSign, zodiacDescription } = req.body;
+
+    // Дополнительно проверьте каждое из полей
+    console.log('telegramId:', telegramId);
+    console.log('name:', name);
+    console.log('birthDate:', birthDate);
+    console.log('birthTime:', birthTime);
+    console.log('birthPlace:', birthPlace);
+    console.log('zodiacSign:', zodiacSign);
+    console.log('zodiacDescription:', zodiacDescription);
+
+    try {
+        const user = new User(req.body);
+        await user.save();
+        res.status(201).send(user);
+    } catch (error) {
+        console.error('Ошибка при сохранении пользователя:', error);
+        res.status(400).send(error);
+    }
+});
 
 
 
