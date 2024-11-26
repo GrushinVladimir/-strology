@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useTelegram } from '../hooks/useTelegram';
+import { useTelegram } from '../hooks/useTelegram'; 
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './ChatPage.css';
 
-const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName }) => {
+const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName,telegramId }) => {
   const { tg } = useTelegram();
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -123,7 +123,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
         {messages.map((message, index) => (
           <div key={index} className={`message ${message.sender}`}>
             <img
-              src={message.sender === 'user' ? '/img/user-avatar.png' : '/img/menu/BotAvatar.png'}
+              src={message.sender === 'user' && user && user.photo_url ? user.photo_url  : '/img/menu/BotAvatar.png'}
               alt={message.sender}
               className="avatar"
             />
