@@ -68,6 +68,18 @@ app.use('/api/users', userRoutes);
 app.use('/api/test-results', testResultRoutes);  
 app.get('/api/horoscope', horoscopeHandler);  
 
+app.post('/api/users', async (req, res) => {
+    console.log('Полученные данные для нового пользователя:', req.body); // Логируем полученные данные
+    
+    try {
+        const user = new User(req.body);
+        await user.save();
+        res.status(201).send(user);
+    } catch (error) {
+        console.error('Ошибка при сохранении пользователя:', error);
+        res.status(400).send(error);
+    }
+});
 app.post('/api/questions/:id', async (req, res) => {  
     const { id } = req.params;  
     const { remainingQuestions } = req.body;  
