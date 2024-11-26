@@ -84,21 +84,23 @@ app.post('/api/questions/:id', async (req, res) => {
         res.status(500).json({ error: 'Не удалось сохранить количество вопросов' });  
     }  
 });  
-async function savePaymentToDatabase(telegramId, totalAmount, currency) {  
+async function savePaymentToDatabase(telegramId, chatId, totalAmount, currency) {  
     try {  
-        // Здесь ваш код для сохранения данных о платеже в БД  
+        // Создаем новый документ платежа  
         const paymentRecord = new Payment({  
-            telegramId: telegramId,  
-            amount: totalAmount,  
-            currency: currency,  
-            date: new Date(),  
+            telegramId: telegramId, // ID пользователя в Telegram  
+            chatId: chatId,         // ID чата (группы или пользователя)  
+            amount: totalAmount,     // Сумма платежа  
+            currency: currency,      // Валюта платежа  
+            date: new Date()        // Дата платежа  
         });  
 
+        // Сохраняем документ в базе данных  
         await paymentRecord.save();  
         console.log('Платеж успешно сохранен в БД');  
     } catch (error) {  
         console.error('Ошибка при сохранении платежа в БД:', error);  
-        throw error; // Перебросить ошибку, чтобы  была видна на уровне API  
+        throw error; // Перебрасываем ошибку, чтобы это было видно на уровне API  
     }  
 }  
 // Эндпоинт для обработки обновлений от Telegram  
