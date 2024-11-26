@@ -201,7 +201,7 @@ const ProfilePage = ({ telegramId }) => {
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
-                            <h4 style={{fontWeight: '200'}}>О вашем знаке: {zodiacSign || 'Не найден'}</h4>  
+                            <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
                             <p>{userData.zodiacDescription}</p>  
                         </div>  
                     )}  
