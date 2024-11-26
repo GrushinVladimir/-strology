@@ -13,7 +13,7 @@ const ProfilePage = ({ telegramId }) => {
     const [testCompleted, setTestCompleted] = useState(false);
     const [showSupportModal, setShowSupportModal] = useState(false);  // Добавим состояние для модалки
     const navigate = useNavigate();  
-
+    const [isPaid, setIsPaid] = useState(false);
     const fetchUserData = async () => {  
         try {  
             const response = await axios.get(`/api/users/${telegramId}`);  
@@ -107,7 +107,7 @@ const ProfilePage = ({ telegramId }) => {
         const invoiceData = {  
             chatId: String(telegramId)
         };  
-    
+
         try {  
             console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
             const response = await fetch('https://strology.vercel.app/api/payment', {  
@@ -117,15 +117,16 @@ const ProfilePage = ({ telegramId }) => {
                 },  
                 body: JSON.stringify(invoiceData),  
             });
-    
+
             if (!response.ok) {  
                 const errorData = await response.json();  
                 throw new Error(`Ошибка при отправке инвойса: ${errorData.message}`);  
             }  
-    
+
             const data = await response.json();  
             console.log('Инвойс отправлен!', data);  
             alert('Инвойс успешно отправлен в чат Telegram!');  
+            setIsPaid(true); // Обновляем состояние на оплачено
         } catch (error) {  
             console.error('Ошибка:', error);  
             alert(`Произошла ошибка: ${error.message}`);  
@@ -152,8 +153,14 @@ const ProfilePage = ({ telegramId }) => {
                             )}  
                         </div>  
                           {/**<div className='top-profile-right'>0,00</div>*/}
-                        <div className="top-profile-right active"  onClick={() => startPayment(telegramId)}>Оплатить </div>   
-                    </div>  
+                            <div 
+                                className={`top-profile-right ${isPaid ? 'paid' : 'active'}`} 
+                                onClick={() => !isPaid && startPayment(telegramId)}
+                                style={{ color: isPaid ? 'green' : 'black' }} // Изменение цвета текста
+                            >
+                                {isPaid ? 'Оплачено' : 'Оплатить'}
+                            </div>
+                            </div>  
                     {userData && (  
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: {zodiacSign || 'Не найден'}</h4>  
