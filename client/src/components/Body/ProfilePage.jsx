@@ -15,22 +15,24 @@ const ProfilePage = ({ telegramId }) => {
     const navigate = useNavigate();  
     const [isPaid, setIsPaid] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);  
-    useEffect(() => {  
-        const checkPaymentStatus = async () => {  
-            try {  
-                const response = await axios.get(`/api/payment/${telegramId}`);  
-                if (response.data.paid) {  
-                    setPaymentStatus(true);  
-                } else {  
-                    setPaymentStatus(false);  
-                }  
-            } catch (error) {  
-                console.error('Ошибка при проверке статуса платежа:', error);  
-            }  
-        };  
 
-        checkPaymentStatus();  
-    }, [telegramId]); 
+    const checkPaymentStatus = async () => {  
+        try {  
+            console.log('Checking payment status for:', telegramId);
+            const response = await axios.get(`/api/payment/${telegramId}`);
+            console.log('Payment status response:', response.data);
+            if (response.data.paid) {  
+                setPaymentStatus(true);  
+            } else {  
+                setPaymentStatus(false);  
+            }  
+        } catch (error) {  
+            console.error('Ошибка при проверке статуса платежа:', error);
+            setError('Не удалось проверить статус платежа');
+        } finally {
+            setLoading(false); // Устанавливаем загрузку как завершенную
+        }  
+    };
     const fetchUserData = async () => {  
         try {  
             const response = await axios.get(`/api/users/${telegramId}`);  
@@ -179,14 +181,14 @@ const ProfilePage = ({ telegramId }) => {
                         </div>  
                           {/**<div className='top-profile-right'>0,00</div>*/}
                           <div className="top-profile-right active">  
-            {paymentStatus === null ? (  
-                <span>Загрузка...</span> // или какой-то индикатор загрузки, если необходимо  
-            ) : paymentStatus ? (  
-                <span>Оплачено</span>  
-            ) : (  
-                <span onClick={() => startPayment(telegramId)}>Оплатить</span>  
-            )}  
-        </div>  
+    {paymentStatus === null ? (
+        <span>Загрузка статуса оплаты...</span>
+    ) : paymentStatus ? (
+        <span>Оплачено</span>
+    ) : (
+        <span onClick={() => startPayment(telegramId)}>Оплатить</span>
+    )}
+</div> 
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
