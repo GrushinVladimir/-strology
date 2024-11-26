@@ -454,13 +454,13 @@ box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
   width: 100%;
 }
 .center-profile div{
-  background: #2a1a6594;
-  border-radius: 15px;
+  background: #170d3a;
+  border-radius: 4px;
   flex-shrink: 0;
   height: 14vh;
   margin: auto;
   position: relative;
-  width: 67%;
+  width: 93%;
 }
 .center-profile div p{
   font-size: 12px;
@@ -473,6 +473,8 @@ box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
   flex-shrink: 0;
   border-radius: 4px;
   background: #170D3A;
+  width: 93%;
+  margin: auto;
 }
 
 .bottom-profile div p{

@@ -249,7 +249,7 @@ const handleNextWithValidation = (currentData) => {
     if (!date) {
       return (
         <span style={{ display: 'flex', margin: '0'  ,  alignItems: 'center', 
-          height: '47px'
+          height: '47px',justifyContent: 'center'
 }}>
           <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>День</span>
           <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '1.4rem' }}>Мес</span>
@@ -263,7 +263,7 @@ const handleNextWithValidation = (currentData) => {
     const year = date.toLocaleDateString('ru-RU', { year: 'numeric' });
   
     return (
-      <span style={{ display: 'flex', margin: '0' }}>
+      <span style={{ display: 'flex', margin: '0',justifyContent: 'center' }}>
         <span style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>{day}</span>
         <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', borderRight: '1px solid #eee', paddingRight: '15px', lineHeight: '2.5rem' }}>{month}</span>
         <span style={{ marginRight: '15px', marginTop: '5px', marginBottom: '5px', paddingRight: '0px', lineHeight: '2.5rem' }}>{year}</span>
@@ -389,7 +389,7 @@ const handleNextWithValidation = (currentData) => {
                           onClick={() => setCalendarOpen(true)} 
                           style={{ 
                             padding: '6px 0px',
-                            width:'210px',
+                            minWidth:'210px',
                             color: 'white', 
                             border: 'none', 
                             cursor: 'pointer' 

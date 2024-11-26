@@ -173,6 +173,8 @@ const ProfilePage = ({ telegramId }) => {
                     {/* SVG for back button */}  
                 </button>  
                 <div className="header-profile">  
+                    <div className='phead'>
+        
                     <div className="line-profile">  
                         <div className='top-profile-left'>  
                             <div style={{ width: '60px', height: '60px' }}>  
@@ -188,14 +190,14 @@ const ProfilePage = ({ telegramId }) => {
                         </div>  
                           {/**<div className='top-profile-right'>0,00</div>*/}
                           <div className="top-profile-right active">  
-    {paymentStatus === null ? (
-        <span>Загрузка статуса оплаты...</span>
-    ) : paymentStatus ? (
-        <span>Оплачено</span>
-    ) : (
-        <span onClick={() => startPayment(telegramId)}>Оплатить</span>
-    )}
-</div> 
+                            {paymentStatus === null ? (
+                                <span>Загрузка статуса оплаты...</span>
+                            ) : paymentStatus ? (
+                                <span>Оплачено</span>
+                            ) : (
+                                <span onClick={() => startPayment(telegramId)}>Оплатить</span>
+                            )}
+                        </div> 
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
@@ -203,6 +205,9 @@ const ProfilePage = ({ telegramId }) => {
                             <p>{userData.zodiacDescription}</p>  
                         </div>  
                     )}  
+
+
+                    </div>
                     <div className="center-profile">  
                         <div className="profile-block">  
                             <p>Пройти тест на знак зодиака</p>  
