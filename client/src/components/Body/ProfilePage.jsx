@@ -103,35 +103,55 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
-    const startPayment = async (telegramId) => {  
-        const invoiceData = {  
-            chatId: String(telegramId)
-        };  
+    Чтобы изменить текст и цвет кнопки только после успешной оплаты, необходимо обновить клиентскую часть таким образом, чтобы она отслеживала статус оплаты на сервере и меняла состояние только по получении подтверждения об успешной оплате.
 
-        try {  
-            console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
-            const response = await fetch('https://strology.vercel.app/api/payment', {  
-                method: 'POST',  
-                headers: {  
-                    'Content-Type': 'application/json',  
-                },  
-                body: JSON.stringify(invoiceData),  
-            });
-
-            if (!response.ok) {  
-                const errorData = await response.json();  
-                throw new Error(`Ошибка при отправке инвойса: ${errorData.message}`);  
+    Вот как вы можете реализовать это:
+    
+    Обновленная реализация
+    Добавьте состояние для отслеживания статуса оплаты.
+    Измените текст и стиль кнопки только после успешной оплаты.
+    Пример кода
+    jsx
+    import React, { useState } from 'react';
+    
+    const PaymentButton = ({ telegramId }) => {
+        const [isPaid, setIsPaid] = useState(false); // Состояние для отслеживания оплаты
+        const [loading, setLoading] = useState(false); // Состояние загрузки
+    
+        const startPayment = async (telegramId) => {  
+            const invoiceData = {  
+                chatId: String(telegramId)
+            };  
+    
+            try {  
+                setLoading(true); // Устанавливаем состояние загрузки
+                console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
+                const response = await fetch('https://strology.vercel.app/api/payment', {  
+                    method: 'POST',  
+                    headers: {  
+                        'Content-Type': 'application/json',  
+                    },  
+                    body: JSON.stringify(invoiceData),  
+                });
+    
+                if (!response.ok) {  
+                    const errorData = await response.json();  
+                    throw new Error(`Ошибка при отправке инвойса: ${errorData.message}`);  
+                }  
+    
+                const data = await response.json();  
+                console.log('Инвойс отправлен!', data);  
+                alert('Инвойс успешно отправлен в чат Telegram!');  
+                // Здесь ожидание подтверждения от пользователя о том, что оплата прошла
+                // Поменяйте это место на ваше логическое условие подтверждения оплаты
+                setIsPaid(true); // Если вы уверены, что оплата прошла успешно на стороне Telegram
+            } catch (error) {  
+                console.error('Ошибка:', error);  
+                alert(`Произошла ошибка: ${error.message}`);  
+            } finally {
+                setLoading(false); // Окончание состояния загрузки
             }  
-
-            const data = await response.json();  
-            console.log('Инвойс отправлен!', data);  
-            alert('Инвойс успешно отправлен в чат Telegram!');  
-            setIsPaid(true); // Обновляем состояние на оплачено
-        } catch (error) {  
-            console.error('Ошибка:', error);  
-            alert(`Произошла ошибка: ${error.message}`);  
-        }  
-    };
+        };
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
