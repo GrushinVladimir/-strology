@@ -84,17 +84,23 @@ app.post('/api/questions/:id', async (req, res) => {
         res.status(500).json({ error: 'Не удалось сохранить количество вопросов' });  
     }  
 });  
-async function savePaymentToDatabase(chatId, amount, currency) {  
-    const payment = new Payment({  
-        telegramId,
-        chatId,  
-        amount,  
-        currency,  
-        successful: true  
-    });  
-    await payment.save();  
-    console.log('Платеж успешно сохранен в БД:', payment);  
-} 
+async function savePaymentToDatabase(telegramId, totalAmount, currency) {  
+    try {  
+        // Здесь ваш код для сохранения данных о платеже в БД  
+        const paymentRecord = new Payment({  
+            telegramId: telegramId,  
+            amount: totalAmount,  
+            currency: currency,  
+            date: new Date(),  
+        });  
+
+        await paymentRecord.save();  
+        console.log('Платеж успешно сохранен в БД');  
+    } catch (error) {  
+        console.error('Ошибка при сохранении платежа в БД:', error);  
+        throw error; // Перебросить ошибку, чтобы  была видна на уровне API  
+    }  
+}  
 // Эндпоинт для обработки обновлений от Telegram  
 app.post('/api/telegram-webhook', async (req, res) => {  
     const update = req.body;  
@@ -181,9 +187,10 @@ app.post('/api/webhook', async (req, res) => {
         if (update && update.message && update.message.successful_payment) {  
             const successfulPayment = update.message.successful_payment;  
             const chatId = update.message.chat.id;  
+            const userId = update.message.from.id;  // Получаем ID пользователя  
 
             // Сохраняем информацию о платеже  
-            await savePaymentToDatabase(chatId, successfulPayment.total_amount, successfulPayment.currency);  
+            await savePaymentToDatabase(userId, successfulPayment.total_amount, successfulPayment.currency);  
             return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
         }  
 
@@ -223,7 +230,7 @@ app.post('/api/webhook', async (req, res) => {
         console.error('Ошибка при обработке webhook:', error);  
         res.status(500).send('Ошибка сервера');  
     }  
-}); 
+});  
 
 
 
