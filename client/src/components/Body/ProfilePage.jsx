@@ -8,6 +8,7 @@ const ProfilePage = ({ telegramId }) => {
     const { user, tg } = useTelegram();  
     const [userData, setUserData] = useState(null);  
     const [zodiacSign, setZodiacSign] = useState(null);  
+
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);  
     const [testCompleted, setTestCompleted] = useState(false);
@@ -183,7 +184,7 @@ const ProfilePage = ({ telegramId }) => {
                             {userData ? (  
                                 <div>  
                                     <p>{userData.name}</p>  
-                                    <p>{userData. birthTime}</p>  
+                                    <p>{userData. birthPlace}</p>  
                                 </div>  
                             ) : (  
                                 <p>Пользователь не найден</p>  
