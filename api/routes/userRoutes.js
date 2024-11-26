@@ -23,10 +23,10 @@ router.get('/:telegramId', async (req, res) => {
 
 // Создание нового пользователя
 router.post('/', async (req, res) => {
-  const { telegramId, name, birthDate, birthTime, birthPlace, zodiacSign } = req.body;
+  const { telegramId, name, birthDate, birthTime, birthPlace, zodiacSign, zodiacDescription } = req.body;
   console.log('Полученные данные для нового пользователя:', req.body); // Лог для отладки
 
-  if (!telegramId || !name || !birthDate || !birthTime || !birthPlace || !zodiacSign) {
+  if (!telegramId || !name || !birthDate || !birthTime || !birthPlace || !zodiacSign || !zodiacDescription) {
     console.log('Запрос отклонен: все поля обязательны для заполнения'); // Лог для отладки
     return res.status(400).json({ message: 'Все поля обязательны для заполнения' });
   }
