@@ -121,13 +121,27 @@ app.post('/api/telegram-webhook', async (req, res) => {
         const chatId = update.message.chat.id;  
         const userId = update.message.from.id;  
     
-        console.log('Содержимое успешного платежа:', successfulPayment);  
+        // Логируем успешный платеж для отладки  
+        console.log('Содержимое successful_payment:', successfulPayment);  
     
-        const totalAmount = successfulPayment.total_amount; // Ожидается, что это число  
+        const totalAmountString = successfulPayment.total_amount; // Ожидается, что это строка  
         const currency = successfulPayment.currency;  
     
-        console.log('Total Amount:', totalAmount);  
-        console.log('Currency:', currency);  
+        // Логируем тип и значение totalAmount, чтобы понять, что приходит  
+        console.log('Тип totalAmount перед преобразованием:', typeof totalAmountString);  
+        console.log('Значение totalAmount перед преобразованием:', totalAmountString);  
+    
+        // Преобразование строки в число  
+        const totalAmount = parseFloat(totalAmountString);  
+        
+        // Проверка на NaN  
+        if (isNaN(totalAmount)) {  
+            console.error('Ошибка: totalAmount не является числом', totalAmountString);  
+            return res.status(400).send('Invalid amount: must be a number'); // Возвращаем ошибку клиенту  
+        }  
+    
+        // Логируем преобразованное значение  
+        console.log('Преобразованное значение totalAmount:', totalAmount);  
     
         await savePaymentToDatabase(userId, chatId, totalAmount, currency);  
         return res.sendStatus(200);  
