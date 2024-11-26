@@ -6,6 +6,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');  
 const bodyParser = require('body-parser');  
 const User = require('./models/User');  
+const Payment = require('./models/paymentModel');
 const userRoutes = require('./routes/userRoutes');  
 const testResultRoutes = require('./routes/testResultRoutes');  
 const horoscopeHandler = require('./apis/horoscope');  
@@ -81,6 +82,48 @@ app.post('/api/questions/:id', async (req, res) => {
         res.json(questionData);  
     } catch (error) {  
         res.status(500).json({ error: 'Не удалось сохранить количество вопросов' });  
+    }  
+});  
+async function savePaymentToDatabase(chatId, amount, currency) {  
+    const payment = new Payment({  
+        telegramId,
+        chatId,  
+        amount,  
+        currency,  
+        successful: true  
+    });  
+    await payment.save();  
+    console.log('Платеж успешно сохранен в БД:', payment);  
+} 
+// Эндпоинт для обработки обновлений от Telegram  
+app.post('/api/telegram-webhook', async (req, res) => {  
+    const update = req.body;  
+
+    // Проверяем, произошло ли успешное получение платежа  
+    if (update && update.message && update.message.successful_payment) {  
+        const successfulPayment = update.message.successful_payment;  
+        const chatId = update.message.chat.id;  
+
+        // Сохраняем информацию о платеже  
+        await savePaymentToDatabase(chatId, successfulPayment.total_amount, successfulPayment.currency);  
+
+        return res.sendStatus(200); // Подтверждаем, что сообщение обработано  
+    }  
+    
+    res.sendStatus(200);  
+});  
+
+// Эндпоинт для получения запроса на оплату  
+app.post('/api/payment', async (req, res) => {  
+    const { chatId } = req.body;  
+    console.log('Получен запрос на оплату:', chatId); // Логируем полученный chatId  
+
+    try {  
+        await handlePayment(chatId);  
+        res.json({ success: true, message: 'Инвойс успешно отправлен' });  
+    } catch (error) {  
+        console.error('Ошибка при отправке инвойса:', error);  
+        res.status(500).json({ success: false, message: 'Ошибка при отправке инвойса', error: error.message });  
     }  
 });  
 

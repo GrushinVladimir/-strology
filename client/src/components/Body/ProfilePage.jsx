@@ -103,55 +103,36 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
-    Чтобы изменить текст и цвет кнопки только после успешной оплаты, необходимо обновить клиентскую часть таким образом, чтобы она отслеживала статус оплаты на сервере и меняла состояние только по получении подтверждения об успешной оплате.
-
-    Вот как вы можете реализовать это:
+    const startPayment = async (telegramId, amount, currency) => {  
+        const invoiceData = {  
+            chatId: String(telegramId),  
+            amount: amount, // добавьте сумму  
+            currency: currency // добавьте валюту  
+        };  
     
-    Обновленная реализация
-    Добавьте состояние для отслеживания статуса оплаты.
-    Измените текст и стиль кнопки только после успешной оплаты.
-    Пример кода
-    jsx
-    import React, { useState } from 'react';
+        try {  
+            console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
+            const response = await fetch('https://strology.vercel.app/api/payment', {  
+                method: 'POST',  
+                headers: {  
+                    'Content-Type': 'application/json',  
+                },  
+                body: JSON.stringify(invoiceData),  
+            });  
     
-    const PaymentButton = ({ telegramId }) => {
-        const [isPaid, setIsPaid] = useState(false); // Состояние для отслеживания оплаты
-        const [loading, setLoading] = useState(false); // Состояние загрузки
-    
-        const startPayment = async (telegramId) => {  
-            const invoiceData = {  
-                chatId: String(telegramId)
-            };  
-    
-            try {  
-                setLoading(true); // Устанавливаем состояние загрузки
-                console.log('Отправка данных для инвойса:', JSON.stringify(invoiceData));  
-                const response = await fetch('https://strology.vercel.app/api/payment', {  
-                    method: 'POST',  
-                    headers: {  
-                        'Content-Type': 'application/json',  
-                    },  
-                    body: JSON.stringify(invoiceData),  
-                });
-    
-                if (!response.ok) {  
-                    const errorData = await response.json();  
-                    throw new Error(`Ошибка при отправке инвойса: ${errorData.message}`);  
-                }  
-    
-                const data = await response.json();  
-                console.log('Инвойс отправлен!', data);  
-                alert('Инвойс успешно отправлен в чат Telegram!');  
-                // Здесь ожидание подтверждения от пользователя о том, что оплата прошла
-                // Поменяйте это место на ваше логическое условие подтверждения оплаты
-                setIsPaid(true); // Если вы уверены, что оплата прошла успешно на стороне Telegram
-            } catch (error) {  
-                console.error('Ошибка:', error);  
-                alert(`Произошла ошибка: ${error.message}`);  
-            } finally {
-                setLoading(false); // Окончание состояния загрузки
+            if (!response.ok) {  
+                const errorData = await response.json();  
+                throw new Error(`Ошибка при отправке инвойса: ${errorData.message || 'Неизвестная ошибка'}`);  
             }  
-        };
+    
+            const data = await response.json();  
+            console.log('Инвойс отправлен!', data);  
+            alert('Инвойс успешно отправлен в чат Telegram!');  
+        } catch (error) {  
+            console.error('Ошибка:', error);  
+            alert(`Произошла ошибка: ${error.message}`);  
+        }  
+    };  
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
@@ -173,14 +154,8 @@ const ProfilePage = ({ telegramId }) => {
                             )}  
                         </div>  
                           {/**<div className='top-profile-right'>0,00</div>*/}
-                            <div 
-                                className={`top-profile-right ${isPaid ? 'paid' : 'active'}`} 
-                                onClick={() => !isPaid && startPayment(telegramId)}
-                                style={{ color: isPaid ? 'green' : 'black' }} // Изменение цвета текста
-                            >
-                                {isPaid ? 'Оплачено' : 'Оплатить'}
-                            </div>
-                            </div>  
+                        <div className="top-profile-right active"  onClick={() => startPayment(telegramId)}>Оплатить </div>   
+                    </div>  
                     {userData && (  
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: {zodiacSign || 'Не найден'}</h4>  
