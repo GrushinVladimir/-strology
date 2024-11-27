@@ -276,6 +276,7 @@ const handleNextWithValidation = (currentData) => {
 
   //forms
   const renderStep = () => {  
+    
     switch (step) {  
       case 0 :  
         return (  
