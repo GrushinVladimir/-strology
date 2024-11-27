@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   try {  
     const { data } = await axios.get(url);  
     const $ = load(data);  
-    const horoscopeText = $('div.horoscope__content p').first().text().trim(); // Изменено здесь  
+    const horoscopeText = $('div.main-horoscope p').first().text().trim(); 
 
     if (!horoscopeText) {  
       return res.status(404).json({ error: 'Horoscope not found' });  
