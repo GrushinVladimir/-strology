@@ -83,7 +83,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
     const userData = {  
       telegramId: user?.id,  
       name: username,  
-      birthDate: `${day}-${month}-${year}`, // Приведите к формату YYYY-MM-DD  
+      birthDate: `${day}.${month}.${year}`, // Приведите к формату YYYY-MM-DD  
       birthTime: birthTime || 'Неизвестно',  
       birthPlace: placeOfBirth,  
       zodiacSign: sign,  
