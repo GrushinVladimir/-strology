@@ -62,22 +62,19 @@ padding: 0px;
 margin:0px;
 }
 .time-selector {
+  align-items: center;
+  background: linear-gradient(90deg, #533fa1 -1.41%, #170d3a 99.73%);
+  border-radius: 39px;
+  box-shadow: inset 2px 4px 4px 0 #00000040, 0 4px 4px 0 #00000040, inset -2px 3px 4px 0 #00000040;
+  display: flex;
+  flex-shrink: 0;
+  font-family: Arial, sans-serif;
+  height: 60px;
   justify-content: space-evenly;
-    display: flex;
-    align-items: flex-start;
-    font-family: Arial, sans-serif;
-    padding: 0px 30px;
-    margin: 0 auto;
-
-
-    border-radius: 39px;
-opacity: 0.7;
-background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
-box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), -2px 3px 4px 0px rgba(0, 0, 0, 0.25) inset;
-
-width: 157px;
-height: 55px;
-flex-shrink: 0;
+  margin: 0 auto;
+  opacity: .7;
+  padding: 0 30px;
+  width: 157px;
 }
 .scroll-item {
     height: 30px; /* Высота каждого элемента */
@@ -110,10 +107,11 @@ flex-shrink: 0;
 
 
 .scroll-container {
-max-height: 74px;
-scrollbar-width: none;
-    overflow-y: overlay;
-    position: relative;
+  max-height: 50px;
+  overflow-y: overlay;
+  position: relative;
+  scrollbar-width: none;
+  padding-top: .7rem;
   }
   
   .item {
