@@ -36,12 +36,14 @@ const FAQPage = () => {
                 <h2>Часто задаваемые вопросы</h2>  
                 {questions.map((item, index) => (  
                     <div key={index} className="faq-item">  
-                        <p onClick={() => toggleQuestion(index)} style={{ cursor: 'pointer' }}>  
+                        <p onClick={() => toggleQuestion(index)} style={{ cursor: 'pointer',    position: 'relative '}}>  
                             {item.question}  
                             {openQuestion === index ? (  
-                                <span style={{ marginLeft: '10px' }}>&#9650;</span> // Стрелка вверх  
+                                <span className='arows'><path d="M7 10l5 5 5-5H7z" fill="currentColor"/>  
+</span> // Стрелка вверх  
                             ) : (  
-                                <span style={{ marginLeft: '10px' }}>&#9660;</span> // Стрелка вниз  
+                                <span className='arows'><path d="M12 5l5 5H7l5-5z" fill="currentColor"/>  
+</span> // Стрелка вниз  
                             )}  
                         </p>  
                         {openQuestion === index && <span>{item.answer}</span>}  
