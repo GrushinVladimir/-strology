@@ -178,11 +178,11 @@ const ProfilePage = ({ telegramId }) => {
                           {/**<div className='top-profile-right'>0,00</div>*/}
                           <div className="top-profile-right active">  
                             {paymentStatus === null ? (
-                                <span>Загрузка статуса оплаты...</span>
+                                <span>...</span>
                             ) : paymentStatus ? (
-                                <span>Оплачено</span>
+                                <span className='yesoplata'>Активный</span>
                             ) : (
-                                <span onClick={() => startPayment(telegramId)}>Оплатить</span>
+                                <span onClick={() => startPayment(telegramId)} className='nooplata'>Неактивный</span>
                             )}
                         </div> 
                     </div>  
