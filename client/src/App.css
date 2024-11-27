@@ -24,7 +24,9 @@ body{
   color: #fff;
   flex-wrap: wrap;
 }
-
+#root::-webkit-scrollbar {  
+  display: none; /* Скрываем скролл-бар */  
+}  
 .App{
     text-align: center;
     background: url(../img/image8.png);
