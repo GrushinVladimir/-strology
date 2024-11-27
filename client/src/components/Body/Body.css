@@ -277,7 +277,7 @@ box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0
   display: none;
 }
 .tabs .active {
-  margin-bottom: -1px;
+  margin-bottom: 0px;
 }
 
 .tabs .active .toggle-icon {
