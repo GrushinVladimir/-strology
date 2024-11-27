@@ -15,7 +15,7 @@ body{
 
 }
 #root{
-  overflow: auto;
+  overflow-y: scroll;
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
   max-height: 100vh;
   display: flex; /* Используем флексбокс для центрирования */
