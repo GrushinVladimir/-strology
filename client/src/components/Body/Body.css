@@ -541,6 +541,9 @@ box-shadow: 0px 4px 25.8px 0px rgba(83, 63, 161, 0.70);
   height: 100vh;
 
 }
+.header-profile{
+  padding-bottom: 4rem;
+}
 .victor-desc{
 font-size: 14px;
 opacity: .8;
