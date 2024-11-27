@@ -24,7 +24,7 @@ body{
   color: #fff;
   flex-wrap: wrap;
 }
-body::-webkit-scrollbar {  
+#root::-webkit-scrollbar {  
   display: none; /* Скрываем скролл-бар */  
 }  
 .App{
