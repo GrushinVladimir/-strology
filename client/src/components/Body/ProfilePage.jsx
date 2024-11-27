@@ -17,60 +17,44 @@ const ProfilePage = ({ telegramId }) => {
     const [isPaid, setIsPaid] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);  
 
-    const checkPaymentStatus = async () => {  
+
+    const fetchData = async () => {  
         try {  
-            console.log('Checking payment status for:', telegramId);
-            const response = await axios.get(`/api/payment/${telegramId}`);
-            console.log('Payment status response:', response.data);
-            if (response.data.paid) {  
+            // Запрос на получение данных пользователя  
+            const userResponse = await axios.get(`/api/users/${telegramId}`);  
+            if (userResponse.data && userResponse.data.user) {  
+                setUserData(userResponse.data.user);  
+                setZodiacSign(userResponse.data.user.zodiacSign);  
+            } else {  
+                throw new Error('Данные пользователя не найдены');  
+            }  
+
+            // Запрос на проверку статуса платежа  
+            const paymentResponse = await axios.get(`/api/payment/${telegramId}`);  
+            if (paymentResponse.data && paymentResponse.data.paid) {  
                 setPaymentStatus(true);  
             } else {  
                 setPaymentStatus(false);  
             }  
-        } catch (error) {  
-            console.error('Ошибка при проверке статуса платежа:', error);
-            setError('Не удалось проверить статус платежа');
-        } finally {
-            setLoading(false); // Устанавливаем загрузку как завершенную
-        }  
-    };
-    const fetchUserData = async () => {  
-        try {  
-            const response = await axios.get(`/api/users/${telegramId}`);  
-            if (response.data && response.data.user) {  
-                setUserData(response.data.user);  
-                setZodiacSign(response.data.user.zodiacSign);  
-            } else {  
-                setError('Данные пользователя не найдены');  
-            }  
+
+            // Запрос на проверку результатов теста  
+            const testResponse = await axios.get(`/api/test-results/${telegramId}`);  
+            setTestCompleted(testResponse.data && testResponse.data.length > 0);  
+
         } catch (err) {  
-            setError('Ошибка при получении данных пользователя');  
+            setError(err.message);  
         } finally {  
-            fetchTestResults();  
+            setLoading(false); // Устанавливаем флаг загрузки как завершенный  
         }  
     };  
 
-    const fetchTestResults = async () => {  
-        try {  
-            const response = await axios.get(`/api/test-results/${telegramId}`);  
-            setTestCompleted(response.data && response.data.length > 0);  
-        } catch (err) {  
-            setTestCompleted(false);  
-        } finally {  
-            setLoading(false); // Mark loading as finished here  
-        }  
-    };  
+
 
     useEffect(() => {  
-        if (!telegramId) return;  
-        fetchUserData(); // Initiate fetching user data  
+        if (telegramId) {  
+            fetchData(); // Инциализируем запрос данных при загрузке  
+        }  
     }, [telegramId]);  
-
-    useEffect(() => {
-        if (telegramId) {
-            checkPaymentStatus(); // Проверяем статус платежа после загрузки пользователя
-        }
-    }, [telegramId]);
 
     
     const getAvatarUrl = (user) => {  
