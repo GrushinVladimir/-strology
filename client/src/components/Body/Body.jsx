@@ -527,7 +527,6 @@ const handleNextWithValidation = (currentData) => {
         <span>Завершить</span>  
       </button>      
       </div> 
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>  
     );  
 
