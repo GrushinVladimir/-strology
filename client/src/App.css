@@ -12,10 +12,11 @@ body{
   max-height: 932px;
   min-width: 320px;
   min-height: 738px;
-  overflow: hidden;
+  overflow-y: scroll;
+
 }
 #root{
-  overflow-y: scroll;
+  overflow: hidden; 
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
   max-height: 100vh;
   display: flex; /* Используем флексбокс для центрирования */
@@ -24,7 +25,7 @@ body{
   color: #fff;
   flex-wrap: wrap;
 }
-#root::-webkit-scrollbar {  
+body::-webkit-scrollbar {  
   display: none; /* Скрываем скролл-бар */  
 }  
 .App{
