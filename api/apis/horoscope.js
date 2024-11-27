@@ -54,7 +54,7 @@ async function handler(req, res) {
     
     const $ = load(data);  
 
-const horoscopeText = $('div.main-horoscope p').not('.show-small, .hide-small').first().text().trim();
+    const horoscopeText = $('div.main-horoscope p').not('.show-small, .hide-small').first().html().replace(/<[^>]*>/g, '').trim();
 
     // Для проверки, что действительно извлекаем текст 
     console.log('Extracted Horoscope Text:', horoscopeText);
