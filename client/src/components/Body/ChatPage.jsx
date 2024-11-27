@@ -3,12 +3,13 @@ import { useTelegram } from '../hooks/useTelegram';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './ChatPage.css';
-
+import './Body.css';  
 const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName, telegramId }) => {
   const { user, tg } = useTelegram();
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(true);
   const [botTyping, setBotTyping] = useState(false);
+  const navigate = useNavigate(); 
   const initialQuestions = [
     'Какие особенности моего знака зодиака?',
     'Ждёт ли меня болезнь в этом году?',
