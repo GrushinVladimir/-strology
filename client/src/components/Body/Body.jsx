@@ -478,7 +478,7 @@ const handleNextWithValidation = (currentData) => {
             />
                </LazyLoad>
           </div>
-          {errorMessage && <p className="error-message" style={{marginTop: '25px'}}>{errorMessage}</p>}
+          {errorMessage && <p className="error-message" style={{marginTop: '0px'}}>{errorMessage}</p>}
           <div className="center-container  flex">
          
             <input className="input-field " value={placeOfBirth} onChange={(e) => setPlaceOfBirth(e.target.value)} placeholder='Место рождения' />  
@@ -504,7 +504,7 @@ const handleNextWithValidation = (currentData) => {
               />
                </LazyLoad>
       </div>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && <p className="error-message" style={{marginTop: '0px'}}>{errorMessage}</p>}
       <div className="center-container flex">
       <input 
                 className="input-field"  
