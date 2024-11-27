@@ -678,7 +678,7 @@ margin-bottom: 25px;
   justify-content: center;
   left: 0;
   position: fixed;
-  top: -7.9%;
+  top: 0;
   width: 100%;
   z-index: 1000;
 }
