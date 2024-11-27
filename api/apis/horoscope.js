@@ -53,7 +53,8 @@ async function handler(req, res) {
     console.log('Received HTML:', data);  
     
     const $ = load(data);  
-    const horoscopeText = $('div.main-horoscope p').text().trim();  
+
+    const horoscopeText = $('div.main-horoscope p').not('.show-small, .hide-small').first().text().trim();
 
     // Для проверки, что действительно извлекаем текст 
     console.log('Extracted Horoscope Text:', horoscopeText);
