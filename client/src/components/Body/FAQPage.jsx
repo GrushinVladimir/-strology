@@ -1,58 +1,69 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';  
+import { Link, useNavigate } from 'react-router-dom';  
 
-const FAQPage = () => {
-    const [openQuestion, setOpenQuestion] = useState(null);
+const FAQPage = () => {  
+    const [openQuestion, setOpenQuestion] = useState(null);  
+    const navigate = useNavigate();  
 
-    const questions = [
-        {
-            question: "Как пройти тест на знак зодиака?",
-            answer: "Для того чтобы пройти тест, перейдите в раздел 'Профиль' и нажмите на кнопку 'Пройти тест'."
-        },
-        {
-            question: "Как получить бонусы?",
-            answer: "Проходите ежедневные задания и получайте бонусы."
-        },
-        {
-            question: "Как пригласить друга?",
-            answer: "Нажмите на ссылку 'Пригласить друга' в профиле и отправьте приглашение."
-        }
-    ];
+    const questions = [  
+        {  
+            question: "Как пройти тест на знак зодиака?",  
+            answer: "Для того чтобы пройти тест, перейдите в раздел 'Профиль' и нажмите на кнопку 'Пройти тест'."  
+        },  
+        {  
+            question: "Как получить бонусы?",  
+            answer: "Проходите ежедневные задания и получайте бонусы."  
+        },  
+        {  
+            question: "Как пригласить друга?",  
+            answer: "Нажмите на ссылку 'Пригласить друга' в профиле и отправьте приглашение."  
+        }  
+    ];  
 
-    const toggleQuestion = (index) => {
-        setOpenQuestion(openQuestion === index ? null : index);
-    };
+    const toggleQuestion = (index) => {  
+        setOpenQuestion(openQuestion === index ? null : index);  
+    };  
 
-    return (
-        <div className='faq-body'>
-        <div className="faq-page">
-            <h2>Часто задаваемые вопросы</h2>
-            {questions.map((item, index) => (
-                <div key={index} className="faq-item">
-                    <p onClick={() => toggleQuestion(index)}>
-                        {item.question}
-                    </p>
-                    {openQuestion === index && <span>{item.answer}</span>}
-                </div>
-            ))}
+    return (  
+        <div className='faq-body'>  
+            <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}} className='body-test'>  
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">  
+                    <circle cx="11.5" cy="11.5" r="11" stroke="white"/>  
+                    <path d="M7.64645 11.6464C7.45118 11.8417 7.45118 12.1583 7.64645 12.3536L10.8284 15.5355C11.0237 15.7308 11.3403 15.7308 11.5355 15.5355C11.7308 15.3403 11.7308 15.0237 11.5355 14.8284L8.70711 12L11.5355 9.17157C11.7308 8.97631 11.7308 8.65973 11.5355 8.46447C11.3403 8.2692 11.0237 8.2692 10.8284 8.46447L7.64645 11.6464ZM16 11.5L8 11.5V12.5L16 12.5V11.5Z" fill="white"/>  
+                </svg>  
+            </button>   
+            <div className="faq-page">  
+                <h2>Часто задаваемые вопросы</h2>  
+                {questions.map((item, index) => (  
+                    <div key={index} className="faq-item">  
+                        <p onClick={() => toggleQuestion(index)} style={{ cursor: 'pointer' }}>  
+                            {item.question}  
+                            {openQuestion === index ? (  
+                                <span style={{ marginLeft: '10px' }}>&#9650;</span> // Стрелка вверх  
+                            ) : (  
+                                <span style={{ marginLeft: '10px' }}>&#9660;</span> // Стрелка вниз  
+                            )}  
+                        </p>  
+                        {openQuestion === index && <span>{item.answer}</span>}  
+                    </div>  
+                ))}  
+            </div>  
+            <div className="menu">  
+                <Link to="/main">  
+                    <img src="img/menu/Union.png" alt="Главная" />  
+                    <span>Главная</span>  
+                </Link>  
+                <Link to="/chat">  
+                    <img src="img/menu/chat.png" alt="Чат" />  
+                    <span>Чат</span>  
+                </Link>  
+                <Link to="/profile">  
+                    <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
+                    <span>Профиль</span>  
+                </Link>  
+            </div>   
+        </div>   
+    );  
+};  
 
-        </div>
-                    <div className="menu">  
-                    <Link to="/main">  
-                        <img src="img/menu/Union.png" alt="Главная" />  
-                        <span>Главная</span>  
-                    </Link>  
-                    <Link to="/chat">  
-                        <img src="img/menu/chat.png" alt="Чат" />  
-                        <span>Чат</span>  
-                    </Link>  
-                    <Link to="/profile">  
-                        <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
-                        <span>Профиль</span>  
-                    </Link>  
-                </div> 
-                 </div>   
-    );
-};
-
-export default FAQPage;
+export default FAQPage;  
