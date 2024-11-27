@@ -111,10 +111,3 @@
     color: gray; /* Серый цвет текста */
   }
   
-  .chat-container button{
-    margin-top: 2vh;
-    margin-bottom: 2vh;
-    left: 0;
-    display: block;
-    margin-left: 6%;
-  }
