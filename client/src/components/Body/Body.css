@@ -13,7 +13,7 @@
   font-style: normal;
 }
 .body{
-    margin-top:5%;
+    margin-top:3%;
     margin-bottom: 30%;
     justify-content: center;
    
@@ -539,12 +539,13 @@ margin-bottom: 25px;
   color: #fff;
 }
 .body-test {
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-  left: 0;
+  width: 21px;
   display: block;
+  position: relative;
+  left: 0;
+  margin-bottom: 2vh;
   margin-left: 6%;
-}
+  margin-top: .6vh;}
 .zadaniya-block{
   display: flex;
   justify-content: space-between;
