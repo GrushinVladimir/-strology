@@ -16,7 +16,7 @@ body{
 #root{
 
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
-  height: 100vh; /* Высота экрана */
+  max-height: 100vh;
   display: flex; /* Используем флексбокс для центрирования */
   justify-content: center; /* Центрируем по горизонтали */
   align-items: center; /* Центрируем по вертикали */
