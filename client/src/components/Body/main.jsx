@@ -256,7 +256,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         <div className="menu">
           <Link to="/main">
             <img src="img/menu/home.png" />
-            <span>Главная</span>
+            <span style={{color:'white'}}>Главная</span>
           </Link>
           <Link to="/chat">
             <img src="img/menu/chat.png" />
