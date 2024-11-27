@@ -1,66 +1,41 @@
-* {  
-  margin: 0;  
-  padding: 0;  
-  box-sizing: border-box; /* Обеспечиваем более предсказуемое поведение отступов */  
-  font-family: 'Involve', sans-serif;  
-}  
+*{
+  margin:0;
+  padding:0;
+  font-family: 'Involve', sans-serif;
 
-body {  
-  margin: auto;  
-  background: var(--tg-theme-bg-color);  
-  color: var(--tg-theme-text-color);  
-  max-width: 430px;  
-  max-height: 932px;  
-  min-width: 320px;  
-  min-height: 568px;  
-  overflow: hidden; /* Прячем лишний скролл */  
-}  
+}
+body{
+  margin: auto;
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  max-width: 430px;
+  max-height: 932px;
+  min-width: 320px;
+  min-height: 568px;
+  overflow: hidden;
+}
+#root{
 
-#root {  
-  font-family: Arial, sans-serif;  
-  display: flex;  
-  flex-direction: column; /* Включаем вертикальное выравнивание */  
-  justify-content: space-between; /* Распределяем пространство */  
-  color: #fff;  
-  max-height: 100vh;  
-  height: 100vh; /* Задаем высоту 100% от высоты окна */  
-}  
+  font-family: Arial, sans-serif; /* Шрифт по умолчанию */
+  max-height: 100vh;
+  display: flex; /* Используем флексбокс для центрирования */
+  justify-content: center; /* Центрируем по горизонтали */
+  align-items: center; /* Центрируем по вертикали */
+  color: #fff;
+  flex-wrap: wrap;
+}
 
-/* Оберните ваш основной контент в отдельный контейнер */  
-.MainContent {  
-  flex: 1; /* Занимает всё доступное пространство */  
-  overflow-y: auto; /* Разрешаем вертикальный скролл для MainContent */  
-}  
+.App{
+    text-align: center;
+    background: url(../img/image8.png);
+    background-repeat: round;
+    box-sizing: border-box;
+    background-size: cover;
 
-.App {  
-  text-align: center;  
-  background: url(../img/image8.png);  
-  background-repeat: no-repeat;  
-  background-size: cover; /* Позволяет изображению покрывать фон */  
-  width: 100%; /* Изменяем ширину на 100% */  
-  height: auto; /* Для корректной адаптации */  
-  position: relative;  
-}  
-
-/* Здесь вы можете добавить дополнительные стили для вашего инпута */  
-input {  
-  width: calc(100% - 20px); /* Пример настройки ширины */  
-  margin: 10px; /* Пример отступа */  
-  padding: 10px; /* Пример внутреннего отступа */  
-  border: 1px solid var(--tg-theme-border-color);  
-  border-radius: 5px;  
-  background: var(--tg-theme-bg-input);  
-  color: var(--tg-theme-text-color);  
-}  
-
-/* Обработка стилей для клавиатуры (анимация, положение и т.д.) */  
-@media (max-height: 600px) {  
-  #root {  
-      position: fixed; /* Зафиксируем уклон, когда клавиатура открыта */  
-      bottom: 0; /* Положение внизу */  
-      width: 100%; /* Ширина на всю ширину устройства */  
-  }  
-}  
+    width: 100vh;
+    height: auto;
+    position: relative;
+}
 
 
 
