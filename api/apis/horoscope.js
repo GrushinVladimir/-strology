@@ -54,10 +54,8 @@ async function handler(req, res) {
     
     const $ = load(data);  
 
-    const horoscopeText = $('div.main-horoscope p').not('.show-small, .hide-small').first().contents().filter(function() {
-      return this.nodeType === Node.TEXT_NODE; // Оставляем только текстовые узлы
-  }).text().trim();
-  
+    const horoscopeText = $('div.main-horoscope p').not('.show-small, .hide-small').first().contents().text().trim();
+   
     // Для проверки, что действительно извлекаем текст 
     console.log('Extracted Horoscope Text:', horoscopeText);
 
