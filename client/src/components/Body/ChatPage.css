@@ -86,6 +86,7 @@
   }
   
   .chat-input input {
+    color: #fff;
     flex-grow: 1; /* Поле ввода растягивается на всю доступную ширину */
     padding: 10px;
     border: 1px solid #ccc;
