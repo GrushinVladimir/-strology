@@ -8,7 +8,6 @@ const ProfilePage = ({ telegramId }) => {
     const { user, tg } = useTelegram();  
     const [userData, setUserData] = useState(null);  
     const [zodiacSign, setZodiacSign] = useState(null);  
-
     const [loading, setLoading] = useState(true);  
     const [error, setError] = useState(null);  
     const [testCompleted, setTestCompleted] = useState(false);
@@ -17,7 +16,7 @@ const ProfilePage = ({ telegramId }) => {
     const [isPaid, setIsPaid] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);  
 
-
+    //Функции проверка по БД
     const fetchData = async () => {  
         try {  
             // Запрос на получение данных пользователя  
@@ -48,8 +47,6 @@ const ProfilePage = ({ telegramId }) => {
         }  
     };  
 
-
-
     useEffect(() => {  
         if (telegramId) {  
             fetchData(); // Инциализируем запрос данных при загрузке  
@@ -64,20 +61,20 @@ const ProfilePage = ({ telegramId }) => {
     if (loading) return <p>Загрузка...</p>; // Display loading indicator  
     if (error) return <p>{error}</p>; // Display error message  
 
+
+    //Функция Пригласить друга
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на ваш бот в Telegram
         const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=Пригласите своего друга в наше астрологическое приложение!`;
-
-        // Открываем ссылку для обмена
         window.open(shareUrl, '_blank');
     };
 
+    //Поддержка
     const handleSupportClick = () => {
-        setShowSupportModal(true); // Показываем модальное окно
+        setShowSupportModal(true); 
     };
-
     const closeModal = () => {
-        setShowSupportModal(false); // Закрываем модальное окно
+        setShowSupportModal(false);
     };
     
     // Функция для удаления профиля  
@@ -88,7 +85,6 @@ const ProfilePage = ({ telegramId }) => {
             alert('telegramId недоступен. Проверьте состояние пользователя.');  
             return;  
         }  
-    
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить свой профиль?");  
         if (confirmDelete) {  
             try {  
@@ -114,6 +110,7 @@ const ProfilePage = ({ telegramId }) => {
             }  
         }  
     };  
+    //Функция на оплату
     const startPayment = async (telegramId, amount, currency) => {  
         const invoiceData = {  
             chatId: String(telegramId),  
@@ -151,9 +148,9 @@ const ProfilePage = ({ telegramId }) => {
             alert(`Произошла ошибка: ${error.message}`);  
         }  
     };    
+
     return (  
         <div className='Prof'>  
-
             <div className='body-profile'>  
             <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer'}} className='body-test'>  
           <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">  
