@@ -52,7 +52,7 @@ const zodiacImages = {
   },  
   Рыбы: {  
     src: 'img/zhak/riby2.png',  
-    width: '288px',  
+    width: '311px',  
     height: 'auto'  
   },  
   Овен: {  
