@@ -187,7 +187,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
           </Link>
           <Link to="/chat">
             <img src="img/menu/profileActive.png" alt="Чат" />
-            <span style={{color:'white'}}>Чат</span>
+            <span style={{color:'white',opacity: '1'}}>Чат</span>
           </Link>
           <Link to="/profile">
             <img src="img/menu/profile.png" alt="Профиль" />
