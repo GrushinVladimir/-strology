@@ -197,11 +197,14 @@ app.get('/api/config', (req, res) => {
 app.get('/api/config-google', (req, res) => {  
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
+// Эндпоинт для обработки запросов от клиента  
+app.post('/api/chat', async (req, res) => {  
+    const { apiKey, model, messages } = req.body;  
 
-const openAiApiKey = process.env.REACT_APP_CHAT_API_KEY;
-// Эндпоинт для прокси-запросов к OpenAI API  
-app.post('/api/openai', async (req, res) => {  
-    const { model, messages } = req.body;  
+    // Если API ключ не предоставлен, возвращаем ошибку  
+    if (!apiKey) {  
+        return res.status(400).json({ error: 'API ключ отсутствует.' });  
+    }  
 
     try {  
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {  
@@ -209,17 +212,20 @@ app.post('/api/openai', async (req, res) => {
             messages,  
         }, {  
             headers: {  
-                'Authorization': `Bearer ${openAiApiKey}`,  
                 'Content-Type': 'application/json',  
+                Authorization: `Bearer ${apiKey}`, // Используем предоставленный API ключ  
             },  
         });  
 
+        // Возвращаем ответ клиенту  
         res.json(response.data);  
     } catch (error) {  
-        console.error('Ошибка при запросе к OpenAI API:', error);  
-        res.status(500).json({ error: 'Ошибка при запросе к OpenAI API' });  
+        console.error('Ошибка при запросе к OpenAI API:', error.response ? error.response.data : error.message);  
+        res.status(500).json({ error: 'Ошибка при запросе к OpenAI API', details: error.response ? error.response.data : error.message });  
     }  
 });  
+
+
 // Эндпоинт для обработки сообщений Telegram  
 app.post('/api/webhook', async (req, res) => {  
     try {  

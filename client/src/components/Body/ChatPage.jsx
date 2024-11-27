@@ -31,7 +31,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   useEffect(() => {
     const fetchApiKey = async () => {
       try {
-        const response = await fetch(`https://strology.vercel.app/api/config`);
+        const response = await fetch(`https://strology.vercel.app/api/chat`);
         if (!response.ok) {
           throw new Error('Сеть не отвечает');
         }
@@ -70,7 +70,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     try {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
-        {
+        { apiKey,
           model: 'gpt-4',
           messages: [{ role: 'user', content: fullMessage }],
         },
