@@ -318,7 +318,7 @@ const handleNextWithValidation = (currentData) => {
                             </div>
                         ))}
                     </div>
-                    <span style={{marginTop: '.2rem'}}>:</span>
+                    <span style={{marginTop: '.1rem'}}>:</span>
                     <div className="scroll-container" id="minuteSelector">
                         {minutes.map((minute, index) => (
                             <div 
