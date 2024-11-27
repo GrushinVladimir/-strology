@@ -44,23 +44,68 @@ const zodiacSigns = {
   Козерог: 10,
 };
 
-const zodiacImages = {
-  Водолей: 'img/zhak/vodoley2.png',
+const zodiacImages = {  
+  Водолей: {  
+    src: 'img/zhak/vodoley2.png',  
+    width: '288px', // ширина  
+    height: 'auto' // высота  
+  },  
   Рыбы: {  
     src: 'img/zhak/riby2.png',  
-    width: 311  
+    width: '288px',  
+    height: 'auto'  
   },  
-  Овен: 'img/zhak/oven2.png',
-  Телец: 'img/zhak/telec2.png',
-  Близнецы: 'img/zhak/bliznecy2.png',
-  Рак: 'img/zhak/rak2.png',
-  Лев: 'img/zhak/lev2.png',
-  Дева: 'img/zhak/deva2.png',
-  Весы: 'img/zhak/vesy2.png',
-  Скорпион: 'img/zhak/scorpion2.png',
-  Стрелец: 'img/zhak/strelec2.png',
-  Козерог: 'img/zhak/kozerog2.png',
-};
+  Овен: {  
+    src: 'img/zhak/oven2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Телец: {  
+    src: 'img/zhak/telec2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Близнецы: {  
+    src: 'img/zhak/bliznecy2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Рак: {  
+    src: 'img/zhak/rak2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Лев: {  
+    src: 'img/zhak/lev2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Дева: {  
+    src: 'img/zhak/deva2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Весы: {  
+    src: 'img/zhak/vesy2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Скорпион: {  
+    src: 'img/zhak/scorpion2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Стрелец: {  
+    src: 'img/zhak/strelec2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+  Козерог: {  
+    src: 'img/zhak/kozerog2.png',  
+    width: '288px',  
+    height: 'auto'  
+  },  
+};  
 
 
 const getHoroscope = async (zodiacSign, period) => {  
@@ -202,17 +247,17 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
     {zodiacSign ? (
     <>
       <h1>{zodiacSign}</h1>
-      <div className="zodiac-image">
-        {zodiacImages && zodiacImages[zodiacSign] ? (
-          <img 
-            src={zodiacImages[zodiacSign]} 
-            alt={zodiacSign} 
-            style={{ maxWidth: '288px', height: 'auto' }} 
-          />
-        ) : (
-          <p>Изображение для знака зодиака не найдено</p>
-        )}
-      </div>
+      <div className="zodiac-image">  
+  {zodiacImages && zodiacImages[zodiacSign] ? (  
+    <img  
+      src={zodiacImages[zodiacSign].src}  
+      alt={zodiacSign}  
+      style={{ maxWidth: zodiacImages[zodiacSign].width, height: zodiacImages[zodiacSign].height }}  
+    />  
+  ) : (  
+    <p>Изображение для знака зодиака не найдено</p>  
+  )}  
+</div> 
     </>
   ) : (
     <p>Знак зодиака...</p>
