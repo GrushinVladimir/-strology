@@ -261,7 +261,7 @@ const ProfilePage = ({ telegramId }) => {
                 </Link>  
                 <Link to="/profile">  
                     <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
-                    <span style={{color:'white'}}>Профиль</span>  
+                    <span style={{color:'white', opacity: '1'}}>Профиль</span>  
                 </Link>  
             </div>  
         </div>  
