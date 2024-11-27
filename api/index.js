@@ -86,16 +86,14 @@ app.post('/api/questions/:id', async (req, res) => {
 });  
 async function savePaymentToDatabase(userId, chatId, totalAmount, currency) {  
     try {  
-        // Проверка типа  
-        console.log('Тип totalAmount перед сохранением:', typeof totalAmount);  
-
-        // Преобразуем totalAmount в число  
         const amount = Number(totalAmount);  
-
         if (isNaN(amount)) {  
             throw new Error("Invalid amount: must be a number");  
         }  
 
+        // Удаляем предыдущую запись  
+        await Payment.deleteMany({ telegramId: userId });  
+        
         const paymentRecord = new Payment({  
             telegramId: userId,  
             chatId: chatId,  
