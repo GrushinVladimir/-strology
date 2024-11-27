@@ -46,7 +46,10 @@ const zodiacSigns = {
 
 const zodiacImages = {
   Водолей: 'img/zhak/vodoley2.png',
-  Рыбы: 'img/zhak/riby2.png',
+  Рыбы: {  
+    src: 'img/zhak/riby2.png',  
+    width: 311  
+  },  
   Овен: 'img/zhak/oven2.png',
   Телец: 'img/zhak/telec2.png',
   Близнецы: 'img/zhak/bliznecy2.png',
@@ -58,6 +61,7 @@ const zodiacImages = {
   Стрелец: 'img/zhak/strelec2.png',
   Козерог: 'img/zhak/kozerog2.png',
 };
+
 
 const getHoroscope = async (zodiacSign, period) => {  
   try {  
