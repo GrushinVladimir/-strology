@@ -197,6 +197,29 @@ app.get('/api/config', (req, res) => {
 app.get('/api/config-google', (req, res) => {  
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
+
+const openAiApiKey = process.env.REACT_APP_CHAT_API_KEY;
+// Эндпоинт для прокси-запросов к OpenAI API  
+app.post('/api/openai', async (req, res) => {  
+    const { model, messages } = req.body;  
+
+    try {  
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {  
+            model,  
+            messages,  
+        }, {  
+            headers: {  
+                'Authorization': `Bearer ${openAiApiKey}`,  
+                'Content-Type': 'application/json',  
+            },  
+        });  
+
+        res.json(response.data);  
+    } catch (error) {  
+        console.error('Ошибка при запросе к OpenAI API:', error);  
+        res.status(500).json({ error: 'Ошибка при запросе к OpenAI API' });  
+    }  
+});  
 // Эндпоинт для обработки сообщений Telegram  
 app.post('/api/webhook', async (req, res) => {  
     try {  
