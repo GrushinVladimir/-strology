@@ -11,11 +11,11 @@ body{
   max-width: 430px;
   max-height: 932px;
   min-width: 320px;
-  overflow-y: scroll;
+  overflow-y: hidden;
 
 }
 #root{
-  overflow: hidden; 
+  overflow: auto;
   font-family: Arial, sans-serif; /* Шрифт по умолчанию */
   max-height: 100vh;
   display: flex; /* Используем флексбокс для центрирования */
