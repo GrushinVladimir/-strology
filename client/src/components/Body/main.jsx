@@ -155,42 +155,42 @@ const useTelegramId = () => {
   return queryParams.get('telegramId'); // Здесь извлекаем telegramId из URL
 };
 
-const MainPage = ({ telegramId }) => { // Получаем telegramId через пропсы
-  const [zodiacSign, setZodiacSign] = useState(null);
-  const [horoscope, setHoroscope] = useState('');
-  const [showTabContent, setShowTabContent] = useState(false);
-  const [activeTab, setActiveTab] = useState('Сегодня');
-  const [currentDate, setCurrentDate] = useState('');
-  const [userData, setUserData] = useState(null);
-  const [showContent, setShowContent] = useState(false);  
+const MainPage = ({ telegramId }) => {  
+  const [zodiacSign, setZodiacSign] = useState(null);  
+  const [horoscope, setHoroscope] = useState('');  
+  const [activeTab, setActiveTab] = useState('Сегодня');  
+  const [currentDate, setCurrentDate] = useState('');  
+  const [userData, setUserData] = useState(null);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
   const [tabLoading, setTabLoading] = useState(false);  
 
+  useEffect(() => {  
+    if (!telegramId) return;  
 
-  useEffect(() => {
-    if (!telegramId) return; // Если нет telegramId, выходим из useEffect
+    const fetchUserData = async () => {  
+      try {  
+        const response = await axios.get(`/api/users/${telegramId}`);  
+        if (response.data && response.data.user) {  
+          setUserData(response.data.user);  
+          setZodiacSign(response.data.user.zodiacSign);  
+        } else {  
+          console.error('Данные пользователя не найдены');  
+        }  
+      } catch (error) {  
+        console.error('Ошибка при получении данных пользователя:', error);  
+        setError('Ошибка при получении данных пользователя');  
+      } finally {  
+        setLoading(false);  
+      }  
+    };  
 
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/users/${telegramId}`); // Запрос к серверу для получения данных
-        if (response.data && response.data.user) {
-          setUserData(response.data.user);
-          setZodiacSign(response.data.user.zodiacSign); // Устанавливаем знак зодиака
-        } else {
-          console.error('Данные пользователя не найдены');
-        }
-      } catch (error) {
-        console.error('Ошибка при получении данных пользователя:', error);
-      }
-    };
+    fetchUserData();  
+  }, [telegramId]);  
 
-    fetchUserData(); // Загружаем данные пользователя
-  }, [telegramId]); // Используем telegramId в зависимости
-  
   useEffect(() => {  
     if (!zodiacSign) return;  
-  
+
     const fetchAndTranslateHoroscope = async () => {  
       const periodKey = {  
         'Сегодня': 'today',  
@@ -198,7 +198,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         'Неделя': 'week',  
         'Месяц': 'month',  
       }[activeTab] || '';  
-  
+
       let formattedDate = '';  
       switch (activeTab) {  
         case 'Сегодня':  
@@ -217,9 +217,9 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
           return;  
       }  
       setCurrentDate(formattedDate);  
-      setLoading(false); // Устанавливаем состояние загрузки в true  
+      setTabLoading(true); // Устанавливаем состояние загрузки в true для табов  
       setShowContent(false); // Скрываем контент перед загрузкой  
-      
+
       try {  
         const horoscopeText = await getHoroscope(zodiacSign, periodKey);  
         if (horoscopeText) {  
@@ -232,13 +232,13 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         console.error('Ошибка при получении гороскопа:', error);  
         setHoroscope('Не удалось получить гороскоп');  
       } finally {  
-        setTabLoading(True); // Устанавливаем состояние загрузки в false после завершения  
+        setTabLoading(false); // Устанавливаем состояние загрузки в false после завершения  
         setTimeout(() => {  
           setShowContent(true); // Показываем контент с задержкой  
-        }, 500); // Задержка в 500 мс  
+        }, 500);  
       }  
     };  
-  
+
     fetchAndTranslateHoroscope();  
   }, [activeTab, zodiacSign]);  
 
