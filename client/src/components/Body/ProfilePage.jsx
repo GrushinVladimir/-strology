@@ -17,6 +17,10 @@ const ProfilePage = ({ telegramId }) => {
     const [paymentStatus, setPaymentStatus] = useState(null);  
     const [showFullDescription, setShowFullDescription] = useState(false);
 
+    //Аватар телеги
+    const getAvatarUrl = (user) => {  
+        return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
+    };  
     //Функции проверка по БД
     const fetchData = async () => {  
         try {  
@@ -40,6 +44,8 @@ const ProfilePage = ({ telegramId }) => {
             // Запрос на проверку результатов теста  
             const testResponse = await axios.get(`/api/test-results/${telegramId}`);  
             setTestCompleted(testResponse.data && testResponse.data.length > 0);  
+            
+            
 
         } catch (err) {  
             setError(err.message);  
@@ -55,9 +61,7 @@ const ProfilePage = ({ telegramId }) => {
     }, [telegramId]);  
 
     
-    const getAvatarUrl = (user) => {  
-        return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
-    };  
+
 
     if (loading) {
         return (
