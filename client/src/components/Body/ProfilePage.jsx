@@ -208,39 +208,44 @@ const ProfilePage = ({ telegramId }) => {
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
                             <p style={{ position: 'relative', minHeight: '70px' }}>
                             {showFullDescription && (  
-      <>  
-        <span>  
-          <strong>Планета:</strong> {userData.zodiacPlan}  
-        </span>  
-        <br /> {/* перенос строки для отделения */}  
-        <span>  
-          <strong>Качества:</strong> {userData.zodiacKach}  
-        </span>  
-      </>  
-    )}      <span 
-    onClick={() => setShowFullDescription(!showFullDescription)} 
-    style={{ 
-        cursor: 'pointer', 
-        right: '15px', 
-        position: 'absolute', 
-        bottom: '0', 
-        userSelect: 'none' // Убирает выделение при нажатии
-    }}
->
-    <img 
-        src="ard.png" 
-        alt="" 
-        style={{ 
-            width: '20px', 
-            borderRadius: '50%', 
-            background: '#322369', 
-            padding: '5px', 
-            transform: showFullDescription ? 'scaleY(-1)' : 'none', // Отражение во вертикали при открытии
-            transition: 'transform 0.3s ease' // Плавный переход
-        }} 
-    />
-</span>
-</p>
+                            <>  
+                            
+                                <span>  
+                                <strong>Планета:</strong> {userData.zodiacDescription}  
+                                </span>  
+                                <span>  
+                                <strong>Планета:</strong> {userData.zodiacPlan}  
+                                </span>  
+                                <br /> {/* перенос строки для отделения */}  
+                                <span>  
+                                <strong>Качества:</strong> {userData.zodiacKach}  
+                                </span>  
+                            </>  
+                            )}      
+                            <span 
+                            onClick={() => setShowFullDescription(!showFullDescription)} 
+                            style={{ 
+                                cursor: 'pointer', 
+                                right: '15px', 
+                                position: 'absolute', 
+                                bottom: '0', 
+                                userSelect: 'none' // Убирает выделение при нажатии
+                            }}
+                        >
+                        <img 
+                            src="ard.png" 
+                            alt="" 
+                            style={{ 
+                                width: '20px', 
+                                borderRadius: '50%', 
+                                background: '#322369', 
+                                padding: '5px', 
+                                transform: showFullDescription ? 'scaleY(-1)' : 'none', // Отражение во вертикали при открытии
+                                transition: 'transform 0.3s ease' // Плавный переход
+                            }} 
+                            />
+                        </span>
+                        </p>
                         </div>  
                     )}  
 
