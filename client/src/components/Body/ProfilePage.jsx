@@ -195,7 +195,7 @@ const ProfilePage = ({ telegramId }) => {
                     {userData && (  
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
-                            <div style={{ overflow: 'hidden', transition: 'max-height 0.5s ease', maxHeight: showFullDescription ? '500px' : '0', position: 'relative' }}>
+                            <div style={{ position: 'relative' }}>
                         <p style={{ margin: 0 }}>
                             {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
                         </p>
