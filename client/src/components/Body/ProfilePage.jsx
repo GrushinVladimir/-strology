@@ -15,6 +15,7 @@ const ProfilePage = ({ telegramId }) => {
     const navigate = useNavigate();  
     const [isPaid, setIsPaid] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState(null);  
+    const [showFullDescription, setShowFullDescription] = useState(false);
 
     //Функции проверка по БД
     const fetchData = async () => {  
