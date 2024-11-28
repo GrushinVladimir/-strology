@@ -216,30 +216,29 @@ const ProfilePage = ({ telegramId }) => {
                                     <span   
                                     key={index}   
                                     style={{   
-                                        border: '1px solid #322369', // Цвет обводки  
-                                        borderRadius: '5px', // Закругленные углы  
-                                        padding: '3px 6px', // Отступ внутри обводки  
-                                        margin: '0 5px', // Отступ между словами  
-                                        display: 'inline-block', // Подгонка под контент  
-                                        fontSize: '12px' // Задаем размер шрифта  
+                                        border: '1px solid #322369', 
+                                        borderRadius: '5px', 
+                                        padding: '3px 6px', 
+                                        margin: '0 5px',  
+                                        display: 'inline-block',  
+                                        fontSize: '12px' 
                                     }}  
                                     >  
                                     {quality}  
                                     </span>  
                                 ))}  
-                            </>  
-                            )}   
+  
                                 <h4 style={{fontWeight: '200', padding: '1rem 0 .4rem 0', fontSize: '.9rem'}}>Основные качества:</h4> 
                                 {qualities.map((quality, index) => (  
                                     <span   
                                     key={index}   
                                     style={{   
-                                        border: '1px solid #322369', // Цвет обводки  
-                                        borderRadius: '5px', // Закругленные углы  
-                                        padding: '3px 6px', // Отступ внутри обводки  
-                                        margin: '0 5px', // Отступ между словами  
-                                        display: 'inline-block', // Подгонка под контент  
-                                        fontSize: '12px' // Задаем размер шрифта  
+                                        border: '1px solid #322369', 
+                                        borderRadius: '5px',   
+                                        padding: '3px 6px', 
+                                        margin: '0 5px', 
+                                        display: 'inline-block',   
+                                        fontSize: '12px'  
                                     }}  
                                     >  
                                     {quality}  
