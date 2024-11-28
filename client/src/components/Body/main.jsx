@@ -47,12 +47,12 @@ const zodiacSigns = {
 const zodiacImages = {  
   Водолей: {  
     src: 'img/zhak/vodoley2.png',  
-    width: '288px', // ширина  
+    width: '244px', // ширина  
     height: 'auto' // высота  
   },  
   Рыбы: {  
     src: 'img/zhak/riby2.png',  
-    width: '311px',  
+    width: '355px',  
     height: 'auto'  
   },  
   Овен: {  
@@ -67,7 +67,7 @@ const zodiacImages = {
   },  
   Близнецы: {  
     src: 'img/zhak/bliznecy2.png',  
-    width: '288px',  
+    width: '230px',  
     height: 'auto'  
   },  
   Рак: {  
@@ -77,12 +77,12 @@ const zodiacImages = {
   },  
   Лев: {  
     src: 'img/zhak/lev2.png',  
-    width: '288px',  
+    width: '247px',  
     height: 'auto'  
   },  
   Дева: {  
     src: 'img/zhak/deva2.png',  
-    width: '288px',  
+    width: '223px',  
     height: 'auto'  
   },  
   Весы: {  
@@ -102,7 +102,7 @@ const zodiacImages = {
   },  
   Козерог: {  
     src: 'img/zhak/kozerog2.png',  
-    width: '288px',  
+    width: '250px',  
     height: 'auto'  
   },  
 };  
