@@ -61,11 +61,13 @@ const ProfilePage = ({ telegramId }) => {
 
     if (loading) return <p>Загрузка...</p>; // Display loading indicator  
     if (error) return <p>{error}</p>; // Display error message  
-    //Обрезка описания
+    
+    //Обрезка описания Знака
     const truncateDescription = (description) => {
         if (!description) return '';
         return description.length > 50 ? description.slice(0, 50) + '...' : description;
     };
+
     //Функция Пригласить друга
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на ваш бот в Telegram
@@ -193,13 +195,13 @@ const ProfilePage = ({ telegramId }) => {
                     {userData && (  
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
-                            <p>
+                            <p style={{position: 'relative'}}>
                         {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
                         <span 
                             onClick={() => setShowFullDescription(!showFullDescription)} 
-                            style={{ cursor: 'pointer', marginLeft: '5px' }}
+                            style={{ cursor: 'pointer', right: '15px',position: 'absolute',    bottom: '0' }}
                         >
-                            ⬇️
+                                      <img src="free-icon-down-chevron-10728680.png" alt="" style={{ width: '25px' }} />
                         </span>
                     </p>
                         </div>  
