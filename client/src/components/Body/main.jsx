@@ -298,16 +298,11 @@ if (error) return <p>{error}</p>;
         <div className="tab-content-container">  
   {showTabContent && (  
     <>  
-      {loading ? (  
-        <p style={{ paddingBottom: '2rem' }}>Загрузка...</p> // Сообщение о загрузке  
-      ) : (  
-        showContent && ( // Проверяем, нужно ли показывать контент  
           <>  
             <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>{currentDate}</p>  
             <p style={{ textAlign: 'left', lineHeight: '1rem', fontSize: '14px', paddingBottom: '2rem' }}>{horoscope || 'Гороскоп пока недоступен'}</p>  
           </>  
-        )  
-      )}  
+
     </>  
   )}  
 </div>  
