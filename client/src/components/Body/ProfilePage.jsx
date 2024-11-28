@@ -210,9 +210,9 @@ const ProfilePage = ({ telegramId }) => {
                             <span style={{fontSize:'12px'}}>  {userData.zodiacDescription} </span>
                             {showFullDescription && (  
                             <>                           
-                                <h4 style={{fontWeight: '200'}}>Управляющая планета:</h4> 
+                                <h4 style={{fontWeight: '200', padding: '1rem 0 .4rem 0'}}>Управляющая планета:</h4> 
                                 <span style={{fontSize:'12px'}}>{userData.zodiacPlan}</span>  
-                                <h4 style={{fontWeight: '200'}}>Основные качества:</h4> 
+                                <h4 style={{fontWeight: '200', padding: '1rem 0 .4rem 0'}}>Основные качества:</h4> 
                                 <span  style={{fontSize:'12px'}}>{userData.zodiacKach}</span>  
                             </>  
                             )}      
