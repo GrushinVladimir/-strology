@@ -163,8 +163,9 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
   const [currentDate, setCurrentDate] = useState('');
   const [userData, setUserData] = useState(null);
   const [showContent, setShowContent] = useState(false);  
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);  
 
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!telegramId) return; // Если нет telegramId, выходим из useEffect
@@ -240,6 +241,15 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
     fetchAndTranslateHoroscope();  
   }, [activeTab, zodiacSign]);  
 
+  if (loading) {
+    return (
+        <div className="loading-overlay">
+            <div className="loader"></div>
+        </div>
+    );
+}
+
+if (error) return <p>{error}</p>;
   return (
   <div className="main-page">
 
