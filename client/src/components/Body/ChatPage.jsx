@@ -10,6 +10,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const [loading, setLoading] = useState(true);
   const [botTyping, setBotTyping] = useState(false);
   const navigate = useNavigate(); 
+  const [error, setError] = useState(null);  
   const initialQuestions = [
     'Какие особенности моего знака зодиака?',
     'Ждёт ли меня болезнь в этом году?',
