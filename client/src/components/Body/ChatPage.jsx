@@ -177,15 +177,12 @@ return (
       <div ref={messagesEndRef} />
     </div>
 
-    <div className="chat-input">
-      <input
-        type="text"
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        placeholder="Задай вопрос звездам..."
-      />
-      <button onClick={() => handleSendMessage(inputMessage)}>Отправить</button>
-    </div>
+    <div class="chat-input">
+  <input type="text" placeholder="Задай вопрос звёзда..." />
+  <button>
+    <img src="/img/menu/ButtonSend.png" alt="Отправить" class="send-icon" />
+  </button>
+  </div>
 
     {/* Вкладки */}
     <div className="tabs-and-content">
