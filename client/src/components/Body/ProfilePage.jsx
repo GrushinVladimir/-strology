@@ -148,18 +148,17 @@ const ProfilePage = ({ telegramId }) => {
             alert(`Произошла ошибка: ${error.message}`);  
         }  
     };    
-    const ZodiacProfile = ({ zodiacSign, userData }) => {  
-        const maxLength = 50; // Максимальная длина текста  
-        const [isExpanded, setIsExpanded] = useState(false); // Статус раскрытия текста  
-    
-        // Определение укороченного текста  
-        const shortText = userData.zodiacDescription.slice(0, maxLength);  
-        const fullText = userData.zodiacDescription;  
-    
-        // Обработчик нажатия на кнопку  
-        const toggleText = () => {  
-            setIsExpanded(!isExpanded);  
-        };  
+    const maxLength = 50; // Максимальная длина текста  
+    const [isExpanded, setIsExpanded] = useState(false); // Статус раскрытия текста  
+
+    // Определение укороченного текста  
+    const shortText = userData.zodiacDescription.slice(0, maxLength);  
+    const fullText = userData.zodiacDescription;  
+
+    // Обработчик нажатия на кнопку  
+    const toggleText = () => {  
+        setIsExpanded(!isExpanded);  
+    };  
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
