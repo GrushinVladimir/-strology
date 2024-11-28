@@ -1,3 +1,7 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { load } from 'cheerio';
+import { useLocation, Link, useParams } from 'react-router-dom';
 const MainPage = ({ telegramId }) => {  
   const [zodiacSign, setZodiacSign] = useState(null);  
   const [horoscope, setHoroscope] = useState('');  
