@@ -239,15 +239,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
   
     fetchAndTranslateHoroscope();  
   }, [activeTab, zodiacSign]);  
-  if (loading) {
-    return (
-        <div className="loading-overlay">
-            <div className="loader"></div>
-        </div>
-    );
-}
 
-if (error) return <p>{error}</p>;
   return (
   <div className="main-page">
 
