@@ -61,8 +61,11 @@ const ProfilePage = ({ telegramId }) => {
 
     if (loading) return <p>Загрузка...</p>; // Display loading indicator  
     if (error) return <p>{error}</p>; // Display error message  
-
-
+    //Обрезка описания
+    const truncateDescription = (description) => {
+        if (!description) return '';
+        return description.length > 50 ? description.slice(0, 50) + '...' : description;
+    };
     //Функция Пригласить друга
     const handleInviteClick = () => {
         const inviteLink = 'https://t.me/mygoroskopbot_lite_new_bot'; // Ссылка на ваш бот в Telegram
