@@ -216,7 +216,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
           return;  
       }  
       setCurrentDate(formattedDate);  
-      setLoading(true); // Устанавливаем состояние загрузки в true  
+      setLoading(false); // Устанавливаем состояние загрузки в true  
       setShowContent(false); // Скрываем контент перед загрузкой  
   
       try {  
