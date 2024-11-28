@@ -219,7 +219,7 @@ const ProfilePage = ({ telegramId }) => {
                                         border: '1px solid #322369', 
                                         borderRadius: '5px', 
                                         padding: '3px 6px', 
-                                        margin: '0 5px',  
+                                        margin: '5px 5px',  
                                         display: 'inline-block',  
                                         fontSize: '12px' 
                                     }}  
@@ -236,7 +236,7 @@ const ProfilePage = ({ telegramId }) => {
                                         border: '1px solid #322369', 
                                         borderRadius: '5px',   
                                         padding: '3px 6px', 
-                                        margin: '0 5px', 
+                                        margin: '5px 5px', 
                                         display: 'inline-block',   
                                         fontSize: '12px'  
                                     }}  
