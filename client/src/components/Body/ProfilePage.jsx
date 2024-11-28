@@ -65,7 +65,7 @@ const ProfilePage = ({ telegramId }) => {
     //Обрезка описания Знака
     const truncateDescription = (description) => {
         if (!description) return '';
-        return description.length > 50 ? description.slice(0, 50) + '...' : description;
+        return description.length > 50 ? description.slice(0, 90) + '...' : description;
     };
 
     //Функция Пригласить друга
