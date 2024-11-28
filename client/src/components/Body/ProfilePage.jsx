@@ -206,17 +206,14 @@ const ProfilePage = ({ telegramId }) => {
                     {userData && (  
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
-                            <p style={{ position: 'relative', minHeight: '70px' }}>
-                            <span>  {userData.zodiacDescription} </span>   <br /> 
+                            <h4 style={{ position: 'relative', minHeight: '70px',fontWeight: '200' }}>
+                            <span style={{fontSize:'12px'}}>  {userData.zodiacDescription} </span>
                             {showFullDescription && (  
                             <>                           
-                                <span>  
-                                <h4 style={{fontWeight: '200'}}> Управляющая планета:</h4> {userData.zodiacPlan}  
-                                </span>  
-                                <br /> 
-                                <span>  
-                                <h4 style={{fontWeight: '200'}}> Основные качества: </h4>{userData.zodiacKach}  
-                                </span>  
+                                <h4 style={{fontWeight: '200'}}>Управляющая планета:</h4> 
+                                <span style={{fontSize:'12px'}}>{userData.zodiacPlan}</span>  
+                                <h4 style={{fontWeight: '200'}}>Основные качества:</h4> 
+                                <span  style={{fontSize:'12px'}}>{userData.zodiacKach}</span>  
                             </>  
                             )}      
                             <span 
@@ -242,7 +239,7 @@ const ProfilePage = ({ telegramId }) => {
                             }} 
                             />
                         </span>
-                        </p>
+                        </h4>
                         </div>  
                     )}  
 
