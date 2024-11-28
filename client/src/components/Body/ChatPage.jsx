@@ -89,6 +89,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
         { sender: 'bot', text: botMessage, isClickable: false },
       ]);
     } catch (error) {
+      setError(err.message); 
       console.error('Ошибка при отправке сообщения:', error);
       setMessages((prevMessages) => [
         ...prevMessages,
