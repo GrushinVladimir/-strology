@@ -112,8 +112,8 @@ const zodiacKach = {
     const userData = {  
       telegramId: user?.id,  
       name: username,  
-      birthDate: birthDate, // Используем формат YYYY-MM-DD  
-      birthTime: birthTime || 'Неизвестно',  
+      birthDate: `${day}.${month}.${year}`, // Приведите к формату YYYY-MM-DD  
+      birthTime: birthTime || 'Неизвестно',   
       birthPlace: placeOfBirth,  
       zodiacSign: sign,  
       zodiacDescription: zodiacDescription,  
