@@ -106,21 +106,20 @@ const zodiacKach = {
 
     const sign = getZodiacSign(day, month);  
     setZodiacSign(sign);  
-    const zodiacDescription = zodiacInfo[sign] || "Информация о знаке зодиака не найдена.";
-    const zodiacPlan = zodiacPlan[sign] || "Информация о знаке зодиака не найдена.";
-    const zodiacKach = zodiacKach[sign] || "Информация о знаке зодиака не найдена.";
+    const zodiacDescription = zodiacInfo[sign] || "Информация о знаке зодиака не найдена.";  
+    const zodiacPlanet = zodiacPlan[sign] || "Информация о знаке зодиака не найдена.";  
+    const zodiacQualities = zodiacKach[sign] || "Информация о знаке зодиака не найдена."; 
     const userData = {  
       telegramId: user?.id,  
       name: username,  
-      birthDate: `${day}.${month}.${year}`, // Приведите к формату YYYY-MM-DD  
+      birthDate: birthDate, // Используем формат YYYY-MM-DD  
       birthTime: birthTime || 'Неизвестно',  
       birthPlace: placeOfBirth,  
       zodiacSign: sign,  
-      zodiacDescription: zodiacDescription,
-      zodiacPlan:  zodiacPlan,
-      zodiacKach: zodiacKach ,
-      
-  };  
+      zodiacDescription: zodiacDescription,  
+      zodiacPlan: zodiacPlanet, // Используем правильное значение  
+      zodiacKach: zodiacQualities, // Используем правильное значение  
+    };   
 
     console.log('Данные для отправки:', userData); // Логируем данные  
 
