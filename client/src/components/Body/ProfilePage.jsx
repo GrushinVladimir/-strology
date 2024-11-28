@@ -196,12 +196,16 @@ const ProfilePage = ({ telegramId }) => {
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
                             <p style={{position: 'relative'}}>
-                        {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
+                            {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
                         <span 
                             onClick={() => setShowFullDescription(!showFullDescription)} 
-                            style={{ cursor: 'pointer', right: '15px',position: 'absolute',    bottom: '0' }}
+                            style={{ cursor: 'pointer', right: '15px', position: 'absolute', bottom: '0' }}
                         >
-                                      <img src="free-icon-down-chevron-10728680.png" alt="" style={{ width: '25px' }} />
+                            <img 
+                                src={showFullDescription ? "aru.png" : "ard.png"} 
+                                alt="" 
+                                style={{ width: '25px', borderRadius: '50%', background: '#322369', padding: '5px' }} 
+                            />
                         </span>
                     </p>
                         </div>  
