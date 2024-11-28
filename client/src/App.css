@@ -67,3 +67,30 @@ body{
   font-size: .9rem;
   opacity: .9;
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(50, 34, 105, 0.8); /* Полупрозрачный фиолетовый фон */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Убедитесь, что элемент находится поверх других */
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* Серый фон загрузчика */
+  border-top: 8px solid #9b59b6; /* Цвет верхней части загрузчика (фиолетовый) */
+  border-radius: 50%;
+  width: 50px; /* Ширина загрузчика */
+  height: 50px; /* Высота загрузчика */
+  animation: spin 1s linear infinite; /* Анимация вращения */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

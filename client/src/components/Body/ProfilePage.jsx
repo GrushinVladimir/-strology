@@ -59,8 +59,15 @@ const ProfilePage = ({ telegramId }) => {
         return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
     };  
 
-    if (loading) return <p>Загрузка...</p>; // Display loading indicator  
-    if (error) return <p>{error}</p>; // Display error message  
+    if (loading) {
+        return (
+            <div className="loading-overlay">
+                <div className="loader"></div>
+            </div>
+        );
+    }
+    
+    if (error) return <p>{error}</p>;
     
     //Обрезка описания Знака
     const truncateDescription = (description) => {
