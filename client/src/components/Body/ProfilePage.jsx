@@ -211,11 +211,11 @@ const ProfilePage = ({ telegramId }) => {
                             {showFullDescription && (  
                             <>                           
                                 <span>  
-                                Управляющая планета: {userData.zodiacPlan}  
+                                <h4 style={{fontWeight: '200'}}> Управляющая планета:</h4> {userData.zodiacPlan}  
                                 </span>  
                                 <br /> 
                                 <span>  
-                                Основные качества {userData.zodiacKach}  
+                                <h4 style={{fontWeight: '200'}}> Основные качества: </h4>{userData.zodiacKach}  
                                 </span>  
                             </>  
                             )}      
