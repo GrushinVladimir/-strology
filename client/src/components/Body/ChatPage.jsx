@@ -112,8 +112,14 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   }, [tg]);
 
   if (loading) {
-    return <div>Загрузка...</div>;
-  }
+    return (
+        <div className="loading-overlay">
+            <div className="loader"></div>
+        </div>
+    );
+}
+
+if (error) return <p>{error}</p>;
 
   const getAvatarUrl = (user) => {  
     return user && user.photo_url ? user.photo_url : 'https://via.placeholder.com/100';  
