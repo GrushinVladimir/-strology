@@ -208,7 +208,7 @@ const ProfilePage = ({ telegramId }) => {
                         <div className="profile-desk">  
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
                             <h4 style={{ position: 'relative', minHeight: '70px',fontWeight: '200' }}>
-                            <span style={{fontSize:'12px'}}>  {userData.zodiacDescription} </span>
+                            <span style={{fontSize:'12px',opacity: '.9'}}>  {userData.zodiacDescription} </span>
                             {showFullDescription && (  
                             <>                           
                                 <h4 style={{fontWeight: '200', padding: '1rem 0 .4rem 0', fontSize: '.9rem'}}>Управляющая планета:</h4> 
