@@ -165,6 +165,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
   const [showContent, setShowContent] = useState(false);  
   const [loading, setLoading] = useState(true);  
   const [error, setError] = useState(null);  
+  const [tabLoading, setTabLoading] = useState(false);  
 
 
   useEffect(() => {
@@ -191,55 +192,55 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
     if (!zodiacSign) return;  
   
     const fetchAndTranslateHoroscope = async () => {  
-      const periodKey = {  
-        'Сегодня': 'today',  
-        'Завтра': 'tomorrow',  
-        'Неделя': 'week',  
-        'Месяц': 'month',  
-      }[activeTab] || '';  
+        const periodKey = {  
+            'Сегодня': 'today',  
+            'Завтра': 'tomorrow',  
+            'Неделя': 'week',  
+            'Месяц': 'month',  
+        }[activeTab] || '';  
   
-      let formattedDate = '';  
-      switch (activeTab) {  
-        case 'Сегодня':  
-          formattedDate = formatDate(new Date());  
-          break;  
-        case 'Завтра':  
-          formattedDate = formatDate(new Date(Date.now() + 86400000));  
-          break;  
-        case 'Неделя':  
-          formattedDate = getWeekRange();  
-          break;  
-        case 'Месяц':  
-          formattedDate = getMonthRange();  
-          break;  
-        default:  
-          return;  
-      }  
-      setCurrentDate(formattedDate);  
-      setLoading(false); // Устанавливаем состояние загрузки в true  
-      setShowContent(false); // Скрываем контент перед загрузкой  
-  
-      try {  
-        const horoscopeText = await getHoroscope(zodiacSign, periodKey);  
-        if (horoscopeText) {  
-          const translatedText = await translateText(horoscopeText);  
-          setHoroscope(translatedText);  
-        } else {  
-          setHoroscope('Не удалось получить гороскоп');  
+        let formattedDate = '';  
+        switch (activeTab) {  
+            case 'Сегодня':  
+                formattedDate = formatDate(new Date());  
+                break;  
+            case 'Завтра':  
+                formattedDate = formatDate(new Date(Date.now() + 86400000));  
+                break;  
+            case 'Неделя':  
+                formattedDate = getWeekRange();  
+                break;  
+            case 'Месяц':  
+                formattedDate = getMonthRange();  
+                break;  
+            default:  
+                return;  
         }  
-      } catch (error) {  
-        console.error('Ошибка при получении гороскопа:', error);  
-        setHoroscope('Не удалось получить гороскоп');  
-      } finally {  
-        setLoading(false); // Устанавливаем состояние загрузки в false после завершения  
-        setTimeout(() => {  
-          setShowContent(true); // Показываем контент с задержкой  
-        }, 500); // Задержка в 500 мс  
-      }  
+        setCurrentDate(formattedDate);  
+        setTabLoading(true); // Устанавливаем состояние загрузки в true для табов  
+        setShowContent(false); // Скрываем контент перед загрузкой  
+  
+        try {  
+            const horoscopeText = await getHoroscope(zodiacSign, periodKey);  
+            if (horoscopeText) {  
+                const translatedText = await translateText(horoscopeText);  
+                setHoroscope(translatedText);  
+            } else {  
+                setHoroscope('Не удалось получить гороскоп');  
+            }  
+        } catch (error) {  
+            console.error('Ошибка при получении гороскопа:', error);  
+            setHoroscope('Не удалось получить гороскоп');  
+        } finally {  
+            setTabLoading(false); // Устанавливаем состояние загрузки в false после завершения  
+            setTimeout(() => {  
+                setShowContent(true); // Показываем контент с задержкой  
+            }, 500); // Задержка в 500 мс  
+        }  
     };  
   
     fetchAndTranslateHoroscope();  
-  }, [activeTab, zodiacSign]);  
+}, [activeTab, zodiacSign]);  
 
   if (loading) {
     return (
@@ -248,7 +249,13 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
         </div>
     );
 }
-
+if (tabLoading) {  
+  return (  
+      <div className="loading-overlay">  
+          <div className="loader">Загрузка гороскопа...</div>  
+      </div>  
+  );  
+}  
 if (error) return <p>{error}</p>;
   return (
   <div className="main-page">
