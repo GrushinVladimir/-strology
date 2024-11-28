@@ -103,6 +103,12 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .chat-input button img.send-icon {
+    width: 15px; /* Ширина иконки */
+    height: 15px;
+    object-fit: contain; /* Масштабирование без искажений */
+  }
   
   .typing-indicator {
     position: absolute; /* Позволяет точно позиционировать элемент */

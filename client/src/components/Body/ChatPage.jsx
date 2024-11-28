@@ -177,12 +177,18 @@ return (
       <div ref={messagesEndRef} />
     </div>
 
-    <div class="chat-input">
-  <input type="text" placeholder="Задай вопрос звёзда..." />
-  <button>
-    <img src="/img/menu/ButtonSend.png" alt="Отправить" class="send-icon" />
+    <div className="chat-input">
+  <input
+    type="text"
+    placeholder="Задай вопрос звёздам..."
+    value={inputMessage}
+    onChange={(e) => setInputMessage(e.target.value)} // Обновление состояния при вводе
+    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} // Отправка по Enter
+  />
+  <button onClick={() => handleSendMessage()}> {/* Отправка по кнопке */}
+    <img src="/img/menu/ButtonSend.png" alt="Отправить" className="send-icon" />
   </button>
-  </div>
+</div>
 
     {/* Вкладки */}
     <div className="tabs-and-content">
