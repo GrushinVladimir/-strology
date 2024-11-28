@@ -192,28 +192,24 @@ const ProfilePage = ({ telegramId }) => {
                             )}
                         </div> 
                     </div>  
-                    {userData && (
-                <>
-                    <h4 style={{ fontWeight: '200' }}>
-                        О вашем знаке: <span style={{ textTransform: 'uppercase' }}>{zodiacSign || 'Не найден'}</span>
-                    </h4>
-                    <div style={{ overflow: 'hidden', transition: 'max-height 0.5s ease', maxHeight: showFullDescription ? '500px' : '0' }}>
-                        <p style={{ margin: 0, padding: '0 15px' }}>
-                            {userData.zodiacDescription}
-                        </p>
-                    </div>
-                    <span 
-                        onClick={() => setShowFullDescription(!showFullDescription)} 
-                        style={{ cursor: 'pointer', right: '15px', position: 'absolute', bottom: '0' }}
-                    >
-                        <img 
-                            src={showFullDescription ? "aru.png" : "ard.png"} 
-                            alt="" 
-                            style={{ width: '25px', borderRadius: '50%', background: '#322369', padding: '5px' }} 
-                        />
-                    </span>
-                </>
-            )}
+                    {userData && (  
+                        <div className="profile-desk">  
+                            <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
+                            <p style={{position: 'relative'}}>
+                            {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
+                        <span 
+                            onClick={() => setShowFullDescription(!showFullDescription)} 
+                            style={{ cursor: 'pointer', right: '15px', position: 'absolute', bottom: '0' }}
+                        >
+                            <img 
+                                src={showFullDescription ? "aru.png" : "ard.png"} 
+                                alt="" 
+                                style={{ width: '20px', borderRadius: '50%', background: '#322369', padding: '5px' }} 
+                            />
+                        </span>
+                    </p>
+                        </div>  
+                    )}  
 
 
                     </div>
