@@ -208,6 +208,8 @@ const ProfilePage = ({ telegramId }) => {
                             <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
                             <p style={{ position: 'relative', minHeight: '70px' }}>
     {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
+    {userData.zodiacPlan}
+    {userData.zodiacKach}
     <span 
     onClick={() => setShowFullDescription(!showFullDescription)} 
     style={{ 
