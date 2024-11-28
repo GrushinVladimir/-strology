@@ -148,7 +148,18 @@ const ProfilePage = ({ telegramId }) => {
             alert(`Произошла ошибка: ${error.message}`);  
         }  
     };    
-
+    const ZodiacProfile = ({ zodiacSign, userData }) => {  
+        const maxLength = 50; // Максимальная длина текста  
+        const [isExpanded, setIsExpanded] = useState(false); // Статус раскрытия текста  
+    
+        // Определение укороченного текста  
+        const shortText = userData.zodiacDescription.slice(0, maxLength);  
+        const fullText = userData.zodiacDescription;  
+    
+        // Обработчик нажатия на кнопку  
+        const toggleText = () => {  
+            setIsExpanded(!isExpanded);  
+        };  
     return (  
         <div className='Prof'>  
             <div className='body-profile'>  
@@ -187,10 +198,17 @@ const ProfilePage = ({ telegramId }) => {
                         </div> 
                     </div>  
                     {userData && (  
-                        <div className="profile-desk">  
-                            <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
-                            <p>{userData.zodiacDescription}</p>  
-                        </div>  
+        <div className="profile-desk">  
+        <h4 style={{ fontWeight: '200' }}>  
+            О вашем знаке: <span style={{ textTransform: 'uppercase' }}>{zodiacSign || 'Не найден'}</span>  
+        </h4>  
+        <p>  
+            {isExpanded ? fullText : `${shortText}${fullText.length > maxLength ? '...' : ''}`}  
+        </p>  
+        <button onClick={toggleText} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>  
+            {isExpanded ? '▲ Свернуть' : '▼ Показать больше'} {/* Стрелка вверх или вниз */}  
+        </button>  
+    </div>   
                     )}  
 
 
