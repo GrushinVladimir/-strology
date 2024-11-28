@@ -47,6 +47,8 @@ router.post('/', async (req, res) => {
       birthPlace,
       zodiacSign,
       zodiacDescription, 
+      zodiacPlan,
+      zodiacKach,
     });
 
     await user.save();
