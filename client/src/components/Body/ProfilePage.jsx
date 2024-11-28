@@ -205,36 +205,46 @@ const ProfilePage = ({ telegramId }) => {
                     </div>  
                     {userData && (  
                         <div className="profile-desk">  
-                            <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
-                            <p style={{ position: 'relative', minHeight: '70px' }}>
-    {showFullDescription ? userData.zodiacDescription : truncateDescription(userData.zodiacDescription)}
-    {userData.zodiacPlan}
-    {userData.zodiacKach}
-    <span 
-    onClick={() => setShowFullDescription(!showFullDescription)} 
-    style={{ 
-        cursor: 'pointer', 
-        right: '15px', 
-        position: 'absolute', 
-        bottom: '0', 
-        userSelect: 'none' // Убирает выделение при нажатии
-    }}
->
-    <img 
-        src="ard.png" 
-        alt="" 
-        style={{ 
-            width: '20px', 
-            borderRadius: '50%', 
-            background: '#322369', 
-            padding: '5px', 
-            transform: showFullDescription ? 'scaleY(-1)' : 'none', // Отражение во вертикали при открытии
-            transition: 'transform 0.3s ease' // Плавный переход
-        }} 
-    />
-</span>
-</p>
-                        </div>  
+    <h4 style={{fontWeight: '200'}}>О вашем знаке: <span style={{textTransform: 'uppercase'}}>{zodiacSign || 'Не найден'}</span></h4>  
+    <p style={{ position: 'relative', minHeight: '70px' }}>  
+      {/* Отображаем описание с возможностью раскрытия */}  
+      {showFullDescription ?   
+        userData.zodiacDescription :   
+        truncateDescription(userData.zodiacDescription)}  
+    </p>  
+    
+    {/* Отдельные элементы для Планеты и Качеств */}  
+    <p>  
+      <strong>Планета:</strong> {userData.zodiacPlan}  
+    </p>  
+    <p>  
+      <strong>Качества:</strong> {userData.zodiacKach}  
+    </p>  
+
+    <span   
+      onClick={() => setShowFullDescription(!showFullDescription)}   
+      style={{   
+        cursor: 'pointer',   
+        right: '15px',   
+        position: 'absolute',   
+        bottom: '0',   
+        userSelect: 'none' // Убирает выделение при нажатии  
+      }}  
+    >  
+      <img   
+        src="ard.png"   
+        alt="Toggle description"   
+        style={{   
+          width: '20px',   
+          borderRadius: '50%',   
+          background: '#322369',   
+          padding: '5px',   
+          transform: showFullDescription ? 'scaleY(-1)' : 'none', // Отражение во вертикали при открытии  
+          transition: 'transform 0.3s ease' // Плавный переход  
+        }}   
+      />  
+    </span>  
+  </div>   
                     )}  
 
 
