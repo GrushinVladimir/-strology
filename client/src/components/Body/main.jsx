@@ -219,7 +219,7 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
       setCurrentDate(formattedDate);  
       setLoading(false); // Устанавливаем состояние загрузки в true  
       setShowContent(false); // Скрываем контент перед загрузкой  
-      setTabLoading(true);
+      
       try {  
         const horoscopeText = await getHoroscope(zodiacSign, periodKey);  
         if (horoscopeText) {  
