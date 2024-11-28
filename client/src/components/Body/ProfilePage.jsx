@@ -202,7 +202,7 @@ const ProfilePage = ({ telegramId }) => {
         style={{ cursor: 'pointer', right: '15px', position: 'absolute', bottom: '0' }}
     >
         <img 
-            src="aru.png" 
+            src="ard.png" 
             alt="" 
             style={{ 
                 width: '20px', 
