@@ -257,7 +257,7 @@ if (error) return <p>{error}</p>;
 
 
   <div className="main-page">
-<img src="zvezda.png" />  
+<img src="zvezda.png" className='zvyazda'/>  
     <h2 style={{ marginTop: '10vh' }}>Ваш знак</h2>
     {zodiacSign ? (
     <>
