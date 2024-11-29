@@ -637,11 +637,11 @@ margin-bottom: 25px;
 
 .question-button {
 
-  padding: 5px 10px;
+  background-color: #7209e93b; /* Цвет фона кнопки */
   color: white; /* Цвет текста кнопки */
   border: none; /* Убираем рамку */
   border-radius: 5px; /* Закругляем углы */
-  padding: 5px; /* Отступ внутри кнопки */
+  padding: 5px 10px; /* Отступ внутри кнопки */
   margin: 5px 0; /* Отступ между кнопками */
   cursor: pointer; /* Указатель на кнопке */
   width: 100%; /* Кнопка на всю ширину родителя */
