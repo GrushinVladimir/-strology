@@ -87,11 +87,13 @@
   }
   
   .chat-input input {
+    border: none;
+    height: 100%;
+    min-height: 50px;
     color: #fff;
-    flex-grow: 1; /* Поле ввода растягивается на всю доступную ширину */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ccc; 
+    flex-grow: 1;
+
   }
   
   .chat-input button {
@@ -119,7 +121,7 @@
     color: gray; /* Серый цвет текста */
   }
   
-  .message.user span{  
+  .message.user .message-text {  
     background: #7209e93b; /* Красный фон для пользователя */  
  
 }  
