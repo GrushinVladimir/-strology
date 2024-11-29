@@ -69,7 +69,7 @@
   }
   
   .message-text {
-    max-width: 70%;
+    max-width: 80%;
     padding: 5px;
     border-radius: 10px;
     background: rgba(70, 67, 67, 0); /* Прозрачный фон */
@@ -119,17 +119,12 @@
     color: gray; /* Серый цвет текста */
   }
   
-  .message.user {  
+  .message.user span{  
     background: #7209e93b; /* Красный фон для пользователя */  
-    color: white; /* Цвет текста, если требуется */  
-    padding: 10px; /* Отступы, при желании */  
-    border-radius: 5px; /* Скругление углов, при желании */  
-    margin: 5px; /* Отступы между сообщениями */  
+ 
 }  
 
-.message.bot {  
+.message.bot span{  
     background: none; /* Без фона для бота */  
-    color: black; /* Цвет текста бота */  
-    padding: 10px; /* Отступы, при желании */  
-    margin: 5px; /* Отступы между сообщениями */  
+
 }  
