@@ -58,7 +58,8 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
   const handleSendMessage = async (message) => {  
     const finalMessage = message || inputMessage;  
     const fullMessage = `Тебя зовут Стеша. Ты астролог. Меня зовут: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
-
+    // Очищаем поле ввода после отправки сообщения  
+    setInputMessage('');  
     if (!apiKey) {  
         setMessages((prevMessages) => [  
             ...prevMessages,  
@@ -94,8 +95,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
         setBotTyping(false);  
     }  
 
-    // Очищаем поле ввода после отправки сообщения  
-    setInputMessage('');  
+
 };  
 
 const handleQuestionClick = (question) => {
