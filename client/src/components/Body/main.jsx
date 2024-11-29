@@ -278,7 +278,7 @@ if (error) return <p>{error}</p>;
       <div className="tabs-and-content">
         {showTabContent && activeTab && (
           <div className="toggle-icon" onClick={() => setShowTabContent(!showTabContent)}>
-            <img src="ard.png" alt="" style={{ width: '35px', width: '35px', background: '#4c3997', borderRadius: '50%',  padding: '5px'}} />
+            <img src="ard.png" alt="" style={{ width: '20px', width: '35px', background: '#4c3997', borderRadius: '50%',  padding: '5px'}} />
           </div>
         )}
 
