@@ -96,14 +96,17 @@ body{
 }
 .ico-home{
   filter: invert(1);
-  width: 28px;
+  width: 26px;
+  opacity: .6;
 
 }
 .ico-chat{
   filter: invert(1);
-  width: 26px;
+  width: 24px;
+  opacity: .6;
 }
 .ico-profile{
   filter: invert(1);
-  width: 27px;
+  width: 25px;
+  opacity: .6;
 }

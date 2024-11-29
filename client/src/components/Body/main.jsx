@@ -312,8 +312,8 @@ if (error) return <p>{error}</p>;
              
         <div className="menu">
           <Link to="/main">
-          <img src="home.png" alt="Главная" className='ico-home'/>  
-            <span style={{color:'white',opacity: '1'}}>Главная</span>
+          <img src="home.png" alt="Главная" className='ico-home' style={{opacity: '1'}}/>  
+            <span style={{opacity: '1'}}>Главная</span>
           </Link>
           <Link to="/chat">
           <img src="chat.png" alt="Чат"  className='ico-chat'/>  

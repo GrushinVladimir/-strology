@@ -54,20 +54,20 @@ const FAQPage = () => {
                     </div>  
                 ))}  
             </div>  
-            <div className="menu">  
-                <Link to="/main">  
-                    <img src="img/menu/Union.png" alt="Главная" />  
-                    <span>Главная</span>  
-                </Link>  
-                <Link to="/chat">  
-                    <img src="img/menu/chat.png" alt="Чат" />  
-                    <span>Чат</span>  
-                </Link>  
-                <Link to="/profile">  
-                    <img src="img/menu/profile.png" style={{ width: '13px' }} alt="Профиль" />  
-                    <span>Профиль</span>  
-                </Link>  
-            </div>   
+            <div className="menu">
+          <Link to="/main">
+          <img src="home.png" alt="Главная" className='ico-home' />  
+            <span >Главная</span>
+          </Link>
+          <Link to="/chat">
+          <img src="chat.png" alt="Чат"  className='ico-chat'/>  
+            <span>Чат</span>
+          </Link>
+          <Link to={`/profile?telegramId=${telegramId}`}>
+          <img src="user.png" alt="Профиль" className='ico-profile' style={{opacity: '1'}}/> 
+        <span style={{opacity: '1'}}>Профиль</span>
+      </Link>
+        </div>
         </div>   
     );  
 };  

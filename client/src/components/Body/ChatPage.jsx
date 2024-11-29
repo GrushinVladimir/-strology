@@ -187,20 +187,20 @@ return (
 
     {/* Вкладки */}
     <div className="tabs-and-content">
-      <div className="menu">
-        <Link to="/main">
-          <img src="img/menu/Union.png" alt="Главная" />
-          <span>Главная</span>
-        </Link>
-        <Link to="/chat">
-          <img src="img/menu/profileActive.png" alt="Чат" />
-          <span style={{color:'white',opacity: '1'}}>Чат</span>
-        </Link>
-        <Link to="/profile">
-          <img src="img/menu/profile.png" alt="Профиль" />
-          <span>Профиль</span>
-        </Link>
-      </div>
+    <div className="menu">
+          <Link to="/main">
+          <img src="home.png" alt="Главная" className='ico-home' />  
+            <span >Главная</span>
+          </Link>
+          <Link to="/chat">
+          <img src="chat.png" alt="Чат"  className='ico-chat'  style={{opacity: '1'}}/>  
+            <span  style={{opacity: '1'}}>Чат</span>
+          </Link>
+          <Link to={`/profile?telegramId=${telegramId}`}>
+          <img src="user.png" alt="Профиль" className='ico-profile'/> 
+        <span>Профиль</span>
+      </Link>
+        </div>
     </div>
   </div>
 );
