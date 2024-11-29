@@ -97,7 +97,7 @@ const zodiacImages = {
   },  
   Стрелец: {  
     src: 'img/zhak/strelec2.png',  
-    width: '288px',  
+    width: '250px',  
     height: 'auto'  
   },  
   Козерог: {  
