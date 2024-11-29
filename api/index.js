@@ -18,7 +18,7 @@ const axios = require('axios');  // Используем axios для отпра
 
 // Хранение состояний пользователей  
 const userStates = {};  
-
+app.use(express.json());
 const app = express();  
 let attempts = 0;  
 const maxAttempts = 5;  
