@@ -253,8 +253,11 @@ const MainPage = ({ telegramId }) => { // Получаем telegramId через
 if (error) return <p>{error}</p>;
 
   return (
-  <div className="main-page">
+    
 
+
+  <div className="main-page">
+<img src="zvezda.png" />  
     <h2 style={{ marginTop: '10vh' }}>Ваш знак</h2>
     {zodiacSign ? (
     <>
