@@ -79,20 +79,22 @@
   }
   
   .chat-input {
-    display: flex; /* Включаем Flexbox */
-    align-items: center; /* Выравниваем элементы по вертикали */
-    margin-top: 20px;
+    align-items: center;
+    display: flex;
     margin-bottom: 50px;
-    border: 1px solid transparent;
+    margin-top: 20px;
+    background: #32025fe0;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
   }
   
   .chat-input input {
-    border: none;
-
-    min-height: 50px;
     color: #fff;
-    border: 1px solid #ccc; 
     flex-grow: 1;
+    min-height: 30px;
+    background: none;
+    border: none;
+    outline: none;
 
   }
   
