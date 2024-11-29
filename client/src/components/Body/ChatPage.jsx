@@ -132,45 +132,42 @@ return (
       <div className="chat-header">
         <h2>Спроси Стешу</h2>
       </div>
-    <div className="chat-messages">
-      {messages.map((message, index) => (
-        <div key={index} className={`message ${message.sender}`}>
-          <div className="avatar-container">
-            <img
-              src={message.sender === 'user' ? getAvatarUrl(user) : '/img/menu/BotAvatar.png'}
-              alt={message.sender}
-              className="avatar"
-            />
-            <span className="avatar-label">
-              {message.sender === 'user' ? 'Вы' : 'ChatBot Стеша'}
-            </span>
-          </div>
-          <div className="message-text">
-            {message.isQuestionHeader ? (
-              <div className="question-header">
-                {message.text}
-                <div className="questions-list">
-                  {questions.map((question, index) => (
-                    <button
-                      key={index}
-                      className="question-button"
-                      onClick={() => handleQuestionClick(question)}
-                    >
-                      {question}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>{message.text}</div>
-            )}
-          </div>
-        </div>
-      ))}
-      {botTyping && <div className="typing-indicator">Chat bot Стеша печатает...</div>}
-      {/* Реф для конца сообщений */}
-      <div ref={messagesEndRef} />
-    </div>
+      <div className="chat-messages">  
+  {messages.map((message, index) => (  
+    <div key={index} className={`message ${message.sender}`}>  
+      <div className="avatar-container">  
+        <img  
+          src={message.sender === 'user' ? getAvatarUrl(user) : '/img/menu/BotAvatar.png'}  
+          alt={message.sender}  
+          className="avatar"  
+        />  
+        <span className="avatar-label">  
+          {message.sender === 'user' ? 'Вы' : 'ChatBot Стеша'}  
+        </span>  
+      </div>  
+      <div className="message-text">  
+        {message.isQuestionHeader ? (  
+          <div className="question-header">  
+            {message.text}  
+            <div className="questions-list">  
+              {questions.map((question, index) => (  
+                <button  
+                  key={index}  
+                  className="question-button"  
+                  onClick={() => handleQuestionClick(question)}  
+                >  
+                  {question}  
+                </button>  
+              ))}  
+            </div>  
+          </div>  
+        ) : (  
+          <div>{message.text}</div>  
+        )}  
+      </div>  
+    </div>  
+  ))}  
+</div>  
 
     <div className="chat-input">
   <input
