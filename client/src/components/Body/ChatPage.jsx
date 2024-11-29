@@ -76,7 +76,7 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     setBotTyping(true);
 
     try {
-        const response = await axios.post('strology.vercel.app/api/chat', { message: fullMessage });
+        const response = await axios.post('https://strology.vercel.app/api/chat', { message: fullMessage });
 
         const botMessage = response.data.message || 'Ошибка: нет ответа.';
         setMessages((prevMessages) => [
