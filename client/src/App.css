@@ -94,3 +94,16 @@ body{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+.ico-home{
+  filter: invert(1);
+  width: 28px;
+
+}
+.ico-chat{
+  filter: invert(1);
+  width: 26px;
+}
+.ico-profile{
+  filter: invert(1);
+  width: 27px;
+}

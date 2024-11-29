@@ -308,18 +308,19 @@ if (error) return <p>{error}</p>;
     </>  
   )}  
 </div>  
-
+              
+             
         <div className="menu">
           <Link to="/main">
-            <img src="img/menu/home.png" />
+          <img src="home.png" alt="Главная" className='ico-home'/>  
             <span style={{color:'white',opacity: '1'}}>Главная</span>
           </Link>
           <Link to="/chat">
-            <img src="img/menu/chat.png" />
+          <img src="chat.png" alt="Чат"  className='ico-chat'/>  
             <span>Чат</span>
           </Link>
           <Link to={`/profile?telegramId=${telegramId}`}>
-        <img src="img/menu/profile.png" style={{ width: '13px' }} />
+          <img src="user.png" alt="Профиль" className='ico-profile'/> 
         <span>Профиль</span>
       </Link>
         </div>

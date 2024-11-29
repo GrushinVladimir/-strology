@@ -9,6 +9,7 @@ import ru from 'date-fns/locale/ru';
 import axios from 'axios';
 import LazyLoad from 'react-lazyload';
 
+
 registerLocale('ru', ru);
 setDefaultLocale('ru'); 
 
@@ -312,8 +313,9 @@ const handleNextWithValidation = (currentData) => {
       case 0 :  
         return (  
           <div className={`body step ${visible ? 'fade-in' : 'fade-out'}`}>
-            <h2 style={{marginTop:'20vh'}}>  
-              Давай знакомится!<br />  
+<h2 style={{marginTop:'20vh'}}>  
+              Давай знакомится!<br />                
+
             </h2>  
             <span style={{opacity:'.9'}}>  
               Ответь на 4 простых вопросов. <br />  

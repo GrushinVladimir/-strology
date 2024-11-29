@@ -332,6 +332,7 @@ const ProfilePage = ({ telegramId }) => {
 
             <div className="menu">  
                 <Link to="/main">  
+
                     <img src="img/menu/Union.png" alt="Главная" />  
                     <span>Главная</span>  
                 </Link>  
