@@ -15,11 +15,13 @@ const TOKEN = process.env.REACT_APP_SB_KEY;
 const webAppUrl = 'https://strology.vercel.app';  
 const Question = require('./models/Question');  
 const axios = require('axios');  // Используем axios для отправки запросов
-
-// Хранение состояний пользователей  
-const userStates = {};  
-app.use(express.json());
 const app = express();  
+const userStates = {}; 
+
+
+ 
+app.use(express.json());
+
 let attempts = 0;  
 const maxAttempts = 5;  
 
