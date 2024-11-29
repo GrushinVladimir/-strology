@@ -63,7 +63,7 @@ const FAQPage = () => {
           <img src="chat.png" alt="Чат"  className='ico-chat'/>  
             <span>Чат</span>
           </Link>
-          <Link to={`/profile?telegramId=${telegramId}`}>
+          <Link>
           <img src="user.png" alt="Профиль" className='ico-profile' style={{opacity: '1'}}/> 
         <span style={{opacity: '1'}}>Профиль</span>
       </Link>
