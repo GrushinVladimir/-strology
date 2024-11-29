@@ -124,7 +124,8 @@
   }
   
   .message.user .message-text {  
-    background: #7209e93b; /* Красный фон для пользователя */  
+    background: #7209e93b;
+    padding: 5px 10px;
  
 }  
 
