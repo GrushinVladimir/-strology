@@ -223,15 +223,15 @@ line-height: normal;
 
 }
 .tabs button {
-  height: 45px;
-  width: 95px;
-  border-radius: 20px 20px 0 0;
-  border: none;
-  background: #000;
+  background: #170d3a;
   border: 2px solid #4c3997;
+  border-radius: 20px 20px 0 0;
   color: #fff;
-  transition: height 0.3s;
+  height: 45px;
   margin-bottom: 0;
+  transition: height .3s;
+  width: 95px;
+  border-bottom: none;
 }
 .data{
   width: 196px;
