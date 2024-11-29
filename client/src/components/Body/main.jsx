@@ -47,7 +47,7 @@ const zodiacSigns = {
 const zodiacImages = {  
   Водолей: {  
     src: 'img/zhak/vodoley2.png',  
-    width: '244px', // ширина  
+    width: '210px', // ширина  
     height: 'auto' // высота  
   },  
   Рыбы: {  
@@ -57,12 +57,12 @@ const zodiacImages = {
   },  
   Овен: {  
     src: 'img/zhak/oven2.png',  
-    width: '288px',  
+    width: '250px',  
     height: 'auto'  
   },  
   Телец: {  
     src: 'img/zhak/telec2.png',  
-    width: '288px',  
+    width: '250px',  
     height: 'auto'  
   },  
   Близнецы: {  
