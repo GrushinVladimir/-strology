@@ -264,7 +264,7 @@ app.post('/api/webhook', async (req, res) => {
 
             // Логика ответа на команду /start  
             if (text === '/start') {  
-                const responseText = 'Добро пожаловать! Как я могу помочь вам?';  
+                const responseText = 'Добро пожаловать в наше новое приложение для любителей астрологии!';  
 
                 // Отправляем ответ пользователю  
                 await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {  
