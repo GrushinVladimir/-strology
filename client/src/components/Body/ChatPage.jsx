@@ -181,7 +181,7 @@ return (
     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()} // Отправка по Enter
   />
   <button onClick={() => handleSendMessage()}> {/* Отправка по кнопке */}
-    <img src="/img/menu/ButtonSend.png" alt="Отправить" className="send-icon" />
+    <img src="send.png" alt="Отправить" className="ico-send" />
   </button>
 </div>
 

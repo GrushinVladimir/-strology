@@ -110,3 +110,7 @@ body{
   width: 25px;
   opacity: .6;
 }
+.ico-send{
+  filter: invert(1);
+  width: 20px;
+}
