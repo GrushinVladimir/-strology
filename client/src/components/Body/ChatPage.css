@@ -88,7 +88,7 @@
   
   .chat-input input {
     border: none;
-    height: 100%;
+
     min-height: 50px;
     color: #fff;
     border: 1px solid #ccc; 

@@ -177,7 +177,7 @@ line-height: normal;
     width: 5px; /* Set the desired width */
     height: 5px; /* Set the desired height */
   }
-  input{
+  .body input{
     opacity: 0.7;
     background: linear-gradient(90deg, #533FA1 -1.41%, #170D3A 99.73%);
     box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25), -2px 3px 4px 0px rgba(0, 0, 0, 0.25) inset;
