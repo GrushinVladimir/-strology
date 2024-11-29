@@ -72,7 +72,7 @@ const Body = ({ step, userName, handleStart, handleNext, formData }) => {
 };
 const zodiacPlan = {
   "Водолей": "Уран",
-  "Рыбы": "ептун",
+  "Рыбы": "Нептун",
   "Овен": "Марс",
   "Телец": "Венера",
   "Близнецы": "Меркурий",
