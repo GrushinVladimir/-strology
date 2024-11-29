@@ -23,6 +23,7 @@ function App() {
   const navigate = useNavigate();  
   const initialQuestionsCount = 10;  
   const [remainingQuestions, setRemainingQuestions] = useState(initialQuestionsCount);  
+  const [loading, setLoading] = useState(false);  
 
   const loadRemainingQuestions = async () => {  
     try {  
@@ -77,6 +78,7 @@ function App() {
 
   useEffect(() => {  
     async function checkUser() {  
+      setLoading(true); // Устанавливаем загрузку до выполнения запроса  
       try {  
         const id = tg?.initDataUnsafe?.user?.id;  
         if (id) {  
@@ -86,21 +88,23 @@ function App() {
           const data = await response.json();  
 
           if (data.exists) {  
-            setIsUserExist(true);
-            setUserName(data.user.name); // Обновляем имя пользователя
-            setZodiacSign(data.user.zodiacSign); // Обновляем знак зодиака 
+            setIsUserExist(true);  
+            setUserName(data.user.name); // Обновляем имя пользователя  
+            setZodiacSign(data.user.zodiacSign); // Обновляем знак зодиака   
             if (!hasCheckedUser) {  
               setHasCheckedUser(true); // Устанавливаем флаг, что проверка пользователя завершена  
               navigate('/main');  
             }  
           } else {  
             console.warn('Пользователь не найден в БД.');  
-            // Логика обработки случая, когда пользователь не найден  
+            // Логика обработки случая, когда пользователь не найден, например:  
+            // navigate('/body');  
           }  
         }  
       } catch (error) {  
         console.error('Ошибка при проверке пользователя:', error);  
       } finally {  
+        setLoading(false); // Сбрасываем загрузку  
         tg.ready();  
       }  
     }  
@@ -108,7 +112,14 @@ function App() {
     if (!hasCheckedUser) { // Проверяем, нужно ли делать проверку  
       checkUser();  
     }  
-  }, [tg, hasCheckedUser, navigate]);  
+  }, [tg, hasCheckedUser, navigate]);   
+  if (loading) {
+    return (
+        <div className="loading-overlay">
+            <div className="loader"></div>
+        </div>
+    );
+}
 
   const handleStart = () => {  
     setUserName(userName);  
