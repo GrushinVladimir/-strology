@@ -67,7 +67,7 @@ const zodiacImages = {
   },  
   Близнецы: {  
     src: 'img/zhak/bliznecy2.png',  
-    width: '230px',  
+    width: '200px',  
     height: 'auto'  
   },  
   Рак: {  
