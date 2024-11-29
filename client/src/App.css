@@ -113,4 +113,8 @@ body{
 .ico-send{
   filter: invert(1);
   width: 20px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 5px 5px 5px 6px;
+  opacity: .7;
 }
