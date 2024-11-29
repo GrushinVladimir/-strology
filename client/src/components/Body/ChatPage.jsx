@@ -55,59 +55,41 @@ const ChatPage = ({ remainingQuestions, decrementQuestions, zodiacSign, userName
     fetchApiKey();
   }, []);
 
-  const handleSendMessage = async (message) => {
-    const finalMessage = message || inputMessage;
-    const fullMessage = `Тебя зовут Стеша. Ты астролог. Меня зовут: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;
-
-    if (!apiKey) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'bot', text: 'Ошибка: API Key отсутствует. Пожалуйста, обратитесь к администратору.' },
-      ]);
-      return;
-    }
-
-    if (finalMessage.trim() === '') return;
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { sender: 'user', text: finalMessage },
-    ]);
-    setBotTyping(true);
-
-    try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-4',
-          messages: [{ role: 'user', content: fullMessage }],
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${apiKey}`,
-          },
-        }
-      );
-
-      const botMessage = response.data.choices?.[0]?.message?.content || 'Ошибка: нет ответа.';
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'bot', text: botMessage, isClickable: false },
-      ]);
-    } catch (error) {
-      setError(err.message); 
-      console.error('Ошибка при отправке сообщения:', error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'bot', text: 'Ошибка при получении ответа от API. Проверьте ключ или доступ к API.', isClickable: false },
-      ]);
-    } finally {
-      setBotTyping(false);
-    }
-
-    setInputMessage('');
-  };
+  const handleSendMessage = async (message) => {  
+    const finalMessage = message || inputMessage;  
+    const fullMessage = `Тебя зовут Стеша. Ты астролог. Меня зовут: ${userName || "Неизвестный пользователь"}, Знак зодиака: ${zodiacSign || "Неизвестный знак"}. Вопрос: ${finalMessage}`;  
+  
+    if (finalMessage.trim() === '') return;  
+  
+    setMessages((prevMessages) => [  
+      ...prevMessages,  
+      { sender: 'user', text: finalMessage },  
+    ]);  
+    setBotTyping(true);  
+  
+    try {  
+      const response = await axios.post(  
+        'strology.vercel.app/api/chat', // Замените на адрес вашего прокси-сервера  
+        { message: fullMessage }  
+      );  
+  
+      const botMessage = response.data.choices?.[0]?.message?.content || 'Ошибка: нет ответа.';  
+      setMessages((prevMessages) => [  
+        ...prevMessages,  
+        { sender: 'bot', text: botMessage, isClickable: false },  
+      ]);  
+    } catch (error) {  
+      console.error('Ошибка при отправке сообщения:', error);  
+      setMessages((prevMessages) => [  
+        ...prevMessages,  
+        { sender: 'bot', text: 'Ошибка при получении ответа от API. Проверьте ключ или доступ к API.', isClickable: false },  
+      ]);  
+    } finally {  
+      setBotTyping(false);  
+    }  
+  
+    setInputMessage('');  
+  };  
 
   const handleQuestionClick = (question) => {
     if (remainingQuestions > 0) {

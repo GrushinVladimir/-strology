@@ -193,7 +193,30 @@ app.get('/api/telegram-token', (req, res) => {
 app.get('/api/config', (req, res) => {  
     res.json({ apiKey: process.env.REACT_APP_CHAT_API_KEY });  
 });  
-
+app.post('/api/chat', async (req, res) => {  
+    const { message } = req.body;  
+  
+    try {  
+      const response = await axios.post(  
+        'https://api.openai.com/v1/chat/completions',  
+        {  
+          model: 'gpt-4',  
+          messages: [{ role: 'user', content: message }],  
+        },  
+        {  
+          headers: {  
+            'Content-Type': 'application/json',  
+            Authorization: `${process.env.REACT_APP_CHAT_API_KEY}`, // используйте переменную окружения  
+          },  
+        }  
+      );  
+  
+      res.json(response.data);  
+    } catch (error) {  
+      console.error('Ошибка при отправке сообщения:', error);  
+      res.status(500).json({ error: 'Ошибка при получении ответа от API.' });  
+    }  
+  });  
 app.get('/api/config-google', (req, res) => {  
     res.json({ apiKeys: process.env.GOOGLE_KEY });  
 });  
